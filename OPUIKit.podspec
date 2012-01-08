@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Source/**/*.{h,m}'
   
   s.frameworks = 'UIKit'
-  s.dependency 'BlocksKit', '~> 1.0.1'
+  s.dependency 'BlocksKit', '~> 1.0.2'
   
   s.dependency 'OPExtensionKit', :git => 'git@brandonwilliams.beanstalkapp.com:/opextensionkit.git'
   
