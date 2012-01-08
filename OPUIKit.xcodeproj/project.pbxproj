@@ -16,7 +16,6 @@
 		A706D72014B9237500B469BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70014B9235100B469BB /* Foundation.framework */; };
 		A706D72114B9237500B469BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70214B9235100B469BB /* CoreGraphics.framework */; };
 		A706D72914B9237500B469BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D72814B9237500B469BB /* main.m */; };
-		A706D73314B923A900B469BB /* OPUIKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A706D73214B923A900B469BB /* OPUIKit.podspec */; };
 		A706D73B14B9250C00B469BB /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D73A14B9250C00B469BB /* GHUnitIOS.framework */; };
 		A706D75114B9253400B469BB /* OPBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D73E14B9253400B469BB /* OPBarButtonItem.m */; };
 		A706D75214B9253400B469BB /* OPBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D73E14B9253400B469BB /* OPBarButtonItem.m */; };
@@ -41,61 +40,61 @@
 		A706D76514B9253400B469BB /* OPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D75014B9253400B469BB /* OPViewController.m */; };
 		A706D76614B9253400B469BB /* OPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D75014B9253400B469BB /* OPViewController.m */; };
 		A706D76814B925BD00B469BB /* OPUIKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A706D76714B925BD00B469BB /* OPUIKit.podspec */; };
-		A706D7BB14B9268100B469BB /* A2BlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76C14B9268100B469BB /* A2BlockDelegate.m */; };
+		A706D7BB14B9268100B469BB /* A2BlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76C14B9268100B469BB /* A2BlockDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7BC14B9268100B469BB /* A2BlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76C14B9268100B469BB /* A2BlockDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7BD14B9268100B469BB /* A2DynamicDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76E14B9268100B469BB /* A2DynamicDelegate.m */; };
+		A706D7BD14B9268100B469BB /* A2DynamicDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76E14B9268100B469BB /* A2DynamicDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7BE14B9268100B469BB /* A2DynamicDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D76E14B9268100B469BB /* A2DynamicDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7C914B9268100B469BB /* A2BlockDelegate+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D77D14B9268100B469BB /* A2BlockDelegate+BlocksKit.m */; };
+		A706D7C914B9268100B469BB /* A2BlockDelegate+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D77D14B9268100B469BB /* A2BlockDelegate+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7CA14B9268100B469BB /* A2BlockDelegate+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D77D14B9268100B469BB /* A2BlockDelegate+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7CD14B9268100B469BB /* MFMailComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78414B9268100B469BB /* MFMailComposeViewController+BlocksKit.m */; };
+		A706D7CD14B9268100B469BB /* MFMailComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78414B9268100B469BB /* MFMailComposeViewController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7CE14B9268100B469BB /* MFMailComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78414B9268100B469BB /* MFMailComposeViewController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7CF14B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78614B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m */; };
+		A706D7CF14B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78614B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7D014B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78614B9268100B469BB /* MFMessageComposeViewController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7D114B9268100B469BB /* NSArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78814B9268100B469BB /* NSArray+BlocksKit.m */; };
+		A706D7D114B9268100B469BB /* NSArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78814B9268100B469BB /* NSArray+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7D214B9268100B469BB /* NSArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78814B9268100B469BB /* NSArray+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7D314B9268100B469BB /* NSCache+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78A14B9268100B469BB /* NSCache+BlocksKit.m */; };
+		A706D7D314B9268100B469BB /* NSCache+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78A14B9268100B469BB /* NSCache+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7D414B9268100B469BB /* NSCache+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78A14B9268100B469BB /* NSCache+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7D514B9268100B469BB /* NSDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78C14B9268100B469BB /* NSDictionary+BlocksKit.m */; };
+		A706D7D514B9268100B469BB /* NSDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78C14B9268100B469BB /* NSDictionary+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7D614B9268100B469BB /* NSDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78C14B9268100B469BB /* NSDictionary+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7D714B9268100B469BB /* NSIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78E14B9268100B469BB /* NSIndexSet+BlocksKit.m */; };
+		A706D7D714B9268100B469BB /* NSIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78E14B9268100B469BB /* NSIndexSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7D814B9268100B469BB /* NSIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D78E14B9268100B469BB /* NSIndexSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7D914B9268100B469BB /* NSInvocation+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79014B9268100B469BB /* NSInvocation+BlocksKit.m */; };
+		A706D7D914B9268100B469BB /* NSInvocation+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79014B9268100B469BB /* NSInvocation+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7DA14B9268100B469BB /* NSInvocation+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79014B9268100B469BB /* NSInvocation+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7DB14B9268100B469BB /* NSMutableArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79214B9268100B469BB /* NSMutableArray+BlocksKit.m */; };
+		A706D7DB14B9268100B469BB /* NSMutableArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79214B9268100B469BB /* NSMutableArray+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7DC14B9268100B469BB /* NSMutableArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79214B9268100B469BB /* NSMutableArray+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7DD14B9268100B469BB /* NSMutableDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79414B9268100B469BB /* NSMutableDictionary+BlocksKit.m */; };
+		A706D7DD14B9268100B469BB /* NSMutableDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79414B9268100B469BB /* NSMutableDictionary+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7DE14B9268100B469BB /* NSMutableDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79414B9268100B469BB /* NSMutableDictionary+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7DF14B9268100B469BB /* NSMutableIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79614B9268100B469BB /* NSMutableIndexSet+BlocksKit.m */; };
+		A706D7DF14B9268100B469BB /* NSMutableIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79614B9268100B469BB /* NSMutableIndexSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7E014B9268100B469BB /* NSMutableIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79614B9268100B469BB /* NSMutableIndexSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7E114B9268100B469BB /* NSMutableSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79814B9268100B469BB /* NSMutableSet+BlocksKit.m */; };
+		A706D7E114B9268100B469BB /* NSMutableSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79814B9268100B469BB /* NSMutableSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7E214B9268100B469BB /* NSMutableSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79814B9268100B469BB /* NSMutableSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7E314B9268100B469BB /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79A14B9268100B469BB /* NSObject+AssociatedObjects.m */; };
+		A706D7E314B9268100B469BB /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79A14B9268100B469BB /* NSObject+AssociatedObjects.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7E414B9268100B469BB /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79A14B9268100B469BB /* NSObject+AssociatedObjects.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7E514B9268100B469BB /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79C14B9268100B469BB /* NSObject+BlockObservation.m */; };
+		A706D7E514B9268100B469BB /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79C14B9268100B469BB /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7E614B9268100B469BB /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79C14B9268100B469BB /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7E714B9268100B469BB /* NSObject+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79E14B9268100B469BB /* NSObject+BlocksKit.m */; };
+		A706D7E714B9268100B469BB /* NSObject+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79E14B9268100B469BB /* NSObject+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7E814B9268100B469BB /* NSObject+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D79E14B9268100B469BB /* NSObject+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7E914B9268100B469BB /* NSSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A014B9268100B469BB /* NSSet+BlocksKit.m */; };
+		A706D7E914B9268100B469BB /* NSSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A014B9268100B469BB /* NSSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7EA14B9268100B469BB /* NSSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A014B9268100B469BB /* NSSet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7EB14B9268100B469BB /* NSTimer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A214B9268100B469BB /* NSTimer+BlocksKit.m */; };
+		A706D7EB14B9268100B469BB /* NSTimer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A214B9268100B469BB /* NSTimer+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7EC14B9268100B469BB /* NSTimer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A214B9268100B469BB /* NSTimer+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7ED14B9268100B469BB /* NSURLConnection+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A414B9268100B469BB /* NSURLConnection+BlocksKit.m */; };
+		A706D7ED14B9268100B469BB /* NSURLConnection+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A414B9268100B469BB /* NSURLConnection+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7EE14B9268100B469BB /* NSURLConnection+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A414B9268100B469BB /* NSURLConnection+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7EF14B9268100B469BB /* UIActionSheet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A614B9268100B469BB /* UIActionSheet+BlocksKit.m */; };
+		A706D7EF14B9268100B469BB /* UIActionSheet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A614B9268100B469BB /* UIActionSheet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7F014B9268100B469BB /* UIActionSheet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A614B9268100B469BB /* UIActionSheet+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7F114B9268100B469BB /* UIAlertView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A814B9268100B469BB /* UIAlertView+BlocksKit.m */; };
+		A706D7F114B9268100B469BB /* UIAlertView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A814B9268100B469BB /* UIAlertView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7F214B9268100B469BB /* UIAlertView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7A814B9268100B469BB /* UIAlertView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7F314B9268100B469BB /* UIBarButtonItem+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AA14B9268100B469BB /* UIBarButtonItem+BlocksKit.m */; };
+		A706D7F314B9268100B469BB /* UIBarButtonItem+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AA14B9268100B469BB /* UIBarButtonItem+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7F414B9268100B469BB /* UIBarButtonItem+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AA14B9268100B469BB /* UIBarButtonItem+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7F514B9268100B469BB /* UIControl+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AC14B9268100B469BB /* UIControl+BlocksKit.m */; };
+		A706D7F514B9268100B469BB /* UIControl+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AC14B9268100B469BB /* UIControl+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7F614B9268100B469BB /* UIControl+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AC14B9268100B469BB /* UIControl+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7F714B9268100B469BB /* UIGestureRecognizer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AE14B9268100B469BB /* UIGestureRecognizer+BlocksKit.m */; };
+		A706D7F714B9268100B469BB /* UIGestureRecognizer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AE14B9268100B469BB /* UIGestureRecognizer+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7F814B9268100B469BB /* UIGestureRecognizer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7AE14B9268100B469BB /* UIGestureRecognizer+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7F914B9268100B469BB /* UIPopoverController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B014B9268100B469BB /* UIPopoverController+BlocksKit.m */; };
+		A706D7F914B9268100B469BB /* UIPopoverController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B014B9268100B469BB /* UIPopoverController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7FA14B9268100B469BB /* UIPopoverController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B014B9268100B469BB /* UIPopoverController+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7FB14B9268100B469BB /* UIView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B214B9268100B469BB /* UIView+BlocksKit.m */; };
+		A706D7FB14B9268100B469BB /* UIView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B214B9268100B469BB /* UIView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7FC14B9268100B469BB /* UIView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B214B9268100B469BB /* UIView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A706D7FD14B9268100B469BB /* UIWebView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B414B9268100B469BB /* UIWebView+BlocksKit.m */; };
+		A706D7FD14B9268100B469BB /* UIWebView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B414B9268100B469BB /* UIWebView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D7FE14B9268100B469BB /* UIWebView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D7B414B9268100B469BB /* UIWebView+BlocksKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A706D84114B926A000B469BB /* NSManagedObjectContext+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D80814B9269F00B469BB /* NSManagedObjectContext+Opetopic.m */; };
 		A706D84214B926A000B469BB /* NSManagedObjectContext+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D80814B9269F00B469BB /* NSManagedObjectContext+Opetopic.m */; };
@@ -155,6 +154,11 @@
 		A7F0596F14B9F58D005CF16F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0596E14B9F58D005CF16F /* MapKit.framework */; };
 		A7F0597114B9F5A8005CF16F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597014B9F5A8005CF16F /* QuartzCore.framework */; };
 		A7F0597314B9F5B8005CF16F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597214B9F5B8005CF16F /* MessageUI.framework */; };
+		A7F0597414B9F65F005CF16F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597214B9F5B8005CF16F /* MessageUI.framework */; };
+		A7F0597514B9F65F005CF16F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597014B9F5A8005CF16F /* QuartzCore.framework */; };
+		A7F0597614B9F65F005CF16F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0596E14B9F58D005CF16F /* MapKit.framework */; };
+		A7F0597714B9F65F005CF16F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D87714B926FF00B469BB /* CoreData.framework */; };
+		A7F0597814B9F65F005CF16F /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D73A14B9250C00B469BB /* GHUnitIOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -318,6 +322,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F0597414B9F65F005CF16F /* MessageUI.framework in Frameworks */,
+				A7F0597514B9F65F005CF16F /* QuartzCore.framework in Frameworks */,
+				A7F0597614B9F65F005CF16F /* MapKit.framework in Frameworks */,
+				A7F0597714B9F65F005CF16F /* CoreData.framework in Frameworks */,
+				A7F0597814B9F65F005CF16F /* GHUnitIOS.framework in Frameworks */,
 				A706D6FF14B9235100B469BB /* UIKit.framework in Frameworks */,
 				A706D70114B9235100B469BB /* Foundation.framework in Frameworks */,
 				A706D70314B9235100B469BB /* CoreGraphics.framework in Frameworks */,
@@ -693,7 +702,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A706D73314B923A900B469BB /* OPUIKit.podspec in Resources */,
 				A706D75914B9253400B469BB /* OPNavigationController.xib in Resources */,
 				A706D75D14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */,
 				A706D76814B925BD00B469BB /* OPUIKit.podspec in Resources */,
@@ -910,6 +918,10 @@
 		A706D71314B9235100B469BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OPUIKitTests\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OPUIKit/OPUIKit-Prefix.pch";
 				INFOPLIST_FILE = "OPUIKit/OPUIKit-Info.plist";
@@ -921,6 +933,10 @@
 		A706D71414B9235100B469BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OPUIKitTests\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OPUIKit/OPUIKit-Prefix.pch";
 				INFOPLIST_FILE = "OPUIKit/OPUIKit-Info.plist";
