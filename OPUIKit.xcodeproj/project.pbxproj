@@ -1,0 +1,468 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A706D6FF14B9235100B469BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D6FE14B9235100B469BB /* UIKit.framework */; };
+		A706D70114B9235100B469BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70014B9235100B469BB /* Foundation.framework */; };
+		A706D70314B9235100B469BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70214B9235100B469BB /* CoreGraphics.framework */; };
+		A706D70B14B9235100B469BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D70A14B9235100B469BB /* main.m */; };
+		A706D70F14B9235100B469BB /* OPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D70E14B9235100B469BB /* OPAppDelegate.m */; };
+		A706D71F14B9237500B469BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D6FE14B9235100B469BB /* UIKit.framework */; };
+		A706D72014B9237500B469BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70014B9235100B469BB /* Foundation.framework */; };
+		A706D72114B9237500B469BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D70214B9235100B469BB /* CoreGraphics.framework */; };
+		A706D72914B9237500B469BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D72814B9237500B469BB /* main.m */; };
+		A706D73314B923A900B469BB /* OPUIKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A706D73214B923A900B469BB /* OPUIKit.podspec */; };
+		A706D73B14B9250C00B469BB /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D73A14B9250C00B469BB /* GHUnitIOS.framework */; };
+		A706D75114B9253400B469BB /* OPBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D73E14B9253400B469BB /* OPBarButtonItem.m */; };
+		A706D75214B9253400B469BB /* OPBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D73E14B9253400B469BB /* OPBarButtonItem.m */; };
+		A706D75314B9253400B469BB /* OPGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74014B9253400B469BB /* OPGradientView.m */; };
+		A706D75414B9253400B469BB /* OPGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74014B9253400B469BB /* OPGradientView.m */; };
+		A706D75514B9253400B469BB /* OPNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74214B9253400B469BB /* OPNavigationBar.m */; };
+		A706D75614B9253400B469BB /* OPNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74214B9253400B469BB /* OPNavigationBar.m */; };
+		A706D75714B9253400B469BB /* OPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74414B9253400B469BB /* OPNavigationController.m */; };
+		A706D75814B9253400B469BB /* OPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74414B9253400B469BB /* OPNavigationController.m */; };
+		A706D75914B9253400B469BB /* OPNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A706D74514B9253400B469BB /* OPNavigationController.xib */; };
+		A706D75A14B9253400B469BB /* OPNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A706D74514B9253400B469BB /* OPNavigationController.xib */; };
+		A706D75B14B9253400B469BB /* OPSidebarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74714B9253400B469BB /* OPSidebarNavigationController.m */; };
+		A706D75C14B9253400B469BB /* OPSidebarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74714B9253400B469BB /* OPSidebarNavigationController.m */; };
+		A706D75D14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A706D74814B9253400B469BB /* OPSidebarNavigationController.xib */; };
+		A706D75E14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A706D74814B9253400B469BB /* OPSidebarNavigationController.xib */; };
+		A706D75F14B9253400B469BB /* OPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74A14B9253400B469BB /* OPTableViewController.m */; };
+		A706D76014B9253400B469BB /* OPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74A14B9253400B469BB /* OPTableViewController.m */; };
+		A706D76114B9253400B469BB /* OPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74C14B9253400B469BB /* OPTextView.m */; };
+		A706D76214B9253400B469BB /* OPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74C14B9253400B469BB /* OPTextView.m */; };
+		A706D76314B9253400B469BB /* OPView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74E14B9253400B469BB /* OPView.m */; };
+		A706D76414B9253400B469BB /* OPView.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D74E14B9253400B469BB /* OPView.m */; };
+		A706D76514B9253400B469BB /* OPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D75014B9253400B469BB /* OPViewController.m */; };
+		A706D76614B9253400B469BB /* OPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D75014B9253400B469BB /* OPViewController.m */; };
+		A706D76814B925BD00B469BB /* OPUIKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A706D76714B925BD00B469BB /* OPUIKit.podspec */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A706D6FA14B9235100B469BB /* OPUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OPUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A706D6FE14B9235100B469BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A706D70014B9235100B469BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A706D70214B9235100B469BB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A706D70614B9235100B469BB /* OPUIKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OPUIKit-Info.plist"; sourceTree = "<group>"; };
+		A706D70A14B9235100B469BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A706D70C14B9235100B469BB /* OPUIKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OPUIKit-Prefix.pch"; sourceTree = "<group>"; };
+		A706D70D14B9235100B469BB /* OPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OPAppDelegate.h; sourceTree = "<group>"; };
+		A706D70E14B9235100B469BB /* OPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OPAppDelegate.m; sourceTree = "<group>"; };
+		A706D71D14B9237500B469BB /* OPUIKitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OPUIKitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A706D72414B9237500B469BB /* OPUIKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OPUIKitTests-Info.plist"; sourceTree = "<group>"; };
+		A706D72814B9237500B469BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A706D72A14B9237500B469BB /* OPUIKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OPUIKitTests-Prefix.pch"; sourceTree = "<group>"; };
+		A706D73214B923A900B469BB /* OPUIKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; indentWidth = 2; path = OPUIKit.podspec; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A706D73A14B9250C00B469BB /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = OPUIKitTests/GHUnitIOS.framework; sourceTree = "<group>"; };
+		A706D73D14B9253400B469BB /* OPBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPBarButtonItem.h; sourceTree = "<group>"; };
+		A706D73E14B9253400B469BB /* OPBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPBarButtonItem.m; sourceTree = "<group>"; };
+		A706D73F14B9253400B469BB /* OPGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPGradientView.h; sourceTree = "<group>"; };
+		A706D74014B9253400B469BB /* OPGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPGradientView.m; sourceTree = "<group>"; };
+		A706D74114B9253400B469BB /* OPNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPNavigationBar.h; sourceTree = "<group>"; };
+		A706D74214B9253400B469BB /* OPNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPNavigationBar.m; sourceTree = "<group>"; };
+		A706D74314B9253400B469BB /* OPNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPNavigationController.h; sourceTree = "<group>"; };
+		A706D74414B9253400B469BB /* OPNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPNavigationController.m; sourceTree = "<group>"; };
+		A706D74514B9253400B469BB /* OPNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OPNavigationController.xib; sourceTree = "<group>"; };
+		A706D74614B9253400B469BB /* OPSidebarNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OPSidebarNavigationController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A706D74714B9253400B469BB /* OPSidebarNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPSidebarNavigationController.m; sourceTree = "<group>"; };
+		A706D74814B9253400B469BB /* OPSidebarNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OPSidebarNavigationController.xib; sourceTree = "<group>"; };
+		A706D74914B9253400B469BB /* OPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTableViewController.h; sourceTree = "<group>"; };
+		A706D74A14B9253400B469BB /* OPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTableViewController.m; sourceTree = "<group>"; };
+		A706D74B14B9253400B469BB /* OPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTextView.h; sourceTree = "<group>"; };
+		A706D74C14B9253400B469BB /* OPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTextView.m; sourceTree = "<group>"; };
+		A706D74D14B9253400B469BB /* OPView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPView.h; sourceTree = "<group>"; };
+		A706D74E14B9253400B469BB /* OPView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPView.m; sourceTree = "<group>"; };
+		A706D74F14B9253400B469BB /* OPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPViewController.h; sourceTree = "<group>"; };
+		A706D75014B9253400B469BB /* OPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPViewController.m; sourceTree = "<group>"; };
+		A706D76714B925BD00B469BB /* OPUIKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; indentWidth = 2; path = OPUIKit.podspec; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A706D6F714B9235100B469BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D6FF14B9235100B469BB /* UIKit.framework in Frameworks */,
+				A706D70114B9235100B469BB /* Foundation.framework in Frameworks */,
+				A706D70314B9235100B469BB /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A706D71A14B9237500B469BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D71F14B9237500B469BB /* UIKit.framework in Frameworks */,
+				A706D72014B9237500B469BB /* Foundation.framework in Frameworks */,
+				A706D72114B9237500B469BB /* CoreGraphics.framework in Frameworks */,
+				A706D73B14B9250C00B469BB /* GHUnitIOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A706D6EF14B9235100B469BB = {
+			isa = PBXGroup;
+			children = (
+				A706D70414B9235100B469BB /* OPUIKit */,
+				A706D72214B9237500B469BB /* OPUIKitTests */,
+				A706D6FD14B9235100B469BB /* Frameworks */,
+				A706D6FB14B9235100B469BB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A706D6FB14B9235100B469BB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A706D6FA14B9235100B469BB /* OPUIKit.app */,
+				A706D71D14B9237500B469BB /* OPUIKitTests.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A706D6FD14B9235100B469BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A706D73A14B9250C00B469BB /* GHUnitIOS.framework */,
+				A706D6FE14B9235100B469BB /* UIKit.framework */,
+				A706D70014B9235100B469BB /* Foundation.framework */,
+				A706D70214B9235100B469BB /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A706D70414B9235100B469BB /* OPUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				A706D73C14B9253400B469BB /* Source */,
+				A706D70514B9235100B469BB /* Supporting Files */,
+			);
+			path = OPUIKit;
+			sourceTree = "<group>";
+		};
+		A706D70514B9235100B469BB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A706D70D14B9235100B469BB /* OPAppDelegate.h */,
+				A706D70E14B9235100B469BB /* OPAppDelegate.m */,
+				A706D73214B923A900B469BB /* OPUIKit.podspec */,
+				A706D70614B9235100B469BB /* OPUIKit-Info.plist */,
+				A706D70A14B9235100B469BB /* main.m */,
+				A706D70C14B9235100B469BB /* OPUIKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A706D72214B9237500B469BB /* OPUIKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				A706D72314B9237500B469BB /* Supporting Files */,
+			);
+			path = OPUIKitTests;
+			sourceTree = "<group>";
+		};
+		A706D72314B9237500B469BB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A706D76714B925BD00B469BB /* OPUIKit.podspec */,
+				A706D72414B9237500B469BB /* OPUIKitTests-Info.plist */,
+				A706D72814B9237500B469BB /* main.m */,
+				A706D72A14B9237500B469BB /* OPUIKitTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A706D73C14B9253400B469BB /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A706D73D14B9253400B469BB /* OPBarButtonItem.h */,
+				A706D73E14B9253400B469BB /* OPBarButtonItem.m */,
+				A706D73F14B9253400B469BB /* OPGradientView.h */,
+				A706D74014B9253400B469BB /* OPGradientView.m */,
+				A706D74114B9253400B469BB /* OPNavigationBar.h */,
+				A706D74214B9253400B469BB /* OPNavigationBar.m */,
+				A706D74314B9253400B469BB /* OPNavigationController.h */,
+				A706D74414B9253400B469BB /* OPNavigationController.m */,
+				A706D74514B9253400B469BB /* OPNavigationController.xib */,
+				A706D74614B9253400B469BB /* OPSidebarNavigationController.h */,
+				A706D74714B9253400B469BB /* OPSidebarNavigationController.m */,
+				A706D74814B9253400B469BB /* OPSidebarNavigationController.xib */,
+				A706D74914B9253400B469BB /* OPTableViewController.h */,
+				A706D74A14B9253400B469BB /* OPTableViewController.m */,
+				A706D74B14B9253400B469BB /* OPTextView.h */,
+				A706D74C14B9253400B469BB /* OPTextView.m */,
+				A706D74D14B9253400B469BB /* OPView.h */,
+				A706D74E14B9253400B469BB /* OPView.m */,
+				A706D74F14B9253400B469BB /* OPViewController.h */,
+				A706D75014B9253400B469BB /* OPViewController.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A706D6F914B9235100B469BB /* OPUIKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A706D71214B9235100B469BB /* Build configuration list for PBXNativeTarget "OPUIKit" */;
+			buildPhases = (
+				A706D6F614B9235100B469BB /* Sources */,
+				A706D6F714B9235100B469BB /* Frameworks */,
+				A706D6F814B9235100B469BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OPUIKit;
+			productName = OPUIKit;
+			productReference = A706D6FA14B9235100B469BB /* OPUIKit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A706D71C14B9237500B469BB /* OPUIKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A706D73014B9237500B469BB /* Build configuration list for PBXNativeTarget "OPUIKitTests" */;
+			buildPhases = (
+				A706D71914B9237500B469BB /* Sources */,
+				A706D71A14B9237500B469BB /* Frameworks */,
+				A706D71B14B9237500B469BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OPUIKitTests;
+			productName = OPUIKitTests;
+			productReference = A706D71D14B9237500B469BB /* OPUIKitTests.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A706D6F114B9235100B469BB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = Opetopic;
+			};
+			buildConfigurationList = A706D6F414B9235100B469BB /* Build configuration list for PBXProject "OPUIKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A706D6EF14B9235100B469BB;
+			productRefGroup = A706D6FB14B9235100B469BB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A706D6F914B9235100B469BB /* OPUIKit */,
+				A706D71C14B9237500B469BB /* OPUIKitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A706D6F814B9235100B469BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D73314B923A900B469BB /* OPUIKit.podspec in Resources */,
+				A706D75914B9253400B469BB /* OPNavigationController.xib in Resources */,
+				A706D75D14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */,
+				A706D76814B925BD00B469BB /* OPUIKit.podspec in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A706D71B14B9237500B469BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D75A14B9253400B469BB /* OPNavigationController.xib in Resources */,
+				A706D75E14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A706D6F614B9235100B469BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D70B14B9235100B469BB /* main.m in Sources */,
+				A706D70F14B9235100B469BB /* OPAppDelegate.m in Sources */,
+				A706D75114B9253400B469BB /* OPBarButtonItem.m in Sources */,
+				A706D75314B9253400B469BB /* OPGradientView.m in Sources */,
+				A706D75514B9253400B469BB /* OPNavigationBar.m in Sources */,
+				A706D75714B9253400B469BB /* OPNavigationController.m in Sources */,
+				A706D75B14B9253400B469BB /* OPSidebarNavigationController.m in Sources */,
+				A706D75F14B9253400B469BB /* OPTableViewController.m in Sources */,
+				A706D76114B9253400B469BB /* OPTextView.m in Sources */,
+				A706D76314B9253400B469BB /* OPView.m in Sources */,
+				A706D76514B9253400B469BB /* OPViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A706D71914B9237500B469BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706D72914B9237500B469BB /* main.m in Sources */,
+				A706D75214B9253400B469BB /* OPBarButtonItem.m in Sources */,
+				A706D75414B9253400B469BB /* OPGradientView.m in Sources */,
+				A706D75614B9253400B469BB /* OPNavigationBar.m in Sources */,
+				A706D75814B9253400B469BB /* OPNavigationController.m in Sources */,
+				A706D75C14B9253400B469BB /* OPSidebarNavigationController.m in Sources */,
+				A706D76014B9253400B469BB /* OPTableViewController.m in Sources */,
+				A706D76214B9253400B469BB /* OPTextView.m in Sources */,
+				A706D76414B9253400B469BB /* OPView.m in Sources */,
+				A706D76614B9253400B469BB /* OPViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A706D71014B9235100B469BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A706D71114B9235100B469BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A706D71314B9235100B469BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OPUIKit/OPUIKit-Prefix.pch";
+				INFOPLIST_FILE = "OPUIKit/OPUIKit-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A706D71414B9235100B469BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OPUIKit/OPUIKit-Prefix.pch";
+				INFOPLIST_FILE = "OPUIKit/OPUIKit-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		A706D72E14B9237500B469BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OPUIKitTests\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OPUIKitTests/OPUIKitTests-Prefix.pch";
+				INFOPLIST_FILE = "OPUIKitTests/OPUIKitTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A706D72F14B9237500B469BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/OPUIKitTests\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OPUIKitTests/OPUIKitTests-Prefix.pch";
+				INFOPLIST_FILE = "OPUIKitTests/OPUIKitTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A706D6F414B9235100B469BB /* Build configuration list for PBXProject "OPUIKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A706D71014B9235100B469BB /* Debug */,
+				A706D71114B9235100B469BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A706D71214B9235100B469BB /* Build configuration list for PBXNativeTarget "OPUIKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A706D71314B9235100B469BB /* Debug */,
+				A706D71414B9235100B469BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A706D73014B9237500B469BB /* Build configuration list for PBXNativeTarget "OPUIKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A706D72E14B9237500B469BB /* Debug */,
+				A706D72F14B9237500B469BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A706D6F114B9235100B469BB /* Project object */;
+}

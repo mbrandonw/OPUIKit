@@ -1,0 +1,34 @@
+# xcode noise
+*.mode1v3
+*.pbxuser
+*.perspective 
+*.perspectivev3
+*.pyc 
+*~.nib/
+*/build/*
+build/*
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+
+
+# old skool
+.svn
+
+# osx noise
+.DS_Store
+
+*.dropbox
+
+App/build.output
+App/pkg/*
+
