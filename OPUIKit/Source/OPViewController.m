@@ -64,11 +64,11 @@ static UIImage *defaultTitleImage;
 
 
 #pragma mark View lifecycle
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
+-(void) loadView {
+    [super loadView];
+    
     // default the background color if the view doesn't already have one
-	if (defaultBackgroundColor && ! self.view.backgroundColor)
+	if (defaultBackgroundColor)
 		self.view.backgroundColor = defaultBackgroundColor;
 }
 

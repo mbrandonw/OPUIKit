@@ -108,13 +108,10 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
     
 //    if (self.useOPTableView)
 //        self.tableView = [[[OPTableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style] autorelease];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	if (OPTableViewControllerDefaultBackgroundColor)
-		self.tableView.backgroundColor = OPTableViewControllerDefaultBackgroundColor;
+    
+    // default the background color if the view doesn't already have one
+    if (OPTableViewControllerDefaultBackgroundColor)
+        self.tableView.backgroundColor = OPTableViewControllerDefaultBackgroundColor;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
