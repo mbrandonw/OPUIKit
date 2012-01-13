@@ -143,7 +143,7 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     if (OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
         [self simulateMemoryWarning];
     
-    DLog(@"%@", COALLESCE(self.title, NSStringFromClass([self class])));
+    DLog(@"%@", OPCoalesce(self.title, NSStringFromClass([self class])));
 }
 
 - (void)viewDidUnload {

@@ -78,7 +78,7 @@ static UIImage *defaultTitleImage;
     if (OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
         [self simulateMemoryWarning];
     
-    DLog(@"%@", COALLESCE(self.title, NSStringFromClass([self class])));
+    DLog(@"%@", OPCoalesce(self.title, NSStringFromClass([self class])));
 }
 #pragma mark -
 
