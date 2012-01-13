@@ -67,7 +67,8 @@ static UIImage *defaultTitleImage;
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	if (defaultBackgroundColor)
+    // default the background color if the view doesn't already have one
+	if (defaultBackgroundColor && ! self.view.backgroundColor)
 		self.view.backgroundColor = defaultBackgroundColor;
 }
 
