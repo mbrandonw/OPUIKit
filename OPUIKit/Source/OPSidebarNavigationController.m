@@ -7,7 +7,6 @@
 //
 
 #import "OPSidebarNavigationController.h"
-#import "BlocksKit.h"
 #import "UIView+Opetopic.h"
 #import "OPBarButtonItem.h"
 #import <QuartzCore/QuartzCore.h>

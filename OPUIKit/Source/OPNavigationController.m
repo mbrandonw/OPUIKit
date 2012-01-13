@@ -12,7 +12,6 @@
 #import "OPGradientView.h"
 #import "UIView+Opetopic.h"
 #import "OPBarButtonItem.h"
-#import "BlocksKit.h"
 #import "OPMacros.h"
 
 #if !defined(OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
