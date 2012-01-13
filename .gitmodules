@@ -1,6 +1,3 @@
-[submodule "OPUIKit/BlocksKit"]
-	path = OPUIKit/BlocksKit
-	url = https://github.com/zwaldowski/BlocksKit.git
 [submodule "OPUIKit/opextensionkit"]
 	path = OPUIKit/opextensionkit
 	url = git@brandonwilliams.beanstalkapp.com:/opextensionkit.git
