@@ -109,10 +109,10 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
     
-    showNavigationBarShadow     = OPNavigationControllerDefaultShowNavigationBarShadow;
-    shadowHeight                = OPNavigationControllerDefaultShadowHeight;
-    shadowAlphaStops            = OPNavigationControllerDefaultShadowAlphaStops;
-    allowSwipeToPopController   = OPNavigationControllerDefaultSwipeToPopController;
+    self.showNavigationBarShadow     = OPNavigationControllerDefaultShowNavigationBarShadow;
+    self.shadowHeight                = OPNavigationControllerDefaultShadowHeight;
+    self.shadowAlphaStops            = OPNavigationControllerDefaultShadowAlphaStops;
+    self.allowSwipeToPopController   = OPNavigationControllerDefaultSwipeToPopController;
     
     return self;
 }
@@ -181,12 +181,16 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
 -(UISwipeGestureRecognizer*) popRecognizer {
     if (! popRecognizer)
     {
-        self.popRecognizer = [UISwipeGestureRecognizer recognizerWithHandler:^(UIGestureRecognizer *r, UIGestureRecognizerState s, CGPoint p) {
-            [self popViewControllerAnimated:YES];
-        }];
+        self.popRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiped:)];
         popRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     }
     return popRecognizer;
+}
+
+-(void) swiped:(UISwipeGestureRecognizer*)sender {
+    
+    if (sender.state == UIGestureRecognizerStateBegan)
+        [self popViewControllerAnimated:YES];
 }
 #pragma mark -
 
@@ -203,9 +207,12 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
         self.navigationBarShadowView.opaque = NO;
         self.navigationBarShadowView.backgroundColor = [UIColor clearColor];
         self.navigationBarShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.navigationBarShadowView.gradientLayer.colors = [self.shadowAlphaStops map:^id(id obj) {
-            return (id)[UIColor colorWithWhite:0.0f alpha:[obj floatValue]].CGColor;
-        }];
+        
+        // set up the shadow gradient from the stops
+        NSMutableArray *colors = [NSMutableArray arrayWithCapacity:[self.shadowAlphaStops count]];
+        for (NSNumber *stop in self.shadowAlphaStops)
+            [colors addObject:(id)[UIColor colorWithWhite:0.0f alpha:[stop floatValue]].CGColor];
+        self.navigationBarShadowView.gradientLayer.colors = colors;
         
         if ([self isViewLoaded])
             [self.view addSubview:self.navigationBarShadowView];
@@ -232,12 +239,9 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
         
         if ([OPBarButtonItem hasDefaultBackBackgroundImage])
         {
-            __block id blockSelf = self;
-            viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem 
-                                                               defaultBackButtonWithTitle:(lastController.title ? lastController.title : @"Back")
-                                                               handler:^(id sender) {
-                                                                   [blockSelf dismissModalViewControllerAnimated:YES];
-                                                               }];
+            viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:(lastController.title ? lastController.title : @"Back") 
+                                                                                                   target:self
+                                                                                                   action:@selector(dismissModalViewControllerWithAnimation)];
         }
         else
         {

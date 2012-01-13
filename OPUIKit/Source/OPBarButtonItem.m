@@ -63,38 +63,42 @@ static CGSize OPBarButtonItemDefaultShadowOffset;
 
 
 #pragma mark Initialization methods
-+(id) defaultButtonWithTitle:(NSString *)title handler:(BKSenderBlock)handler {
++(id) defaultButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
     
 	return [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage
                             downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
                                      title:title 
-                                   handler:handler];
+                                   target:target 
+                                    action:action];
 }
 
-+(id) defaultButtonWithIcon:(UIImage *)icon handler:(BKSenderBlock)handler {
++(id) defaultButtonWithIcon:(UIImage *)icon target:(id)target action:(SEL)action {
     
 	return [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage 
                             downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
                                       icon:icon 
-                                   handler:handler];
+                                    target:target
+                                    action:action];
 }
 
-+(id) defaultBackButtonWithTitle:(NSString *)title handler:(BKSenderBlock)handler {
++(id) defaultBackButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
 	
 	OPBarButtonItem *retVal = [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackBackgroundImage
                                                downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
                                                         title:title 
-                                                      handler:handler];
+                                                       target:target
+                                                       action:action];
     [retVal.backingButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f)];
     return retVal;
 }
 
-+(id) defaultButtonWithGlyphishIcon:(NSString*)character handler:(BKSenderBlock)handler {
++(id) defaultButtonWithGlyphishIcon:(NSString*)character target:(id)target action:(SEL)action {
 	
 	OPBarButtonItem *retVal = [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage
                                                downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage 
                                                         title:character 
-                                                      handler:handler];
+                                                       target:target 
+                                                       action:action];
 	
 	retVal.backingButton.titleLabel.font = [UIFont fontWithName:@"glyphish" size:34.0f];
 	[retVal.backingButton sizeToFit];
@@ -104,7 +108,7 @@ static CGSize OPBarButtonItemDefaultShadowOffset;
     return retVal;
 }
 
-+(id) buttonWithBackgroundImage:(UIImage *)image downStateImage:(UIImage *)downStateImage title:(NSString *)title handler:(BKSenderBlock)handler {
++(id) buttonWithBackgroundImage:(UIImage *)image downStateImage:(UIImage *)downStateImage title:(NSString *)title target:(id)target action:(SEL)action {
 	
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 	
@@ -120,14 +124,14 @@ static CGSize OPBarButtonItemDefaultShadowOffset;
 	button.width = MIN(MAX(button.width, 53.0f), 90.0f);
 	button.height = 30.0f;
 	
-	[button addEventHandler:handler forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 	
 	OPBarButtonItem *barButtonItem = [[self alloc] initWithCustomView:button];
 	barButtonItem.backingButton = button;
 	return barButtonItem;
 }
 
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage *)downStateImage icon:(UIImage *)icon handler:(BKSenderBlock)handler {
++(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage *)downStateImage icon:(UIImage *)icon target:(id)target action:(SEL)action {
 	
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 	
@@ -137,7 +141,7 @@ static CGSize OPBarButtonItemDefaultShadowOffset;
 	button.width = icon.size.width + 20.0f;
 	button.height = 30.0f;
 	
-	[button addEventHandler:handler forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 	
     id barButtonItem = [[self alloc] initWithCustomView:button];
 	[(id)barButtonItem setBackingButton:button];

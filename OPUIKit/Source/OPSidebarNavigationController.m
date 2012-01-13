@@ -22,7 +22,12 @@
 -(void) setupSidebarWindow;
 @end
 
-@implementation OPSidebarNavigationController
+@implementation OPSidebarNavigationController {
+    
+    // used for the panning gesture recognizer to drag the navigation controller
+    CGPoint draggingStart;
+    CGPoint previousDraggingPoint;
+}
 
 @synthesize sidebarViewController;
 @synthesize draggableArea;
@@ -110,10 +115,7 @@
     
     if ([self.viewControllers count] == 1 && ! viewController.navigationItem.hidesBackButton)
     {
-        __block id blockSelf = self;
-        viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:@"Menu" handler:^(id sender) {
-            [blockSelf setSidebarVisible:![blockSelf sidebarVisible] animated:YES];
-        }];
+        viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:@"Menu" target:self action:@selector(menuButtonPressed)];
     }
 }
 
@@ -259,56 +261,62 @@
 -(UITapGestureRecognizer*) cancelTapRecognizer {
     if (! cancelTapRecognizer)
     {
-        self.cancelTapRecognizer = [UITapGestureRecognizer recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-            [self setSidebarVisible:NO animated:YES];
-            [self.view removeGestureRecognizer:self.cancelTapRecognizer];
-        }];
+        self.cancelTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancellingTap:)];
         cancelTapRecognizer.numberOfTapsRequired = 1;
         cancelTapRecognizer.cancelsTouchesInView = YES;
     }
     return cancelTapRecognizer;
 }
 
+-(void) cancellingTap:(UITapGestureRecognizer*)sender {
+    
+    if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        [self setSidebarVisible:NO animated:YES];
+        [self.view removeGestureRecognizer:self.cancelTapRecognizer];
+    }
+}
+
 -(UIPanGestureRecognizer*) draggingRecognizer {
     if (! draggingRecognizer)
     {
-        __block CGPoint draggingStart = CGPointZero;
-        __block CGPoint previousDraggingPoint = CGPointZero;
-        self.draggingRecognizer = [UIPanGestureRecognizer recognizerWithHandler:^(UIGestureRecognizer *sender,UIGestureRecognizerState state,CGPoint location) {
-            
-            // figure out which state the gesture is in
-            UIPanGestureRecognizer *panRecognizer = (UIPanGestureRecognizer*)sender;
-            switch (state) {
-                case UIGestureRecognizerStateBegan:
-                {
-                    draggingStart = [panRecognizer locationInView:self.navigationBar];
-                    break;
-                }
-                case UIGestureRecognizerStateChanged:
-                {
-                    previousDraggingPoint = [panRecognizer locationInView:self.navigationBar];
-                    if (ABS([panRecognizer translationInView:self.navigationBar].x) > 10.0f)
-                        self.view.window.left = MAX(0, [panRecognizer locationInView:self.sidebarWindow].x - draggingStart.x);
-                    break;
-                }
-                case UIGestureRecognizerStateEnded:
-                {
-                	// wait for the next runloop frame to show/hide the sidebar since animations get stalled immediately after a gesture
-                    CGPoint velocity = [panRecognizer velocityInView:self.navigationBar];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_main_queue(), ^(void){
-                        if (velocity.x > 0)
-                            [self setSidebarVisible:YES animated:YES];
-                        else
-                            [self setSidebarVisible:NO animated:YES];
-                    });
-                    break;
-                }
-                default:
-                    break;
-            }
-        }];
+        self.draggingRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panning:)];
     }
     return draggingRecognizer;
+}
+
+-(void) panning:(UIPanGestureRecognizer*)sender {
+    
+    // figure out which state the gesture is in
+    UIPanGestureRecognizer *panRecognizer = (UIPanGestureRecognizer*)sender;
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            draggingStart = [panRecognizer locationInView:self.navigationBar];
+            break;
+        }
+        case UIGestureRecognizerStateChanged:
+        {
+            previousDraggingPoint = [panRecognizer locationInView:self.navigationBar];
+            if (ABS([panRecognizer translationInView:self.navigationBar].x) > 10.0f)
+                self.view.window.left = MAX(0, [panRecognizer locationInView:self.sidebarWindow].x - draggingStart.x);
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        {
+            // wait for the next runloop frame to show/hide the sidebar since animations get stalled immediately after a gesture
+            CGPoint velocity = [panRecognizer velocityInView:self.navigationBar];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_main_queue(), ^(void){
+                if (velocity.x > 0)
+                    [self setSidebarVisible:YES animated:YES];
+                else
+                    [self setSidebarVisible:NO animated:YES];
+            });
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 -(void) setDraggableArea:(OPSidebarNavigationDraggableArea)d {
@@ -339,6 +347,11 @@
     }
     self.sidebarWindow.frame = [[UIScreen mainScreen] bounds];
     self.sidebarWindow.rootViewController = self.sidebarViewController;
+}
+
+-(void) menuButtonPressed {
+    
+    [self setSidebarVisible:! self.sidebarVisible animated:YES];
 }
 
 @end

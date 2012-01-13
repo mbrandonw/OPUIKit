@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BlocksKit.h"
 
 @interface OPBarButtonItem : UIBarButtonItem
 
@@ -24,13 +23,13 @@
 +(void) setDefaultShadowOffset:(CGSize)offset;
 
 // initialization methods
-+(id) defaultButtonWithTitle:(NSString *)title handler:(BKSenderBlock)handler;
-+(id) defaultButtonWithIcon:(UIImage *)icon handler:(BKSenderBlock)handler;
-+(id) defaultBackButtonWithTitle:(NSString *)title handler:(BKSenderBlock)handler;
-+(id) defaultButtonWithGlyphishIcon:(NSString*)character handler:(BKSenderBlock)handler;
++(id) defaultButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++(id) defaultButtonWithIcon:(UIImage *)icon target:(id)target action:(SEL)action;
++(id) defaultBackButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++(id) defaultButtonWithGlyphishIcon:(NSString*)character target:(id)target action:(SEL)action;
 
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage title:(NSString*)title handler:(BKSenderBlock)handler;
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage icon:(UIImage*)icon handler:(BKSenderBlock)handler;
++(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage title:(NSString*)title target:(id)target action:(SEL)action;
++(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage icon:(UIImage*)icon target:(id)target action:(SEL)action;
 
 
 @end
