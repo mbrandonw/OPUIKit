@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) BOOL useOPTableView;
 @property (nonatomic, assign) BOOL resignKeyboardWhileScrolling;
+@property (nonatomic, assign) CGFloat resignKeyboardScrollDelta;
 @property (nonatomic, assign) BOOL restoreExpandableSelectionOnViewWillAppear;
 
 @property (nonatomic, readonly) UITableView *activeTableView; // returns the search table view if it is active, otherwise the default table view

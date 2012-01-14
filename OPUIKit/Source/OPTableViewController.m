@@ -32,6 +32,7 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 
 @synthesize useOPTableView;
 @synthesize resignKeyboardWhileScrolling;
+@synthesize resignKeyboardScrollDelta;
 @synthesize restoreExpandableSelectionOnViewWillAppear;
 @synthesize beginDraggingContentOffset;
 @synthesize touchIsDown;
@@ -74,6 +75,7 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 		return nil;
 	
 	self.navigationItem.titleView = [[UIImageView alloc] initWithImage:OPTableViewControllerDefaultTitleImage];
+    self.resignKeyboardScrollDelta = 40.0f;
 	
 	return self;
 }
@@ -83,6 +85,7 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 		return nil;
 	
 	self.navigationItem.titleView = [[UIImageView alloc] initWithImage:OPTableViewControllerDefaultTitleImage];
+    self.resignKeyboardScrollDelta = 40.0f;
 	
 	return self;
 }
@@ -211,7 +214,7 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
     
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
-    if (self.resignKeyboardWhileScrolling && (decelerate || ((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y)) > 1600.0f))
+    if (self.resignKeyboardWhileScrolling && (decelerate || ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta))
         [self.view endEditing:YES];
 }
 
@@ -231,7 +234,7 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
     
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
-    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y)) > 1600.0f)
+    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
         [self.view endEditing:YES];
 }
 
