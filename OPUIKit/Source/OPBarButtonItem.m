@@ -20,7 +20,7 @@ static CGSize OPBarButtonItemDefaultShadowOffset;
 #pragma mark -
 
 @interface OPBarButtonItem (/**/)
-@property (nonatomic, retain, readwrite) UIButton *backingButton;
+@property (nonatomic, strong, readwrite) UIButton *backingButton;
 @end
 
 @implementation OPBarButtonItem

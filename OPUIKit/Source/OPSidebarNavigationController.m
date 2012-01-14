@@ -16,9 +16,9 @@
 #define HBSliderbarAnimationDuration    0.3f
 
 @interface OPSidebarNavigationController (/**/)
-@property (nonatomic, retain) UIWindow *sidebarWindow;
-@property (nonatomic, retain) UITapGestureRecognizer *cancelTapRecognizer;
-@property (nonatomic, retain) UIPanGestureRecognizer *draggingRecognizer;
+@property (nonatomic, strong) UIWindow *sidebarWindow;
+@property (nonatomic, strong) UITapGestureRecognizer *cancelTapRecognizer;
+@property (nonatomic, strong) UIPanGestureRecognizer *draggingRecognizer;
 -(void) setupSidebarWindow;
 @end
 

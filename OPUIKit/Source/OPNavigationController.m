@@ -27,8 +27,8 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
 
 #pragma mark Private methods
 @interface OPNavigationController (/**/)
-@property (nonatomic, retain) OPGradientView *navigationBarShadowView;
-@property (nonatomic, retain) UISwipeGestureRecognizer *popRecognizer;
+@property (nonatomic, strong) OPGradientView *navigationBarShadowView;
+@property (nonatomic, strong) UISwipeGestureRecognizer *popRecognizer;
 -(void) setupNavigationBarShadow;
 @end
 #pragma mark -

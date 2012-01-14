@@ -10,7 +10,7 @@
 
 @interface OPBarButtonItem : UIBarButtonItem
 
-@property (nonatomic, retain, readonly) UIButton *backingButton;
+@property (nonatomic, strong, readonly) UIButton *backingButton;
 
 // styling methods
 +(void) setDefaultBackgroundImage:(UIImage*)image;

@@ -16,7 +16,7 @@ typedef enum {
 
 @interface OPSidebarNavigationController : OPNavigationController
 
-@property (nonatomic, retain) UIViewController *sidebarViewController;
+@property (nonatomic, strong) UIViewController *sidebarViewController;
 @property (nonatomic, assign) OPSidebarNavigationDraggableArea draggableArea;
 @property (nonatomic, assign) CGFloat minimumSidebarWidth;
 @property (nonatomic, assign) CGFloat maximumSidebarWidth;
