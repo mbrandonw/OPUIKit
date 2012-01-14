@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OPView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @class CAGradientLayer;
 
-@interface OPGradientView : OPView
+@interface OPGradientView : UIView
 
 @property (nonatomic, readonly) CAGradientLayer *gradientLayer;
 
