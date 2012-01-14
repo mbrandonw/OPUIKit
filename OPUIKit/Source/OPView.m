@@ -20,17 +20,22 @@
 
 -(void) addBackDrawingBlock:(OPViewDrawingBlock)block {
     
+    if (! self.backDrawingBlocks)
+        self.backDrawingBlocks = [NSMutableArray new];
     [self.backDrawingBlocks addObject:[block copy]];
 }
 
 -(void) addFrontDrawingBlock:(OPViewDrawingBlock)block {
     
+    if (! self.frontDrawingBlocks)
+        self.frontDrawingBlocks = [NSMutableArray new];
     [self.frontDrawingBlocks addObject:[block copy]];
 }
 
 -(void) drawRect:(CGRect)rect {
     
     CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextClearRect(c, rect);
     
     for (OPViewDrawingBlock block in self.backDrawingBlocks)
         block(self, rect, c);
