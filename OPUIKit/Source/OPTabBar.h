@@ -10,14 +10,6 @@
 #import "OPView.h"
 
 typedef enum {
-    OPTabBarStyleFlat = 0,
-    OPTabBarStyleGradient,
-    OPTabBarStyleGloss,
-    OPTabBarStyleCustom,
-    OPTabBarStyleDefault = OPTabBarStyleGradient,
-} OPTabBarStyle;
-
-typedef enum {
     OPTabBarItemLayoutEvenlySpaced = 0,
     OPTabBarItemLayoutCenterGrouped,
     OPTabBarItemLayoutDefault = OPTabBarItemLayoutCenterGrouped,
@@ -38,9 +30,9 @@ typedef enum {
  Styling methods
  */
 @property (nonatomic, strong) UIImage *backgroundImage;
-@property (nonatomic, assign) OPTabBarStyle style;
-@property (nonatomic, assign) CGFloat maxItemWidth; // application only when style == OPTabBarItemLayoutCenterGrouped
-@property (nonatomic, assign) CGFloat glossAmount;
+@property (nonatomic, assign) CGFloat glossAmount;      // % alpha to apply to the top half of the tab bar for the gloss effect
+@property (nonatomic, assign) CGFloat glossOffset;      // how many pixels from the center to offset the gloss
+@property (nonatomic, assign) CGFloat gradientAmount;   // a number between 0 and 1 that determines how much to lighten/darken the background color for the gradient
 @property (nonatomic, assign) CGFloat shadowHeight;
 -(void) setShadowAlphaStops:(NSArray*)stops;
 
@@ -50,6 +42,7 @@ typedef enum {
 @property (nonatomic, copy) NSArray *items;
 @property (nonatomic, assign) OPTabBarItem *selectedItem;
 @property (nonatomic, assign) NSUInteger selectedItemIndex;
-@property (nonatomic, assign) OPTabBarItemLayout itemDistribution;
+@property (nonatomic, assign) OPTabBarItemLayout itemLayout;
+@property (nonatomic, assign) CGFloat maxItemWidth; // application only when itemLayout == OPTabBarItemLayoutCenterGrouped
 
 @end

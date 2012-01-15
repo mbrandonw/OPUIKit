@@ -32,15 +32,16 @@
 @synthesize delegate = _delegate;
 
 @synthesize backgroundImage = _backgroundImage; // Image that is drawn in the background of the tab bar.
-@synthesize style = _style;
-@synthesize maxItemWidth = _maxItemWidth;
 @synthesize glossAmount = _glossAmount;
+@synthesize glossOffset = _glossOffset;
+@synthesize gradientAmount = _gradientAmount;
 @synthesize shadowHeight = _shadowHeight;
 
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;
 @synthesize selectedItemIndex = _selectedItemIndex;
-@synthesize itemDistribution = _itemDistribution;
+@synthesize itemLayout = _itemLayout;
+@synthesize maxItemWidth = _maxItemWidth;
 
 @synthesize shadowView = _shadowView;
 
@@ -53,10 +54,11 @@
         return nil;
     
     // default ivars
-    _style = OPTabBarStyleDefault;
     _maxItemWidth = CGFLOAT_MAX;
-    _glossAmount = 0.1f;
-    _itemDistribution = OPTabBarItemLayoutDefault;
+    _glossAmount = 0.0f;
+    _glossOffset = 0.0f;
+    _gradientAmount = 0.0f;
+    _itemLayout = OPTabBarItemLayoutDefault;
     
     // init shadow view
     _shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
@@ -81,26 +83,12 @@
     {
         CGContextRef c = UIGraphicsGetCurrentContext();
         
-        // determine what kind of background we need to draw
-        if (self.style == OPTabBarStyleFlat)
-        {
-            [self.backgroundColor set];
-            CGContextFillRect(c, rect);
-        }
-        else if (self.style == OPTabBarStyleGloss)
-        {
-            [self.backgroundColor set];
-            CGContextFillRect(c, rect);
-            
-            // gloss = transparent white overlay on upper half of background
-            [$WAf(1.0f,self.glossAmount) set];
-            CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f)));
-        }
-        else if (self.style == OPTabBarStyleGradient)
-        {
-            [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:0.15f], [self.backgroundColor darken:0.15f])]
-             fillRectLinearly:rect];
-        }
+        [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount])]
+         fillRectLinearly:rect];
+        
+        // gloss = transparent white overlay on upper half of background
+        [$WAf(1.0f,self.glossAmount) set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f + self.glossOffset)));
     }
     
     [super drawRect:rect];
@@ -151,6 +139,21 @@
 #pragma mark Custom getters/setters
 #pragma mark -
 
+-(void) setGlossAmount:(CGFloat)glossAmount {
+    _glossAmount = glossAmount;
+    [self setNeedsDisplay];
+}
+
+-(void) setGlossOffset:(CGFloat)glossOffset {
+    _glossOffset = glossOffset;
+    [self setNeedsDisplay];
+}
+
+-(void) setGradientAmount:(CGFloat)gradientAmount {
+    _gradientAmount = gradientAmount;
+    [self setNeedsDisplay];
+}
+
 -(void) setShadowHeight:(CGFloat)h {
     _shadowHeight = h;
     self.shadowView.hidden = h <= 0.0f;
@@ -165,14 +168,9 @@
     self.shadowView.gradientLayer.colors = colors;
 }
 
--(void) setItemDistribution:(OPTabBarItemLayout)d {
-    _itemDistribution = d;
+-(void) setItemLayout:(OPTabBarItemLayout)l {
+    _itemLayout = l;
     [self setNeedsDisplayAndLayout];
-}
-
--(void) setStyle:(OPTabBarStyle)s {
-    _style = s;
-    [self setNeedsDisplay];
 }
 
 -(void) setSelectedItem:(OPTabBarItem*)selectedItem {
@@ -205,14 +203,14 @@
     self.shadowView.frame = CGRectMake(0.0f, -self.shadowHeight, self.width, self.shadowHeight);
     
     // layout the tab bar items
-    if (self.itemDistribution == OPTabBarItemLayoutEvenlySpaced)
+    if (self.itemLayout == OPTabBarItemLayoutEvenlySpaced)
     {
         CGFloat itemWidth = self.width / [self.items count];
         [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
             item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - item.width/2.0f), item.top, itemWidth, item.height);
         }];
     }
-    else if (self.itemDistribution == OPTabBarItemLayoutCenterGrouped)
+    else if (self.itemLayout == OPTabBarItemLayoutCenterGrouped)
     {
         CGFloat neededSpace = 0.0f;
         for (OPTabBarItem *item in self.items)
