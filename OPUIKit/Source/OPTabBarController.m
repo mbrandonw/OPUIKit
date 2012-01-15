@@ -47,7 +47,7 @@
     self.tabBarLandscapeHeight = 40.0f;
     
     // init the tab bar
-    self.tabBar = [[OPTabBar alloc] initWithFrame:CGRectZero];
+    self.tabBar = [[OPTabBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.width, 0.0f)];
     self.tabBar.delegate = self;
     self.tabBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
