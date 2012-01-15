@@ -13,5 +13,6 @@ Pod::Spec.new do |s|
   s.frameworks = 'UIKit'
   
   s.dependency 'OPExtensionKit', :git => 'git@brandonwilliams.beanstalkapp.com:/opextensionkit.git'
+  s.dependency 'OPQuartzKit', :git => 'git@brandonwilliams.beanstalkapp.com:/opquartzkit.git'
   
 end
