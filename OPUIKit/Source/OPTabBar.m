@@ -11,6 +11,7 @@
 
 #import "OPView.h"
 #import "OPGradientView.h"
+#import "OPGradient.h"
 
 #import "UIImage+Opetopic.h"
 #import "NSArray+Opetopic.h"
@@ -22,68 +23,52 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface OPTabBar (/**/)
-@property (nonatomic, strong) OPGradientView *backgroundView;
-@property (nonatomic, strong) OPView *overlayView;
 @property (nonatomic, strong) OPGradientView *shadowView;
 -(void) layoutItems;
+-(void) tabBarButtonPressed:(OPTabBarItem*)sender;
 @end
 
 @implementation OPTabBar
 
-@synthesize delegate;
-@synthesize backgroundImage; // Image that is drawn in the background of the tab bar.
-@synthesize style;
-@synthesize shadowHeight;
+@synthesize delegate = _delegate;
 
-@synthesize items;
-@synthesize selectedItem;
-@synthesize itemDistribution;
+@synthesize backgroundImage = _backgroundImage; // Image that is drawn in the background of the tab bar.
+@synthesize style = _style;
+@synthesize glossAmount = _glossAmount;
+@synthesize shadowHeight = _shadowHeight;
 
-@synthesize backgroundView;
-@synthesize overlayView;
-@synthesize shadowView;
+@synthesize items = _items;
+@synthesize selectedItem = _selectedItem;
+@synthesize selectedItemIndex = _selectedItemIndex;
+@synthesize itemDistribution = _itemDistribution;
+
+@synthesize shadowView = _shadowView;
 
 #pragma mark -
 #pragma mark Object lifecycle
 #pragma mark -
 
 - (id)initWithFrame:(CGRect)frame {
-    if (! (self = [super initWithFrame:frame]))
+    if (! (self = [super initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height?frame.size.height:49.0f)]))
         return nil;
     
     // default ivars
-    if (self.height == 0.0f)
-        self.height = 49.0f;
-    self.style = OPTabBarStyleDefault;
-    self.itemDistribution = OPTabBarItemDistributionDefault;
-    
-    // init background view
-    self.backgroundView = [[OPGradientView alloc] initWithFrame:self.bounds];
-    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:self.backgroundView];
-    
-    // init overlay view
-    self.overlayView = [[OPView alloc] initWithFrame:self.bounds];
-    self.overlayView.backgroundColor = [UIColor clearColor];
-    self.overlayView.opaque = NO;
-    self.overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:self.overlayView];
+    _style = OPTabBarStyleDefault;
+    _glossAmount = 0.1f;
+    _itemDistribution = OPTabBarItemDistributionDefault;
     
     // init shadow view
-    self.shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
-    [self addSubview:self.shadowView];
+    _shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
+    [self addSubview:_shadowView];
     [self setShadowAlphaStops:$array($float(0.0f), $float(0.3f))];
     
     return self;
 }
 
 -(void) drawRect:(CGRect)rect {
-    [super drawRect:rect];
     
     if (self.backgroundImage)
     {
-        self.backgroundView.hidden = YES;
-        
         if ([self.backgroundImage isStretchableImage])
             [self.backgroundImage drawInRect:rect];
         else
@@ -97,25 +82,23 @@
         {
             [self.backgroundColor set];
             CGContextFillRect(c, rect);
-            self.backgroundView.hidden = YES;
         }
         else if (self.style == OPTabBarStyleGloss)
         {
             [self.backgroundColor set];
             CGContextFillRect(c, rect);
             
-            [$WAf(1.0f,0.1f) set];
+            [$WAf(1.0f,self.glossAmount) set];
             CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f)));
-            
-            self.backgroundView.hidden = YES;
         }
         else if (self.style == OPTabBarStyleGradient)
         {
-            self.backgroundView.hidden = NO;
-            self.backgroundView.gradientLayer.colors = $array((id)[self.backgroundColor lighten:0.15f].CGColor,
-                                                              (id)[self.backgroundColor darken:0.15f].CGColor);
+            [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:0.15f], [self.backgroundColor darken:0.15f])]
+             fillRectLinearly:rect];
         }
     }
+    
+    [super drawRect:rect];
 }
 
 #pragma mark -
@@ -129,7 +112,7 @@
         [item removeFromSuperview];
     }
     
-    items = i;
+    _items = i;
     
     for (UIControl *item in self.items)
     {
@@ -150,7 +133,7 @@
         [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
     }
     
-    [self layoutItems];
+    [self setNeedsLayout];
 }
 
 #pragma mark -
@@ -158,7 +141,7 @@
 #pragma mark -
 
 -(void) setShadowHeight:(CGFloat)h {
-    shadowHeight = h;
+    _shadowHeight = h;
     self.shadowView.hidden = h <= 0.0f;
     [self setNeedsLayout];
 }
@@ -177,10 +160,35 @@
 
 -(void) setItemDistribution:(OPTabBarItemDistribution)d animated:(BOOL)animated {
     
-    itemDistribution = d;
-    [UIView animateWithDuration:(0.3f * animated) animations:^{
-        [self layoutItems];
+    _itemDistribution = d;
+    [self setNeedsDisplayAndLayout];
+//    [UIView animateWithDuration:(0.3f * animated) animations:^{
+//        [self layoutItems];
+//    }];
+}
+
+-(void) setStyle:(OPTabBarStyle)s {
+    _style = s;
+    [self setNeedsDisplay];
+}
+
+-(void) setSelectedItem:(OPTabBarItem*)selectedItem {
+    [self setSelectedItemIndex:[self.items indexOfObject:selectedItem]];
+}
+
+-(OPTabBarItem*) selectedItem {
+    return [self.items objectAtIndex:self.selectedItemIndex];
+}
+
+-(void) setSelectedItemIndex:(NSUInteger)selectedItemIndex {
+    _selectedItemIndex = selectedItemIndex;
+    
+    [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+        if (idx != selectedItemIndex)
+            item.selected = NO;
     }];
+    
+    self.selectedItem.selected = YES;
 }
 
 #pragma mark -
@@ -189,31 +197,36 @@
 
 -(void) layoutSubviews {
     [super layoutSubviews];
+    [self layoutItems];
     self.shadowView.frame = CGRectMake(0.0f, -self.shadowHeight, self.width, self.shadowHeight);
 }
 
 #pragma mark -
-#pragma mark OPView Overriden methods
+#pragma mark Overridden UIView methods
 #pragma mark -
 
--(void) addFrontDrawingBlock:(OPViewDrawingBlock)block {
-    [self.overlayView addFrontDrawingBlock:block];
+-(void) setNeedsLayout {
+    [super setNeedsLayout];
+    for (OPTabBarItem *item in self.items)
+        [item setNeedsLayout];
 }
 
--(void) addBackDrawingBlock:(OPViewDrawingBlock)block {
-    [self.overlayView addBackDrawingBlock:block];
+-(void) setNeedsDisplay {
+    [super setNeedsDisplay];
+    for (OPTabBarItem *item in self.items)
+        [item setNeedsDisplay];
 }
 
 #pragma mark -
 #pragma mark Interface actions
 #pragma mark -
 
--(void) tabBarButtonPressed:(UIButton*)sender {
+-(void) tabBarButtonPressed:(OPTabBarItem*)sender {
     
-    for (UIControl *item in self.items)
-        if (item != sender)
-            item.selected = NO;
-    sender.selected = YES;
+    [self setSelectedItem:sender];
+    
+    if ([self.delegate respondsToSelector:@selector(tabBar:didSelectItem:atIndex:)])
+        [self.delegate tabBar:self didSelectItem:sender atIndex:self.selectedItemIndex];
 }
 
 #pragma mark -

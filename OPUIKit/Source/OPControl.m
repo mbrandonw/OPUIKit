@@ -1,19 +1,19 @@
 //
-//  OPButton.m
+//  OPControl.m
 //  OPUIKit
 //
-//  Created by Brandon Williams on 1/14/12.
+//  Created by Brandon Williams on 1/15/12.
 //  Copyright (c) 2012 Opetopic. All rights reserved.
 //
 
-#import "OPButton.h"
+#import "OPControl.h"
 #import "NSNumber+Opetopic.h"
 
-@interface OPButton (/**/)
+@interface OPControl (/**/)
 @property (nonatomic, strong) NSMutableDictionary *drawingBlocks;
 @end
 
-@implementation OPButton
+@implementation OPControl
 
 @synthesize drawingBlocks;
 
@@ -30,7 +30,7 @@
     return self;
 }
 
--(void) addDrawingBlock:(OPButtonDrawingBlock)block forState:(UIControlState)state {
+-(void) addDrawingBlock:(OPControlDrawingBlock)block forState:(UIControlState)state {
     
     if (state == UIControlStateNormal)
         [[self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateNormal]] addObject:[block copy]];
@@ -61,14 +61,14 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (OPButtonDrawingBlock block in [self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
+    for (OPControlDrawingBlock block in [self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
         block(self, rect, c);
     
     for (NSNumber *drawState in self.drawingBlocks)
     {
         if ([drawState intValue] & self.state)
         {
-            for (OPButtonDrawingBlock block in [self.drawingBlocks objectForKey:drawState])
+            for (OPControlDrawingBlock block in [self.drawingBlocks objectForKey:drawState])
                 block(self, rect, c);
         }
     }

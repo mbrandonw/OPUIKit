@@ -24,6 +24,7 @@
 @property (nonatomic, readonly, strong) OPTabBar *tabBar;   // Don't be a jerk and mess with the tab bar items :-)
 @property (nonatomic, assign) CGFloat tabBarPortraitHeight;
 @property (nonatomic, assign) CGFloat tabBarLandscapeHeight;
+@property (nonatomic, assign) BOOL hidesToolbarTitlesInLandscape;
 
 @property (nonatomic, readonly, strong) NSArray *viewControllers;
 @property (nonatomic, readonly, strong) UIViewController *selectedViewController;

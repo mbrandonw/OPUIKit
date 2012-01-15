@@ -14,7 +14,7 @@ typedef void(^OPViewDrawingBlock)(OPView* v, CGRect r, CGContextRef c);
 
 @interface OPView : UIView
 
--(void) addBackDrawingBlock:(OPViewDrawingBlock)block;
--(void) addFrontDrawingBlock:(OPViewDrawingBlock)block;
+-(void) addDrawingBlock:(OPViewDrawingBlock)block;
+-(void) removeAllDrawingBlocks;
 
 @end

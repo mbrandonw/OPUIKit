@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OPButton.h"
+#import "OPControl.h"
 
-@interface OPTabBarItem : OPButton
+@interface OPTabBarItem : OPControl
+
+@property (nonatomic, strong, readonly) UIImageView *iconView;
+@property (nonatomic, assign) UIEdgeInsets iconViewInsets;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, assign) UIEdgeInsets titleLabelInsets;
 
 @end

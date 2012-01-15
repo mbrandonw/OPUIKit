@@ -16,8 +16,11 @@
 #import "OPGradientView.h"
 #import "UIView+Opetopic.h"
 #import "Quartz+Opetopic.h"
+#import "NSString+Opetopic.h"
 #import "OPGradient.h"
+#import "UIDevice+Opetopic.h"
 #import "NSNumber+Opetopic.h"
+#import "TestViewController.h"
 
 @implementation AppDelegate
 
@@ -27,7 +30,6 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor blackColor];
-    [self.window makeKeyAndVisible];
     
     OPTabBarController *root = [[OPTabBarController alloc] init];
     
@@ -35,52 +37,57 @@
     
     root.tabBar.backgroundColor = [UIColor hex:0xbf3030];
     root.tabBar.style = OPTabBarStyleGloss;
-    root.tabBar.shadowHeight = 4.0f;
+    root.tabBar.glossAmount = 0.05f;
+    root.tabBar.shadowHeight = [UIDevice isPad] ? 6.0f : 4.0f;
     root.tabBarPortraitHeight = 49.0f;
-    root.tabBarLandscapeHeight = 36.0f;
+    root.tabBarLandscapeHeight = [UIDevice isPad] ? 49.0f : 40.0f;
+    root.hidesToolbarTitlesInLandscape = [UIDevice isPad] ? NO : YES;
+    root.tabBar.itemDistribution = OPTabBarItemDistributionEvenlySpaced;
     
     __block OPTabBar *blockTabBar = root.tabBar;
-    [root.tabBar addFrontDrawingBlock:^(OPView *v, CGRect r, CGContextRef c) {
+    [root.tabBar addDrawingBlock:^(OPView *v, CGRect r, CGContextRef c) {
         [[blockTabBar.backgroundColor darken:0.5f] set];
         CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
         [[blockTabBar.backgroundColor lighten:0.3f] set];
         CGContextFillRect(c, CGRectMake(0.0f, 2.0f, r.size.width, 1.0f));
     }];
     
+    NSArray *titles = $array(@"Playlists", @"Artists", @"Songs", @"Albums");
+    
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:4];
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < [titles count]; i++)
     {
         OPTabBarItem *item = [[OPTabBarItem alloc] init];
+        item.iconView.image = [UIImage imageNamed:[NSString stringWithFormat:@"icon%i.png", i]];
+        item.titleLabel.text = [titles objectAtIndex:i];
+        item.titleLabel.shadowColor = [UIColor blackColor];
+        item.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
         item.width = self.window.width/4;
         [items addObject:item];
         
-        [item setTitle:[NSString stringWithFormat:@"Item %i", i] forState:UIControlStateNormal];
-        [item setTitleColor:[blockTabBar.backgroundColor lighten:0.5f] forState:UIControlStateNormal];
-        [item setTitleColor:[blockTabBar.backgroundColor lighten:0.8f] forState:UIControlStateSelected];
-        [item setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
-        item.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        item.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-        [item setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, -24.0f, 0.0f)];
+        [item addDrawingBlock:^(OPControl *b, CGRect r, CGContextRef c) {
+            
+        } forState:UIControlStateNormal];
         
-        [item addDrawingBlock:^(OPButton *b, CGRect r, CGContextRef c) {
+        [item addDrawingBlock:^(OPControl *b, CGRect r, CGContextRef c) {
             
-            CGPoint center = CGRectCenter(r);
-            center.y -= 5.0f;
-            UIImage *icon = [UIImage imageNamed:@"icon.png"];
-            [icon drawAtPoint:CGPointMake(center.x - roundf(icon.size.width/2.0f), center.y - roundf(icon.size.height/2.0f))];
-            
-        } forState:UIControlStateNormal | UIControlStateHighlighted | UIControlStateSelected];
-        
-        [item addDrawingBlock:^(OPButton *b, CGRect r, CGContextRef c) {
-            
-            [[OPGradient gradientWithColors:$array([blockTabBar.backgroundColor darken:0.7f], [blockTabBar.backgroundColor darken:0.4f]) 
+            [[OPGradient gradientWithColors:$array([blockTabBar.backgroundColor darken:0.3f], [blockTabBar.backgroundColor darken:0.1f]) 
                                   locations:$array($float(0.0f), $float(0.75f))]
-             fillRectLinearly:r];
+             fillRectLinearly:CGRectMake(0.0f, 2.0f, r.size.width, r.size.height-2.0f)];
             
         } forState:UIControlStateSelected];
     }
-    [root.tabBar setItems:items];
-    root.tabBar.itemDistribution = OPTabBarItemDistributionEvenlySpaced;
+    
+    NSArray *controllers = [NSArray arrayWithObjects:
+                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
+                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
+                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
+                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
+                            nil];
+    
+    [root setViewControllers:controllers withTabBarItems:items];
+    
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

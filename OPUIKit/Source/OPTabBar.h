@@ -39,6 +39,7 @@ typedef enum {
  */
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) OPTabBarStyle style;
+@property (nonatomic, assign) CGFloat glossAmount;
 @property (nonatomic, assign) CGFloat shadowHeight;
 -(void) setShadowAlphaStops:(NSArray*)stops;
 
@@ -46,7 +47,8 @@ typedef enum {
  Managing tab bar items.
  */
 @property (nonatomic, copy) NSArray *items;
-@property (nonatomic, assign) NSUInteger selectedItem;
+@property (nonatomic, assign) OPTabBarItem *selectedItem;
+@property (nonatomic, assign) NSUInteger selectedItemIndex;
 @property (nonatomic, assign) OPTabBarItemDistribution itemDistribution;
 -(void) setItemDistribution:(OPTabBarItemDistribution)itemDistribution animated:(BOOL)animated;
 

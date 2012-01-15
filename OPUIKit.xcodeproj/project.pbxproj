@@ -95,6 +95,18 @@
 		A706D87514B926A000B469BB /* UIWebView+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */; };
 		A706D87614B926A000B469BB /* UIWebView+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */; };
 		A706D87814B926FF00B469BB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D87714B926FF00B469BB /* CoreData.framework */; };
+		A79606BB14C33230001A9B06 /* OPControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606BA14C33230001A9B06 /* OPControl.m */; };
+		A79606BC14C33230001A9B06 /* OPControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606BA14C33230001A9B06 /* OPControl.m */; };
+		A79606D014C341D6001A9B06 /* icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606CE14C341D6001A9B06 /* icon0.png */; };
+		A79606D114C341D6001A9B06 /* icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606CE14C341D6001A9B06 /* icon0.png */; };
+		A79606D214C341D6001A9B06 /* icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606CF14C341D6001A9B06 /* icon1.png */; };
+		A79606D314C341D6001A9B06 /* icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606CF14C341D6001A9B06 /* icon1.png */; };
+		A79606D514C3421C001A9B06 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606D414C3421C001A9B06 /* icon2.png */; };
+		A79606D614C3421C001A9B06 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606D414C3421C001A9B06 /* icon2.png */; };
+		A79606D814C3470D001A9B06 /* icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606D714C3470D001A9B06 /* icon3.png */; };
+		A79606D914C3470D001A9B06 /* icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606D714C3470D001A9B06 /* icon3.png */; };
+		A79606DC14C36DA4001A9B06 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606DB14C36DA4001A9B06 /* TestViewController.m */; };
+		A79606DD14C36DA4001A9B06 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606DB14C36DA4001A9B06 /* TestViewController.m */; };
 		A7A9C16A14C1024900C39504 /* OPTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C16914C1024900C39504 /* OPTabBar.m */; };
 		A7A9C16B14C1024900C39504 /* OPTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C16914C1024900C39504 /* OPTabBar.m */; };
 		A7A9C16F14C1025800C39504 /* OPTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C16E14C1025800C39504 /* OPTabBarItem.m */; };
@@ -111,10 +123,6 @@
 		A7A9C24714C24FEF00C39504 /* Quartz+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C24314C24FEE00C39504 /* Quartz+Opetopic.m */; };
 		A7A9C24A14C2501100C39504 /* NSNumber+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C24914C2501100C39504 /* NSNumber+Opetopic.m */; };
 		A7A9C24B14C2501100C39504 /* NSNumber+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9C24914C2501100C39504 /* NSNumber+Opetopic.m */; };
-		A7A9C25514C2628500C39504 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7A9C25314C2628400C39504 /* icon.png */; };
-		A7A9C25614C2628500C39504 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7A9C25314C2628400C39504 /* icon.png */; };
-		A7A9C25714C2628500C39504 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7A9C25414C2628400C39504 /* icon@2x.png */; };
-		A7A9C25814C2628500C39504 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7A9C25414C2628400C39504 /* icon@2x.png */; };
 		A7F0596F14B9F58D005CF16F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0596E14B9F58D005CF16F /* MapKit.framework */; };
 		A7F0597114B9F5A8005CF16F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597014B9F5A8005CF16F /* QuartzCore.framework */; };
 		A7F0597314B9F5B8005CF16F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0597214B9F5B8005CF16F /* MessageUI.framework */; };
@@ -133,7 +141,7 @@
 		A706D70614B9235100B469BB /* OPUIKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OPUIKit-Info.plist"; sourceTree = "<group>"; };
 		A706D70A14B9235100B469BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A706D70C14B9235100B469BB /* OPUIKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OPUIKit-Prefix.pch"; sourceTree = "<group>"; };
-		A706D70D14B9235100B469BB /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		A706D70D14B9235100B469BB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A706D70E14B9235100B469BB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A706D71D14B9237500B469BB /* OPUIKitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OPUIKitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A706D72414B9237500B469BB /* OPUIKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OPUIKitTests-Info.plist"; sourceTree = "<group>"; };
@@ -217,6 +225,14 @@
 		A706D83F14B9269F00B469BB /* UIWebView+Opetopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+Opetopic.h"; sourceTree = "<group>"; };
 		A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+Opetopic.m"; sourceTree = "<group>"; };
 		A706D87714B926FF00B469BB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A79606B914C33230001A9B06 /* OPControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPControl.h; sourceTree = "<group>"; };
+		A79606BA14C33230001A9B06 /* OPControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPControl.m; sourceTree = "<group>"; };
+		A79606CE14C341D6001A9B06 /* icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon0.png; sourceTree = "<group>"; };
+		A79606CF14C341D6001A9B06 /* icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon1.png; sourceTree = "<group>"; };
+		A79606D414C3421C001A9B06 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
+		A79606D714C3470D001A9B06 /* icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon3.png; sourceTree = "<group>"; };
+		A79606DA14C36DA4001A9B06 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		A79606DB14C36DA4001A9B06 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		A7A9C16814C1024900C39504 /* OPTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTabBar.h; sourceTree = "<group>"; };
 		A7A9C16914C1024900C39504 /* OPTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTabBar.m; sourceTree = "<group>"; };
 		A7A9C16D14C1025800C39504 /* OPTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTabBarItem.h; sourceTree = "<group>"; };
@@ -233,8 +249,6 @@
 		A7A9C24314C24FEE00C39504 /* Quartz+Opetopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Quartz+Opetopic.m"; sourceTree = "<group>"; };
 		A7A9C24814C2501100C39504 /* NSNumber+Opetopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Opetopic.h"; sourceTree = "<group>"; };
 		A7A9C24914C2501100C39504 /* NSNumber+Opetopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Opetopic.m"; sourceTree = "<group>"; };
-		A7A9C25314C2628400C39504 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		A7A9C25414C2628400C39504 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		A7F0596E14B9F58D005CF16F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A7F0597014B9F5A8005CF16F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A7F0597214B9F5B8005CF16F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -322,10 +336,14 @@
 		A706D70514B9235100B469BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7A9C25314C2628400C39504 /* icon.png */,
-				A7A9C25414C2628400C39504 /* icon@2x.png */,
+				A79606CE14C341D6001A9B06 /* icon0.png */,
+				A79606CF14C341D6001A9B06 /* icon1.png */,
+				A79606D414C3421C001A9B06 /* icon2.png */,
+				A79606D714C3470D001A9B06 /* icon3.png */,
 				A706D70D14B9235100B469BB /* AppDelegate.h */,
 				A706D70E14B9235100B469BB /* AppDelegate.m */,
+				A79606DA14C36DA4001A9B06 /* TestViewController.h */,
+				A79606DB14C36DA4001A9B06 /* TestViewController.m */,
 				A706D73214B923A900B469BB /* OPUIKit.podspec */,
 				A706D70614B9235100B469BB /* OPUIKit-Info.plist */,
 				A706D70A14B9235100B469BB /* main.m */,
@@ -374,6 +392,8 @@
 				A706D74C14B9253400B469BB /* OPTextView.m */,
 				A706D74D14B9253400B469BB /* OPView.h */,
 				A706D74E14B9253400B469BB /* OPView.m */,
+				A79606B914C33230001A9B06 /* OPControl.h */,
+				A79606BA14C33230001A9B06 /* OPControl.m */,
 				A7A9C1C514C22AF600C39504 /* OPButton.h */,
 				A7A9C1C614C22AF700C39504 /* OPButton.m */,
 				A706D74F14B9253400B469BB /* OPViewController.h */,
@@ -578,8 +598,10 @@
 				A706D75914B9253400B469BB /* OPNavigationController.xib in Resources */,
 				A706D75D14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */,
 				A706D76814B925BD00B469BB /* OPUIKit.podspec in Resources */,
-				A7A9C25514C2628500C39504 /* icon.png in Resources */,
-				A7A9C25714C2628500C39504 /* icon@2x.png in Resources */,
+				A79606D014C341D6001A9B06 /* icon0.png in Resources */,
+				A79606D214C341D6001A9B06 /* icon1.png in Resources */,
+				A79606D514C3421C001A9B06 /* icon2.png in Resources */,
+				A79606D814C3470D001A9B06 /* icon3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,8 +611,10 @@
 			files = (
 				A706D75A14B9253400B469BB /* OPNavigationController.xib in Resources */,
 				A706D75E14B9253400B469BB /* OPSidebarNavigationController.xib in Resources */,
-				A7A9C25614C2628500C39504 /* icon.png in Resources */,
-				A7A9C25814C2628500C39504 /* icon@2x.png in Resources */,
+				A79606D114C341D6001A9B06 /* icon0.png in Resources */,
+				A79606D314C341D6001A9B06 /* icon1.png in Resources */,
+				A79606D614C3421C001A9B06 /* icon2.png in Resources */,
+				A79606D914C3470D001A9B06 /* icon3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,6 +671,8 @@
 				A7A9C24414C24FEF00C39504 /* OPGradient.m in Sources */,
 				A7A9C24614C24FEF00C39504 /* Quartz+Opetopic.m in Sources */,
 				A7A9C24A14C2501100C39504 /* NSNumber+Opetopic.m in Sources */,
+				A79606BB14C33230001A9B06 /* OPControl.m in Sources */,
+				A79606DC14C36DA4001A9B06 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +725,8 @@
 				A7A9C24514C24FEF00C39504 /* OPGradient.m in Sources */,
 				A7A9C24714C24FEF00C39504 /* Quartz+Opetopic.m in Sources */,
 				A7A9C24B14C2501100C39504 /* NSNumber+Opetopic.m in Sources */,
+				A79606BC14C33230001A9B06 /* OPControl.m in Sources */,
+				A79606DD14C36DA4001A9B06 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

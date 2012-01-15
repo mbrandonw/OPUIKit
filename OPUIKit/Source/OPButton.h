@@ -14,5 +14,7 @@ typedef void(^OPButtonDrawingBlock)(OPButton* b, CGRect r, CGContextRef c);
 @interface OPButton : UIButton
 
 -(void) addDrawingBlock:(OPButtonDrawingBlock)block forState:(UIControlState)state;
+-(void) removeDrawingBlocksForState:(UIControlState)state;
+-(void) removeAllDrawingBlocks;
 
 @end

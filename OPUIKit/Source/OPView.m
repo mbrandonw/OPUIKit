@@ -9,40 +9,33 @@
 #import "OPView.h"
 
 @interface OPView (/**/)
-@property (nonatomic, strong) NSMutableArray *frontDrawingBlocks;
-@property (nonatomic, strong) NSMutableArray *backDrawingBlocks;
+@property (nonatomic, strong) NSMutableArray *drawingBlocks;
 @end
 
 @implementation OPView
 
-@synthesize frontDrawingBlocks;
-@synthesize backDrawingBlocks;
+@synthesize drawingBlocks;
 
--(void) addBackDrawingBlock:(OPViewDrawingBlock)block {
+-(void) addDrawingBlock:(OPViewDrawingBlock)block {
     
-    if (! self.backDrawingBlocks)
-        self.backDrawingBlocks = [NSMutableArray new];
-    [self.backDrawingBlocks addObject:[block copy]];
+    if (! self.drawingBlocks)
+        self.drawingBlocks = [NSMutableArray new];
+    [self.drawingBlocks addObject:[block copy]];
+    
+    [self setNeedsDisplay];
 }
 
--(void) addFrontDrawingBlock:(OPViewDrawingBlock)block {
-    
-    if (! self.frontDrawingBlocks)
-        self.frontDrawingBlocks = [NSMutableArray new];
-    [self.frontDrawingBlocks addObject:[block copy]];
+-(void) removeAllDrawingBlocks {
+    [self.drawingBlocks removeAllObjects];
+    [self setNeedsDisplay];
 }
 
 -(void) drawRect:(CGRect)rect {
-    
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextClearRect(c, rect);
-    
-    for (OPViewDrawingBlock block in self.backDrawingBlocks)
-        block(self, rect, c);
-    
     [super drawRect:rect];
     
-    for (OPViewDrawingBlock block in self.frontDrawingBlocks)
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    
+    for (OPViewDrawingBlock block in self.drawingBlocks)
         block(self, rect, c);
 }
 
