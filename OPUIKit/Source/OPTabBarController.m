@@ -107,7 +107,6 @@
 
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
-#warning MAKE SURE TO GET OF THIS
     return YES;
     
     // ask the selected view controller if we should rotate
@@ -187,21 +186,23 @@
     UIViewController *previousController = self.selectedViewController;
     self.selectedViewController = controller;
     
+    // remove the previous view controller from our view hierarchy
     [previousController viewWillDisappear:NO];
-    [self.selectedViewController viewWillAppear:NO];
-    {
-        [previousController.view removeFromSuperview];
-        [self.view addSubviewToBack:self.selectedViewController.view];
-        
-        self.selectedViewController.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | 
-                                                             UIViewAutoresizingFlexibleHeight | 
-                                                             UIViewAutoresizingFlexibleBottomMargin);
-        self.selectedViewController.view.frame = CGRectMake(0.0f, 0.0f,
-                                                            self.view.bounds.size.width, 
-                                                            self.view.bounds.size.height - self.tabBar.height);
-        [self.selectedViewController.view setNeedsLayout];
-    }
+    [previousController.view removeFromSuperview];
     [previousController viewDidDisappear:NO];
+    
+    // configure the next view controller
+    self.selectedViewController.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | 
+                                                         UIViewAutoresizingFlexibleHeight | 
+                                                         UIViewAutoresizingFlexibleBottomMargin);
+    self.selectedViewController.view.frame = CGRectMake(0.0f, 0.0f,
+                                                        self.view.bounds.size.width, 
+                                                        self.view.bounds.size.height - self.tabBar.height);
+    
+    // add the next view controller to our view hiearchy
+    [self.selectedViewController viewWillAppear:NO];
+    [self.view addSubviewToBack:self.selectedViewController.view];
+    [self.selectedViewController.view setNeedsLayout];
     [self.selectedViewController viewDidAppear:NO];
 }
 
