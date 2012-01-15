@@ -34,6 +34,7 @@
 
 @synthesize backgroundImage = _backgroundImage; // Image that is drawn in the background of the tab bar.
 @synthesize style = _style;
+@synthesize maxItemWidth = _maxItemWidth;
 @synthesize glossAmount = _glossAmount;
 @synthesize shadowHeight = _shadowHeight;
 
@@ -54,6 +55,7 @@
     
     // default ivars
     _style = OPTabBarStyleDefault;
+    _maxItemWidth = CGFLOAT_MAX;
     _glossAmount = 0.1f;
     _itemDistribution = OPTabBarItemDistributionDefault;
     
@@ -133,7 +135,7 @@
         [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
     }
     
-    [self setNeedsLayout];
+    [self setNeedsDisplayAndLayout];
 }
 
 #pragma mark -
@@ -155,16 +157,8 @@
 }
 
 -(void) setItemDistribution:(OPTabBarItemDistribution)d {
-    [self setItemDistribution:d animated:NO];
-}
-
--(void) setItemDistribution:(OPTabBarItemDistribution)d animated:(BOOL)animated {
-    
     _itemDistribution = d;
     [self setNeedsDisplayAndLayout];
-//    [UIView animateWithDuration:(0.3f * animated) animations:^{
-//        [self layoutItems];
-//    }];
 }
 
 -(void) setStyle:(OPTabBarStyle)s {
@@ -237,24 +231,25 @@
     
     if (self.itemDistribution == OPTabBarItemDistributionEvenlySpaced)
     {
-        CGFloat space = self.width / [self.items count];
+        CGFloat itemWidth = self.width / [self.items count];
         [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
             
-            item.frame = CGRectMake(roundf(space * (0.5f + idx) - item.width/2.0f), 
-                                    item.top, item.width, item.height);
+            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - item.width/2.0f), item.top, 
+                                    itemWidth, item.height);
         }];
     }
     else if (self.itemDistribution == OPTabBarItemDistributionCenterGrouped)
     {
-        CGFloat space = 0.0f;
+        CGFloat neededSpace = 0.0f;
         for (OPTabBarItem *item in self.items)
-            space += item.width;
+            neededSpace += MIN(self.maxItemWidth, item.width);
+        CGFloat itemWidth = neededSpace / [self.items count];
         __block CGFloat offset = 0.0f;
         
         [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
             
-            item.frame = CGRectMake(roundf(self.width/2.0f - space/2.0f + offset),
-                                    item.top, item.width, item.height);
+            item.frame = CGRectMake(roundf(self.width/2.0f - neededSpace/2.0f + offset), item.top, 
+                                    MIN(self.maxItemWidth, itemWidth), item.height);
             offset += item.width;
             
         }];
