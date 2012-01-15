@@ -128,14 +128,17 @@
     // re-layout the tab bar
     [self.tabBar setNeedsDisplayAndLayout];
     
-    // adjust the height of the selected view controller view as the tab bar may have changed
-    self.selectedViewController.view.height += heightDelta;
+    // make the selected view controller fill the entire containing view so that it autoresizes to remain full view
+    self.selectedViewController.view.height += height - heightDelta;
     
     // forward rotation events to the selected view controller
     [self.selectedViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    // adjust the selected view controller's height to stop at the bottom tab bar
+    self.selectedViewController.view.height -= self.tabBar.height;
     
     // forward rotation events to the selected view controller
     [self.selectedViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
