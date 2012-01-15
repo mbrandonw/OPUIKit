@@ -14,7 +14,7 @@
 
 #define kOPTabBarRotationFudgePixels    8.0f
 
-@interface OPTabBarController (/**/) <OPTabBarDelegate>
+@interface OPTabBarController (/**/) <OPTabBarDelegate, UINavigationControllerDelegate>
 @property (nonatomic, readwrite, strong) OPTabBar *tabBar;
 @property (nonatomic, readwrite, strong) NSArray *viewControllers;
 @property (nonatomic, readwrite, strong) UIViewController *selectedViewController;
@@ -95,6 +95,11 @@
     self.viewControllers = viewControllers;
     self.tabBar.items = tabBarItems;
     
+    // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
+    for (UIViewController *controller in self.viewControllers)
+        if ([controller isKindOfClass:[UINavigationController class]])
+            [(UINavigationController*)controller setDelegate:self];
+    
     if (self.selectedIndex < [self.viewControllers count])
         self.selectedIndex = self.selectedIndex;
     else if ([self.viewControllers count] > 0)
@@ -106,8 +111,6 @@
 #pragma mark -
 
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    
-    return YES;
     
     // ask the selected view controller if we should rotate
     return [self.selectedViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -226,6 +229,44 @@
     {
         self.selectedIndex = index;
     }
+}
+
+#pragma mark -
+#pragma mark UINavigationControllerDelegate methods
+#pragma mark -
+
+-(void) navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+    // check if we should hide/show the tab bar based on the view controller we are pushing onto the stack
+    if (viewController.hidesBottomBarWhenPushed && ! self.tabBar.hidden)
+    {
+        self.selectedViewController.view.height += self.tabBar.height;
+        [UIView animateWithDuration:0.35f animations:^{
+            self.tabBar.right = 0.0f;
+        } completion:^(BOOL finished) {
+            self.tabBar.hidden = YES;
+        }];
+    }
+    else if (! viewController.hidesBottomBarWhenPushed && self.tabBar.hidden)
+    {
+        self.tabBar.hidden = NO;
+        [UIView animateWithDuration:0.35f animations:^{
+            self.tabBar.left = 0.0f;
+        } completion:^(BOOL finished) {
+            self.selectedViewController.view.height -= self.tabBar.height;
+        }];
+    }
+    
+    // pass the delegate method back to the navigation controller if it can handle it
+    if ([navigationController conformsToProtocol:@protocol(UINavigationControllerDelegate)])
+        [(id<UINavigationControllerDelegate>)navigationController navigationController:navigationController willShowViewController:viewController animated:animated];
+}
+
+-(void) navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+    // pass the delegate method back to the navigation controller if it can handle it
+    if ([navigationController conformsToProtocol:@protocol(UINavigationControllerDelegate)])
+        [(id<UINavigationControllerDelegate>)navigationController navigationController:navigationController didShowViewController:viewController animated:animated];
 }
 
 
