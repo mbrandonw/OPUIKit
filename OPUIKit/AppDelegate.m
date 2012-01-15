@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Opetopic. All rights reserved.
 //
 
-#import "OPAppDelegate.h"
+#import "AppDelegate.h"
 #import "OPTabBar.h"
 #import "OPTabBarItem.h"
 #import "OPTabBarController.h"
@@ -16,8 +16,10 @@
 #import "OPGradientView.h"
 #import "UIView+Opetopic.h"
 #import "Quartz+Opetopic.h"
+#import "OPGradient.h"
+#import "NSNumber+Opetopic.h"
 
-@implementation OPAppDelegate
+@implementation AppDelegate
 
 @synthesize window = _window;
 
@@ -31,40 +33,49 @@
     
     self.window.rootViewController = root;
     
-    root.tabBar.backgroundColor = $RGBi(67,67,67);
-    root.tabBar.style = OPTabBarStyleGradient;
+    root.tabBar.backgroundColor = [UIColor hex:0xbf3030];
+    root.tabBar.style = OPTabBarStyleGloss;
     root.tabBar.shadowHeight = 4.0f;
-    root.tabBarPortraitHeight = 44.0f;
+    root.tabBarPortraitHeight = 49.0f;
     root.tabBarLandscapeHeight = 36.0f;
     
     __block OPTabBar *blockTabBar = root.tabBar;
     [root.tabBar addFrontDrawingBlock:^(OPView *v, CGRect r, CGContextRef c) {
-        [[blockTabBar.backgroundColor darken:0.15f] set];
-        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 1.0f));
+        [[blockTabBar.backgroundColor darken:0.5f] set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
         [[blockTabBar.backgroundColor lighten:0.3f] set];
-        CGContextFillRect(c, CGRectMake(0.0f, 1.0f, r.size.width, 2.0f));
+        CGContextFillRect(c, CGRectMake(0.0f, 2.0f, r.size.width, 1.0f));
     }];
     
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < 4; i++)
     {
         OPTabBarItem *item = [[OPTabBarItem alloc] init];
-        item.autoresizingMask |= UIViewAutoresizingFlexibleWidth;
-        item.width = 80.0f;
+        item.width = self.window.width/4;
         [items addObject:item];
         
         [item setTitle:[NSString stringWithFormat:@"Item %i", i] forState:UIControlStateNormal];
+        [item setTitleColor:[blockTabBar.backgroundColor lighten:0.5f] forState:UIControlStateNormal];
+        [item setTitleColor:[blockTabBar.backgroundColor lighten:0.8f] forState:UIControlStateSelected];
+        [item setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+        item.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        item.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+        [item setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, -24.0f, 0.0f)];
         
         [item addDrawingBlock:^(OPButton *b, CGRect r, CGContextRef c) {
-            [[UIColor blackColor] set];
-            CGContextFillRect(c, CGRectMake(r.size.width-1.0f, 1.0f, 1.0f, r.size.height));
-            [[UIColor darkGrayColor] set];
-            CGContextFillRect(c, CGRectMake(0.0f, 1.0f, 1.0f, r.size.height));
-        } forState:UIControlStateNormal];
+            
+            CGPoint center = CGRectCenter(r);
+            center.y -= 5.0f;
+            UIImage *icon = [UIImage imageNamed:@"icon.png"];
+            [icon drawAtPoint:CGPointMake(center.x - roundf(icon.size.width/2.0f), center.y - roundf(icon.size.height/2.0f))];
+            
+        } forState:UIControlStateNormal | UIControlStateHighlighted | UIControlStateSelected];
         
         [item addDrawingBlock:^(OPButton *b, CGRect r, CGContextRef c) {
-            [[UIColor veryDarkGrayColor] set];
-            CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, r.size.height));
+            
+            [[OPGradient gradientWithColors:$array([blockTabBar.backgroundColor darken:0.7f], [blockTabBar.backgroundColor darken:0.4f]) 
+                                  locations:$array($float(0.0f), $float(0.75f))]
+             fillRectLinearly:r];
             
         } forState:UIControlStateSelected];
     }

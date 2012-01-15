@@ -7,6 +7,7 @@
 //
 
 #import "OPTabBarController.h"
+#import "OPTabBarItem.h"
 #import "OPTabBar.h"
 #import "OPMacros.h"
 #import "UIView+Opetopic.h"
@@ -33,7 +34,7 @@
 @synthesize selectedIndex;
 
 #pragma mark -
-#pragma mark === Object Lifecycle ===
+#pragma mark Object Lifecycle
 #pragma mark -
 
 -(id) init {
@@ -55,7 +56,7 @@
 }
 
 #pragma mark -
-#pragma mark === View Lifecycle ===
+#pragma mark View Lifecycle
 #pragma mark -
 
 - (void)loadView {
@@ -80,7 +81,7 @@
 }
 
 #pragma mark -
-#pragma mark === View controller management ===
+#pragma mark View controller management
 #pragma mark -
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems {
@@ -88,7 +89,7 @@
 }
 
 #pragma mark -
-#pragma mark === Orientation methods ===
+#pragma mark Orientation methods
 #pragma mark -
 
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -104,13 +105,17 @@
     CGFloat height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.tabBarPortraitHeight : self.tabBarLandscapeHeight;
     self.tabBar.top += self.tabBar.height - height;
     self.tabBar.height = height;
+    
+    for (OPTabBarItem *item in self.tabBar.items)
+        [item setNeedsDisplay];
 }
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
 }
 
 #pragma mark -
-#pragma mark === Custom getters/setters ===
+#pragma mark Custom getters/setters
 #pragma mark -
 
 -(OPTabBar*) tabBar {
@@ -137,7 +142,7 @@
 }
 
 #pragma mark -
-#pragma mark === OPTabBarDelegate methods ===
+#pragma mark OPTabBarDelegate methods
 #pragma mark -
 
 -(void) tabBar:(OPTabBar*)tabBar didSelectItem:(OPTabBarItem*)item atIndex:(NSUInteger)index {

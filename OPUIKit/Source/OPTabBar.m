@@ -16,6 +16,7 @@
 #import "NSArray+Opetopic.h"
 #import "UIColor+Opetopic.h"
 #import "UIView+Opetopic.h"
+#import "NSNumber+Opetopic.h"
 
 #import "OPMacros.h"
 #import <QuartzCore/QuartzCore.h>
@@ -24,6 +25,7 @@
 @property (nonatomic, strong) OPGradientView *backgroundView;
 @property (nonatomic, strong) OPView *overlayView;
 @property (nonatomic, strong) OPGradientView *shadowView;
+-(void) layoutItems;
 @end
 
 @implementation OPTabBar
@@ -42,7 +44,7 @@
 @synthesize shadowView;
 
 #pragma mark -
-#pragma mark === Object lifecycle ===
+#pragma mark Object lifecycle
 #pragma mark -
 
 - (id)initWithFrame:(CGRect)frame {
@@ -70,7 +72,7 @@
     // init shadow view
     self.shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
     [self addSubview:self.shadowView];
-    [self setShadowAlphaStops:$array(NSFloat(0.0f), NSFloat(0.3f))];
+    [self setShadowAlphaStops:$array($float(0.0f), $float(0.3f))];
     
     return self;
 }
@@ -117,13 +119,13 @@
 }
 
 #pragma mark -
-#pragma mark === Item management methods ===
+#pragma mark Item management methods
 #pragma mark -
 
 -(void) setItems:(NSArray *)i {
     
     for (UIControl *item in self.items) {
-        [item removeTarget:self action:@selector(tabBarItemPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [item removeTarget:self action:@selector(tabBarItemPressed:) forControlEvents:UIControlEventTouchDown];
         [item removeFromSuperview];
     }
     
@@ -139,16 +141,20 @@
         }
         
         item.height = self.height;
-        item.autoresizingMask |= UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        item.autoresizingMask |= (UIViewAutoresizingFlexibleHeight | 
+                                  UIViewAutoresizingFlexibleWidth |
+                                  UIViewAutoresizingFlexibleLeftMargin | 
+                                  UIViewAutoresizingFlexibleRightMargin);
         [self addSubview:item];
-        [self setItemDistribution:self.itemDistribution];
         
-        [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
     }
+    
+    [self layoutItems];
 }
 
 #pragma mark -
-#pragma mark === Custom getters/setters ===
+#pragma mark Custom getters/setters
 #pragma mark -
 
 -(void) setShadowHeight:(CGFloat)h {
@@ -172,47 +178,13 @@
 -(void) setItemDistribution:(OPTabBarItemDistribution)d animated:(BOOL)animated {
     
     itemDistribution = d;
-    if (d == OPTabBarItemDistributionEvenlySpaced)
-    {
-        [UIView animateWithDuration:(0.3f * animated) animations:^{
-            
-            CGFloat space = self.width / [self.items count];
-            [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-                
-                item.frame = CGRectMake(roundf(space * (0.5f + idx) - item.width/2.0f), 
-                                        item.top, item.width, item.height);
-                
-                // use flexible margins to keep the items evenly distributioned in the tab bar
-                item.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-                
-            }];
-        }];
-    }
-    else if (d == OPTabBarItemDistributionCenterGrouped)
-    {
-        [UIView animateWithDuration:(0.3f * animated) animations:^{
-            
-            CGFloat space = 0.0f;
-            for (OPTabBarItem *item in self.items)
-                space += item.width;
-            __block CGFloat offset = 0.0f;
-            
-            [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-                
-                item.frame = CGRectMake(roundf(self.width/2.0f - space/2.0f + offset),
-                                        item.top, item.width, item.height);
-                offset += item.width;
-                
-                // remove flexible margins so that the items remain grouped in the middle of the tab bar
-                item.autoresizingMask &= ~(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-                
-            }];
-        }];
-    }
+    [UIView animateWithDuration:(0.3f * animated) animations:^{
+        [self layoutItems];
+    }];
 }
 
 #pragma mark -
-#pragma mark === UIView drawing methods ===
+#pragma mark UIView drawing methods
 #pragma mark -
 
 -(void) layoutSubviews {
@@ -221,7 +193,7 @@
 }
 
 #pragma mark -
-#pragma mark === OPView Overriden methods ===
+#pragma mark OPView Overriden methods
 #pragma mark -
 
 -(void) addFrontDrawingBlock:(OPViewDrawingBlock)block {
@@ -233,14 +205,48 @@
 }
 
 #pragma mark -
-#pragma mark === Interface actions ===
+#pragma mark Interface actions
 #pragma mark -
 
 -(void) tabBarButtonPressed:(UIButton*)sender {
     
     for (UIControl *item in self.items)
-        item.selected = NO;
+        if (item != sender)
+            item.selected = NO;
     sender.selected = YES;
 }
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) layoutItems {
+    
+    if (self.itemDistribution == OPTabBarItemDistributionEvenlySpaced)
+    {
+        CGFloat space = self.width / [self.items count];
+        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+            
+            item.frame = CGRectMake(roundf(space * (0.5f + idx) - item.width/2.0f), 
+                                    item.top, item.width, item.height);
+        }];
+    }
+    else if (self.itemDistribution == OPTabBarItemDistributionCenterGrouped)
+    {
+        CGFloat space = 0.0f;
+        for (OPTabBarItem *item in self.items)
+            space += item.width;
+        __block CGFloat offset = 0.0f;
+        
+        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+            
+            item.frame = CGRectMake(roundf(self.width/2.0f - space/2.0f + offset),
+                                    item.top, item.width, item.height);
+            offset += item.width;
+            
+        }];
+    }
+}
+
 
 @end
