@@ -12,7 +12,7 @@
 @class OPTabBar;
 @class OPTabBarController;
 
-@protocol OPTabBarControllerDelegate <UITabBarControllerDelegate>
+@protocol OPTabBarControllerDelegate
 -(BOOL) tabBarController:(OPTabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController;
 -(void) tabBarController:(OPTabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController;
 @end
