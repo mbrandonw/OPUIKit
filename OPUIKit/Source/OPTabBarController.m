@@ -126,13 +126,13 @@
 
 -(void) setTabBarPortraitHeight:(CGFloat)h {
     tabBarPortraitHeight = h;
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+    if ([self isViewLoaded] && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
         self.tabBar.frame = CGRectMake(0.0f, self.view.height-h, self.view.width, h);
 }
 
 -(void) setTabBarLandscapeHeight:(CGFloat)h {
     tabBarLandscapeHeight = h;
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+    if ([self isViewLoaded] && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
         self.tabBar.frame = CGRectMake(0.0f, self.view.height-h, self.view.width, h);
 }
 
