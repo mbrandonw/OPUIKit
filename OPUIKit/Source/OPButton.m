@@ -7,7 +7,7 @@
 //
 
 #import "OPButton.h"
-#import "OPMacros.h"
+#import "NSNumber+Opetopic.h"
 
 @interface OPButton (/**/)
 @property (nonatomic, strong) NSMutableDictionary *drawingBlocks;
@@ -21,10 +21,10 @@
     
     if (! self.drawingBlocks)
         self.drawingBlocks = [NSMutableDictionary new];
-    if (! [self.drawingBlocks objectForKey:NSInt(state)])
-        [self.drawingBlocks setObject:[NSMutableArray new] forKey:NSInt(state)];
+    if (! [self.drawingBlocks objectForKey:$int(state)])
+        [self.drawingBlocks setObject:[NSMutableArray new] forKey:$int(state)];
     
-    [[self.drawingBlocks objectForKey:NSInt(state)] addObject:[block copy]];
+    [[self.drawingBlocks objectForKey:$int(state)] addObject:[block copy]];
 }
 
 -(void) drawRect:(CGRect)rect {
