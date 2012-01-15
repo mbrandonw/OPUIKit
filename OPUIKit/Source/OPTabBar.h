@@ -18,10 +18,10 @@ typedef enum {
 } OPTabBarStyle;
 
 typedef enum {
-    OPTabBarItemDistributionEvenlySpaced = 0,
-    OPTabBarItemDistributionCenterGrouped,
-    OPTabBarItemDistributionDefault = OPTabBarItemDistributionCenterGrouped,
-} OPTabBarItemDistribution;
+    OPTabBarItemLayoutEvenlySpaced = 0,
+    OPTabBarItemLayoutCenterGrouped,
+    OPTabBarItemLayoutDefault = OPTabBarItemLayoutCenterGrouped,
+} OPTabBarItemLayout;
 
 @class OPTabBar;
 @class OPTabBarItem;
@@ -39,7 +39,7 @@ typedef enum {
  */
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) OPTabBarStyle style;
-@property (nonatomic, assign) CGFloat maxItemWidth;
+@property (nonatomic, assign) CGFloat maxItemWidth; // application only when style == OPTabBarItemLayoutCenterGrouped
 @property (nonatomic, assign) CGFloat glossAmount;
 @property (nonatomic, assign) CGFloat shadowHeight;
 -(void) setShadowAlphaStops:(NSArray*)stops;
@@ -50,6 +50,6 @@ typedef enum {
 @property (nonatomic, copy) NSArray *items;
 @property (nonatomic, assign) OPTabBarItem *selectedItem;
 @property (nonatomic, assign) NSUInteger selectedItemIndex;
-@property (nonatomic, assign) OPTabBarItemDistribution itemDistribution;
+@property (nonatomic, assign) OPTabBarItemLayout itemDistribution;
 
 @end

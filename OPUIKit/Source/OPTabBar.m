@@ -24,7 +24,6 @@
 
 @interface OPTabBar (/**/)
 @property (nonatomic, strong) OPGradientView *shadowView;
--(void) layoutItems;
 -(void) tabBarButtonPressed:(OPTabBarItem*)sender;
 @end
 
@@ -57,7 +56,7 @@
     _style = OPTabBarStyleDefault;
     _maxItemWidth = CGFLOAT_MAX;
     _glossAmount = 0.1f;
-    _itemDistribution = OPTabBarItemDistributionDefault;
+    _itemDistribution = OPTabBarItemLayoutDefault;
     
     // init shadow view
     _shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
@@ -69,8 +68,10 @@
 
 -(void) drawRect:(CGRect)rect {
     
+    // background images take precendence over background colors
     if (self.backgroundImage)
     {
+        // figure out if we need to draw a stretchable image or a pattern image
         if ([self.backgroundImage isStretchableImage])
             [self.backgroundImage drawInRect:rect];
         else
@@ -80,6 +81,7 @@
     {
         CGContextRef c = UIGraphicsGetCurrentContext();
         
+        // determine what kind of background we need to draw
         if (self.style == OPTabBarStyleFlat)
         {
             [self.backgroundColor set];
@@ -90,6 +92,7 @@
             [self.backgroundColor set];
             CGContextFillRect(c, rect);
             
+            // gloss = transparent white overlay on upper half of background
             [$WAf(1.0f,self.glossAmount) set];
             CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f)));
         }
@@ -109,6 +112,7 @@
 
 -(void) setItems:(NSArray *)i {
     
+    // remove previous items
     for (UIControl *item in self.items) {
         [item removeTarget:self action:@selector(tabBarItemPressed:) forControlEvents:UIControlEventTouchDown];
         [item removeFromSuperview];
@@ -116,6 +120,7 @@
     
     _items = i;
     
+    // add new items
     for (UIControl *item in self.items)
     {
         if (! [item isKindOfClass:[OPTabBarItem class]]) {
@@ -131,9 +136,13 @@
                                   UIViewAutoresizingFlexibleLeftMargin | 
                                   UIViewAutoresizingFlexibleRightMargin);
         [self addSubview:item];
-        
         [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
     }
+    
+    if (self.selectedItemIndex < [self.items count])
+        self.selectedItemIndex = self.selectedItemIndex;
+    else if ([self.items count] > 0)
+        self.selectedItemIndex = 0;
     
     [self setNeedsDisplayAndLayout];
 }
@@ -156,7 +165,7 @@
     self.shadowView.gradientLayer.colors = colors;
 }
 
--(void) setItemDistribution:(OPTabBarItemDistribution)d {
+-(void) setItemDistribution:(OPTabBarItemLayout)d {
     _itemDistribution = d;
     [self setNeedsDisplayAndLayout];
 }
@@ -191,8 +200,31 @@
 
 -(void) layoutSubviews {
     [super layoutSubviews];
-    [self layoutItems];
+    
+    // keep shadow up at the top
     self.shadowView.frame = CGRectMake(0.0f, -self.shadowHeight, self.width, self.shadowHeight);
+    
+    // layout the tab bar items
+    if (self.itemDistribution == OPTabBarItemLayoutEvenlySpaced)
+    {
+        CGFloat itemWidth = self.width / [self.items count];
+        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - item.width/2.0f), item.top, itemWidth, item.height);
+        }];
+    }
+    else if (self.itemDistribution == OPTabBarItemLayoutCenterGrouped)
+    {
+        CGFloat neededSpace = 0.0f;
+        for (OPTabBarItem *item in self.items)
+            neededSpace += MIN(self.maxItemWidth, item.width);
+        CGFloat itemWidth = neededSpace / [self.items count];
+        __block CGFloat offset = 0.0f;
+        
+        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+            item.frame = CGRectMake(roundf(self.width/2.0f - neededSpace/2.0f + offset), item.top, MIN(self.maxItemWidth, itemWidth), item.height);
+            offset += item.width;
+        }];
+    }
 }
 
 #pragma mark -
@@ -222,39 +254,5 @@
     if ([self.delegate respondsToSelector:@selector(tabBar:didSelectItem:atIndex:)])
         [self.delegate tabBar:self didSelectItem:sender atIndex:self.selectedItemIndex];
 }
-
-#pragma mark -
-#pragma mark Private methods
-#pragma mark -
-
--(void) layoutItems {
-    
-    if (self.itemDistribution == OPTabBarItemDistributionEvenlySpaced)
-    {
-        CGFloat itemWidth = self.width / [self.items count];
-        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-            
-            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - item.width/2.0f), item.top, 
-                                    itemWidth, item.height);
-        }];
-    }
-    else if (self.itemDistribution == OPTabBarItemDistributionCenterGrouped)
-    {
-        CGFloat neededSpace = 0.0f;
-        for (OPTabBarItem *item in self.items)
-            neededSpace += MIN(self.maxItemWidth, item.width);
-        CGFloat itemWidth = neededSpace / [self.items count];
-        __block CGFloat offset = 0.0f;
-        
-        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-            
-            item.frame = CGRectMake(roundf(self.width/2.0f - neededSpace/2.0f + offset), item.top, 
-                                    MIN(self.maxItemWidth, itemWidth), item.height);
-            offset += item.width;
-            
-        }];
-    }
-}
-
 
 @end
