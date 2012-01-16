@@ -16,7 +16,7 @@
 
 @synthesize drawingBlocks;
 
--(void) addDrawingBlock:(OPViewDrawingBlock)block {
+-(void) addDrawingBlock:(UIViewDrawingBlock)block {
     
     if (! self.drawingBlocks)
         self.drawingBlocks = [NSMutableArray new];
@@ -35,7 +35,7 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (OPViewDrawingBlock block in self.drawingBlocks)
+    for (UIViewDrawingBlock block in self.drawingBlocks)
         block(self, rect, c);
 }
 

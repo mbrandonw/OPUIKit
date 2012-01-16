@@ -7,14 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class OPView;
-
-typedef void(^OPViewDrawingBlock)(OPView* v, CGRect r, CGContextRef c);
+#import "OPBlockDefinitions.h"
 
 @interface OPView : UIView
 
--(void) addDrawingBlock:(OPViewDrawingBlock)block;
+-(void) addDrawingBlock:(UIViewDrawingBlock)block;
 -(void) removeAllDrawingBlocks;
 
 @end
