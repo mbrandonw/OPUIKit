@@ -12,6 +12,19 @@
 #import "RTMethod.h"
 #import "MARTNSObject.h"
 
+#pragma mark -
+#pragma mark Private OPStyle interface
+#pragma mark -
+
+@interface OPStyle (/**/)
+@property (nonatomic, assign) Class styledClass;
+@property (nonatomic, strong) NSMutableSet *touchedMethods;
+-(id) initForClass:(Class)styledClass;
+@end
+
+#pragma mark -
+#pragma mark OPStyleProxy
+#pragma mark -
 
 @interface OPStyleProxy : NSProxy
 @property (nonatomic, strong) OPStyle *style;
@@ -19,19 +32,29 @@
 
 @implementation OPStyleProxy
 
+@synthesize style = _style;
+
+-(id) initWithStyle:(OPStyle*)style {
+    _style = style;
+    return self;
+}
+
 -(void) forwardInvocation:(NSInvocation *)invocation {
     
-    invocation.
+    // forward everything to the style, but keep track of which properties were edited
+    [self.style.touchedMethods addObject:NSStringFromSelector(invocation.selector)];
+    [invocation invokeWithTarget:self.style];
+}
+
+-(NSMethodSignature*) methodSignatureForSelector:(SEL)sel {
+    return [self.style methodSignatureForSelector:sel];
 }
 
 @end
 
-
-@interface OPStyle (/**/)
-@property (nonatomic, strong) NSMutableArray *touchedMethods;
-@property (nonatomic, assign) Class styledClass;
--(id) initForClass:(Class)styledClass;
-@end
+#pragma mark -
+#pragma mark OPStyle implementation
+#pragma mark -
 
 @implementation OPStyle
 
@@ -53,19 +76,17 @@
 @synthesize defaultTitle = _defaultTitle;
 @synthesize defaultTitleImage = _defaultTitleImage;
 
-+(void) initialize {
-    if (self == [OPStyle class])
-    {
-        
-    }
+-(id) initForClass:(Class)styledClass {
+    if (! (self = [self init]))
+        return nil;
+    _styledClass = styledClass;
+    return self;
 }
 
--(id) initForClass:(Class)styledClass {
+-(id) init {
     if (! (self = [super init]))
         return nil;
-    
-    _styledClass = styledClass;
-    
+    _touchedMethods = [NSMutableSet new];
     return self;
 }
 
@@ -92,8 +113,9 @@
             void *value = NULL;
             [self rt_returnValue:&value sendSelector:getterSelector];
             
-            // send the setter method to 
-            [target rt_returnValue:NULL sendSelector:method.selector, RTARG(value)];
+            // send the setter method to the target (but only if this property has been touched while styling)
+            if ([self.touchedMethods containsObject:method.selectorName])
+                [target rt_returnValue:NULL sendSelector:method.selector, RTARG(value)];
         }
     }
 }
@@ -123,7 +145,8 @@ static NSMutableDictionary *OPStylesByClass;
     if (! [OPStylesByClass objectForKey:classString])
     {
         OPStyle *style = [[OPStyle alloc] initForClass:[self class]];
-        [OPStylesByClass setObject:style forKey:classString];
+        OPStyleProxy *styleProxy = [[OPStyleProxy alloc] initWithStyle:style];
+        [OPStylesByClass setObject:styleProxy forKey:classString];
     }
     
     return [OPStylesByClass objectForKey:classString];
