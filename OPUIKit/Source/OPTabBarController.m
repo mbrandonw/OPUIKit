@@ -19,7 +19,6 @@
 @property (nonatomic, readwrite, strong) NSArray *viewControllers;
 @property (nonatomic, readwrite, strong) UIViewController *selectedViewController;
 @property (nonatomic, readwrite, assign) NSUInteger selectedIndex;
-@property (nonatomic, strong) UIView *containerView;
 @end
 
 @implementation OPTabBarController
@@ -34,8 +33,6 @@
 @synthesize viewControllers = _viewControllers;
 @synthesize selectedViewController = _selectedViewController;
 @synthesize selectedIndex = _selectedIndex;
-
-@synthesize containerView;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -71,10 +68,6 @@
     self.view.backgroundColor = [UIColor blackColor];
 #endif
     
-    // configure the container view
-    self.containerView = [[UIView alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:self.containerView];
-    
     // configure the tab bar
     self.tabBar.frame = CGRectMake(0.0f, 0.0f, self.view.width, UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.tabBarPortraitHeight : self.tabBarLandscapeHeight);
     [self.tabBar setNeedsDisplayAndLayout];
@@ -91,7 +84,6 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
-    self.containerView = nil;
     self.tabBar = nil;
 }
 
@@ -231,10 +223,30 @@
     
     UIViewController *controller = [self.viewControllers objectAtIndex:index];
     
+    // tapping the tab bar item a 2nd time offers some additional functionality
     if (self.selectedViewController == controller)
     {
         if ([self.selectedViewController isKindOfClass:[UINavigationController class]])
-            [(UINavigationController*)self.selectedViewController popToRootViewControllerAnimated:YES];
+        {
+            UINavigationController *navigationController = (UINavigationController*)self.selectedViewController;
+            
+            // if the selected controller is a navigation controller that is already at its root controller, then we try to scroll its child controller to the top
+            if ([navigationController.viewControllers count] == 1 &&
+                [[[navigationController.viewControllers lastObject] view] isKindOfClass:[UIScrollView class]])
+            {
+                [(UIScrollView*)[[navigationController.viewControllers lastObject] view] setContentOffset:CGPointZero animated:YES];
+            }
+            // otherwise we just pop the navigation controller to its root
+            else
+            {
+                [(UINavigationController*)self.selectedViewController popToRootViewControllerAnimated:YES];
+            }
+        }
+        // if we can then we will scroll the selected controller to the top
+        else if ([self.selectedViewController.view isKindOfClass:[UIScrollView class]])
+        {
+            [(UIScrollView*)self.selectedViewController.view setContentOffset:CGPointZero animated:YES];
+        }
     }
     else
     {

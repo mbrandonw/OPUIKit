@@ -75,9 +75,7 @@
 #pragma mark - Table view data source
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
-        return 44.0f;
-    return 26.0f;
+    return 44.0f;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -150,7 +148,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TestViewController *controller = [TestViewController new];
-    controller.hidesBottomBarWhenPushed = YES;
+    controller.hidesBottomBarWhenPushed = [self.navigationController.viewControllers count] >= 2 ? YES : NO;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

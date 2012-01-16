@@ -34,6 +34,8 @@
     OPTabBarController *root = [[OPTabBarController alloc] init];
     
     root.tabBar.backgroundColor = $hex(0xbf3030);
+    root.tabBar.shadowHeight = 6.0f;
+    [root.tabBar setShadowAlphaStops:$array($float(0.0f),$float(0.2f))];
     root.tabBar.glossAmount = 0.05f;
     root.tabBar.glossOffset = 1.0f;
     root.tabBar.gradientAmount = 0.1f;
