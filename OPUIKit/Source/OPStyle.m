@@ -80,6 +80,7 @@
 @synthesize defaultTitle = _defaultTitle;
 @synthesize defaultSubtitle = _defaultSubtitle;
 @synthesize defaultTitleImage = _defaultTitleImage;
+@synthesize allowSwipeToPop = _allowSwipeToPop;
 
 -(id) initForClass:(Class)styledClass {
     if (! (self = [self init]))

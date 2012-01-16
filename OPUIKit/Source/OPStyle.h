@@ -41,6 +41,13 @@
 @property (nonatomic, strong) NSString *defaultSubtitle;
 @property (nonatomic, strong) UIImage *defaultTitleImage;
 
+/**
+ Determines if a swipe gesture pops the current view controller from the stack. Of course this is
+ only application to instances of OPNavigationController. We gotta use an NSInteger for this
+ datatype because MAObjCRuntime doesn't seem to handle BOOL types.
+ */
+@property (nonatomic, assign) NSInteger allowSwipeToPop;
+
 @end
 
 @interface OPStyle : NSObject <OPStyleProtocol>
