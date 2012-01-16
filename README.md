@@ -38,3 +38,9 @@ We make use extensive of [OPQuartzKit](http://www.opetopic.com) and [OPExtension
 ##Demo
 
 Checkout [OPKitDemo](http://www.opetopic.com) for a demo application using OPUIKit, among other things.
+
+##Author
+
+Brandon Williams
+brandon@opetopic.com
+[www.opetopic.com](http://www.opetopic.com)
