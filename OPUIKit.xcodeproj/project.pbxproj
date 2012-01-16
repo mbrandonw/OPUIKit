@@ -95,6 +95,20 @@
 		A706D87514B926A000B469BB /* UIWebView+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */; };
 		A706D87614B926A000B469BB /* UIWebView+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */; };
 		A706D87814B926FF00B469BB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D87714B926FF00B469BB /* CoreData.framework */; };
+		A77512C814C48E830020AF09 /* OPStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512C714C48E830020AF09 /* OPStyle.m */; };
+		A77512C914C48E830020AF09 /* OPStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512C714C48E830020AF09 /* OPStyle.m */; };
+		A77512D814C49AD90020AF09 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512CD14C49AD90020AF09 /* MARTNSObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512D914C49AD90020AF09 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512CD14C49AD90020AF09 /* MARTNSObject.m */; };
+		A77512DA14C49AD90020AF09 /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512CF14C49AD90020AF09 /* RTIvar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512DB14C49AD90020AF09 /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512CF14C49AD90020AF09 /* RTIvar.m */; };
+		A77512DC14C49AD90020AF09 /* RTMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D114C49AD90020AF09 /* RTMethod.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512DD14C49AD90020AF09 /* RTMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D114C49AD90020AF09 /* RTMethod.m */; };
+		A77512DE14C49AD90020AF09 /* RTProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D314C49AD90020AF09 /* RTProperty.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512DF14C49AD90020AF09 /* RTProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D314C49AD90020AF09 /* RTProperty.m */; };
+		A77512E014C49AD90020AF09 /* RTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D514C49AD90020AF09 /* RTProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512E114C49AD90020AF09 /* RTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D514C49AD90020AF09 /* RTProtocol.m */; };
+		A77512E214C49AD90020AF09 /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D714C49AD90020AF09 /* RTUnregisteredClass.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A77512E314C49AD90020AF09 /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A77512D714C49AD90020AF09 /* RTUnregisteredClass.m */; };
 		A79606BB14C33230001A9B06 /* OPControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606BA14C33230001A9B06 /* OPControl.m */; };
 		A79606BC14C33230001A9B06 /* OPControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A79606BA14C33230001A9B06 /* OPControl.m */; };
 		A79606D014C341D6001A9B06 /* icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = A79606CE14C341D6001A9B06 /* icon0.png */; };
@@ -225,6 +239,20 @@
 		A706D83F14B9269F00B469BB /* UIWebView+Opetopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+Opetopic.h"; sourceTree = "<group>"; };
 		A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+Opetopic.m"; sourceTree = "<group>"; };
 		A706D87714B926FF00B469BB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A77512C614C48E830020AF09 /* OPStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPStyle.h; sourceTree = "<group>"; };
+		A77512C714C48E830020AF09 /* OPStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPStyle.m; sourceTree = "<group>"; };
+		A77512CC14C49AD90020AF09 /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MARTNSObject.h; sourceTree = "<group>"; };
+		A77512CD14C49AD90020AF09 /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MARTNSObject.m; sourceTree = "<group>"; };
+		A77512CE14C49AD90020AF09 /* RTIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTIvar.h; sourceTree = "<group>"; };
+		A77512CF14C49AD90020AF09 /* RTIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTIvar.m; sourceTree = "<group>"; };
+		A77512D014C49AD90020AF09 /* RTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMethod.h; sourceTree = "<group>"; };
+		A77512D114C49AD90020AF09 /* RTMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTMethod.m; sourceTree = "<group>"; };
+		A77512D214C49AD90020AF09 /* RTProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTProperty.h; sourceTree = "<group>"; };
+		A77512D314C49AD90020AF09 /* RTProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTProperty.m; sourceTree = "<group>"; };
+		A77512D414C49AD90020AF09 /* RTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTProtocol.h; sourceTree = "<group>"; };
+		A77512D514C49AD90020AF09 /* RTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTProtocol.m; sourceTree = "<group>"; };
+		A77512D614C49AD90020AF09 /* RTUnregisteredClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTUnregisteredClass.h; sourceTree = "<group>"; };
+		A77512D714C49AD90020AF09 /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTUnregisteredClass.m; sourceTree = "<group>"; };
 		A79606B914C33230001A9B06 /* OPControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPControl.h; sourceTree = "<group>"; };
 		A79606BA14C33230001A9B06 /* OPControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPControl.m; sourceTree = "<group>"; };
 		A79606CE14C341D6001A9B06 /* icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon0.png; sourceTree = "<group>"; };
@@ -374,6 +402,7 @@
 		A706D73C14B9253400B469BB /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A77512CB14C49AD90020AF09 /* MAObjCRuntime */,
 				A706D73D14B9253400B469BB /* OPBarButtonItem.h */,
 				A706D73E14B9253400B469BB /* OPBarButtonItem.m */,
 				A706D73F14B9253400B469BB /* OPGradientView.h */,
@@ -404,6 +433,8 @@
 				A7A9C16E14C1025800C39504 /* OPTabBarItem.m */,
 				A7A9C17114C1026600C39504 /* OPTabBarController.h */,
 				A7A9C17214C1026600C39504 /* OPTabBarController.m */,
+				A77512C614C48E830020AF09 /* OPStyle.h */,
+				A77512C714C48E830020AF09 /* OPStyle.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -512,6 +543,25 @@
 				A706D84014B9269F00B469BB /* UIWebView+Opetopic.m */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		A77512CB14C49AD90020AF09 /* MAObjCRuntime */ = {
+			isa = PBXGroup;
+			children = (
+				A77512CC14C49AD90020AF09 /* MARTNSObject.h */,
+				A77512CD14C49AD90020AF09 /* MARTNSObject.m */,
+				A77512CE14C49AD90020AF09 /* RTIvar.h */,
+				A77512CF14C49AD90020AF09 /* RTIvar.m */,
+				A77512D014C49AD90020AF09 /* RTMethod.h */,
+				A77512D114C49AD90020AF09 /* RTMethod.m */,
+				A77512D214C49AD90020AF09 /* RTProperty.h */,
+				A77512D314C49AD90020AF09 /* RTProperty.m */,
+				A77512D414C49AD90020AF09 /* RTProtocol.h */,
+				A77512D514C49AD90020AF09 /* RTProtocol.m */,
+				A77512D614C49AD90020AF09 /* RTUnregisteredClass.h */,
+				A77512D714C49AD90020AF09 /* RTUnregisteredClass.m */,
+			);
+			path = MAObjCRuntime;
 			sourceTree = "<group>";
 		};
 		A7A9C23F14C24FED00C39504 /* OPQuartzKit */ = {
@@ -673,6 +723,13 @@
 				A7A9C24A14C2501100C39504 /* NSNumber+Opetopic.m in Sources */,
 				A79606BB14C33230001A9B06 /* OPControl.m in Sources */,
 				A79606DC14C36DA4001A9B06 /* TestViewController.m in Sources */,
+				A77512C814C48E830020AF09 /* OPStyle.m in Sources */,
+				A77512D814C49AD90020AF09 /* MARTNSObject.m in Sources */,
+				A77512DA14C49AD90020AF09 /* RTIvar.m in Sources */,
+				A77512DC14C49AD90020AF09 /* RTMethod.m in Sources */,
+				A77512DE14C49AD90020AF09 /* RTProperty.m in Sources */,
+				A77512E014C49AD90020AF09 /* RTProtocol.m in Sources */,
+				A77512E214C49AD90020AF09 /* RTUnregisteredClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,6 +784,13 @@
 				A7A9C24B14C2501100C39504 /* NSNumber+Opetopic.m in Sources */,
 				A79606BC14C33230001A9B06 /* OPControl.m in Sources */,
 				A79606DD14C36DA4001A9B06 /* TestViewController.m in Sources */,
+				A77512C914C48E830020AF09 /* OPStyle.m in Sources */,
+				A77512D914C49AD90020AF09 /* MARTNSObject.m in Sources */,
+				A77512DB14C49AD90020AF09 /* RTIvar.m in Sources */,
+				A77512DD14C49AD90020AF09 /* RTMethod.m in Sources */,
+				A77512DF14C49AD90020AF09 /* RTProperty.m in Sources */,
+				A77512E114C49AD90020AF09 /* RTProtocol.m in Sources */,
+				A77512E314C49AD90020AF09 /* RTUnregisteredClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
