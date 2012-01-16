@@ -16,6 +16,7 @@
  Apply this style object's properties to a target.
  */
 -(void) applyTo:(id)target;
+
 @end
 
 @interface NSObject (OPStyle)

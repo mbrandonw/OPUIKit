@@ -21,39 +21,65 @@
 #import "UIDevice+Opetopic.h"
 #import "NSNumber+Opetopic.h"
 #import "TestViewController.h"
+#import "OPNavigationController.h"
+#import "OPViewController.h"
+#import "OPStyle.h"
+#import "UIViewController+OPUIKit.h"
+#import "OPNavigationBar.h"
+#import "OPUIKitBlockDefinitions.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    UIColor *baseColor = [UIColor grayColor];
+    
+    // global stylings
+    [[UIViewController styling] setBackgroundColor:[UIColor veryLightGrayColor]];
+    [[UIViewController styling] setDefaultTitle:@"OPUIKit"];
+    [[UIViewController styling] setTitleShadowOffset:-1.0f];
+    [[UITableViewController styling] setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+    [[OPNavigationController styling] setAllowSwipeToPop:1];
+    
+    [[OPNavigationBar styling] setBackgroundColor:baseColor];
+    [[OPTabBar styling] setBackgroundColor:baseColor];
+    [[UIView styling] setGradientAmount:0.1f];
+    [[UIView styling] setGlossAmount:0.1f];
+    [[UIView styling] setShadowHeight:4.0f];
+    [[UIView styling] setShadowColors:[NSArray arrayWithObjects:
+                                                (id)[UIColor colorWithWhite:0.0f alpha:0.0f].CGColor, 
+                                                (id)[UIColor colorWithWhite:0.0f alpha:0.3f].CGColor, 
+                                                nil]];
+    
+    [[OPNavigationBar styling] setDrawingBlock:^(UIView *v, CGRect r, CGContextRef c) {
+        [[UIColor colorWithWhite:1.0f alpha:0.5f] set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 1.0f));
+        [[UIColor colorWithWhite:0.0f alpha:0.5f] set];
+        CGContextFillRect(c, CGRectMake(0.0f, r.size.height-1.0f, r.size.width, 1.0f));
+    }];
+    
+    
+    [[OPView styling] setDrawingBlocks:[NSArray arrayWithObject:[^(UIView *v, CGRect r, CGContextRef c) {
+        [[baseColor darken:0.5f] set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
+        [[baseColor lighten:0.3f] set];
+        CGContextFillRect(c, CGRectMake(0.0f, 2.0f, r.size.width, 1.0f));
+    } copy]]];
+    
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor blackColor];
     
     OPTabBarController *root = [[OPTabBarController alloc] init];
     
-    root.tabBar.backgroundColor = $hex(0xbf3030);
-    root.tabBar.shadowHeight = 6.0f;
-    [root.tabBar setShadowAlphaStops:$array($float(0.0f),$float(0.2f))];
-    root.tabBar.glossAmount = 0.05f;
-    root.tabBar.glossOffset = 1.0f;
-    root.tabBar.gradientAmount = 0.1f;
-    root.tabBar.shadowHeight = [UIDevice isPad] ? 6.0f : 4.0f;
     root.tabBarPortraitHeight = 49.0f;
     root.tabBarLandscapeHeight = [UIDevice isPad] ? 49.0f : 36.0f;
     root.hidesToolbarTitlesInLandscape = [UIDevice isPad] ? NO : YES;
     root.tabBar.itemLayout = [UIDevice isPad] ? OPTabBarItemLayoutCenterGrouped : OPTabBarItemLayoutEvenlySpaced;
     root.tabBar.maxItemWidth = [UIDevice isPad] ? 160.0f : CGFLOAT_MAX;
     
-    __block OPTabBar *blockTabBar = root.tabBar;
-    
-    [root.tabBar addDrawingBlock:^(OPView *v, CGRect r, CGContextRef c) {
-        [[blockTabBar.backgroundColor darken:0.5f] set];
-        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
-        [[blockTabBar.backgroundColor lighten:0.3f] set];
-        CGContextFillRect(c, CGRectMake(0.0f, 2.0f, r.size.width, 1.0f));
-    }];
     
     NSArray *titles = $array(@"Playlists", @"Artists", @"Songs", @"Albums");
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:4];
@@ -70,20 +96,16 @@
         
         [item addDrawingBlock:^(OPControl *b, CGRect r, CGContextRef c) {
             
-        } forState:UIControlStateNormal];
-        
-        [item addDrawingBlock:^(OPControl *b, CGRect r, CGContextRef c) {
-            
-            [[OPGradient gradientWithColors:$array([blockTabBar.backgroundColor darken:0.3f], [blockTabBar.backgroundColor darken:0.1f]) 
+            [[OPGradient gradientWithColors:$array([baseColor darken:0.3f], [baseColor darken:0.1f]) 
                                   locations:$array($float(0.0f), $float(0.75f))]
              fillRectLinearly:CGRectMake(0.0f, 2.0f, r.size.width, r.size.height-2.0f)];
             
             if (i > 0) {
-                [[blockTabBar.backgroundColor lighten:0.1f] set];
+                [[baseColor lighten:0.1f] set];
                 CGContextFillRect(c, CGRectMake(0.0f, 2.0f, 1.0f, b.height));
             }
             if (i < [titles count] - 1) {
-                [[blockTabBar.backgroundColor lighten:0.1f] set];
+                [[baseColor lighten:0.1f] set];
                 CGContextFillRect(c, CGRectMake(b.width-1.0f, 2.0f, 1.0f, b.height));
             }
             
@@ -91,10 +113,10 @@
     }
     
     NSArray *controllers = [NSArray arrayWithObjects:
-                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
-                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
-                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
-                            [[UINavigationController alloc] initWithRootViewController:[TestViewController new]],
+                            [OPNavigationController controllerWithRootViewController:[[OPViewController alloc] initWithTitle:@"OPUIKit" subtitle:@"it's da shizz"]],
+                            [OPNavigationController controllerWithRootViewController:[[OPViewController alloc] initWithTitle:@"Wazzzzzup!" subtitle:nil]],
+                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
+                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
                             nil];
     
     [root setViewControllers:controllers withTabBarItems:items];

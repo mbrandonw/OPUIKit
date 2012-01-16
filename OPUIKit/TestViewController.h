@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPTableViewController.h"
 
-@interface TestViewController : UITableViewController
+@interface TestViewController : OPTableViewController
 
 @end

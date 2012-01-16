@@ -16,16 +16,12 @@ OPUIKit was built to accomodate the many interface patterns we saw repeatedly wh
 
 ##Global styling
 
-All UIKit component subclasses listed above have class methods that allow for setting up default stylings that will be applied automatically when new instances are created. This solved a serious problem in the pre-iOS 5 days (before `UIAppeance` was released), allowing for easy skinning of apps. However, even in the post-iOS 5 days we have found this method of skinning to be sufficient (perhaps even superior) to `UIAppearance`, therefore we have decided to keep this functionality and improve on it as we develop the components more.
+There is a category on `NSObject` that adds an instance method `-styling` and class method `+styling` to every subclass. It returns an instance of `OPStyle` (well, technically `OPStyleProxy`, but more on that later) that allows you to set global stylings associated with your class. For example,
 
-An example of how we use this (this code should happen right after the application launches):
+	[[OPNavigationBar styling] setBackgroundColor:[UIColor lightGrayColor]];
+	[[OPNavigationBar styling] setShadowHeight:4.0f];
 
-	[OPNavigationBar setDefaultColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"nav_bar_texture.png"]]];
-	[OPBarButtonItem setDefaultTextColor:[UIColor grayColor]];
-	[OPBarButtonItem setDefaultTextShadowColor:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-	[OPTableViewController setDefaultBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_texture.png"]]];
-	
-Now, all of our navigation controllers with have nicely textured navigation bars and properly styled navigation buttons, and all of our table view controllers will have a nice textured background.
+Now all new instances of `OPNavigationBar` will be styled accordingly. For a list of styles that can be applied, see `OPStyleProtocol.h`.
     
 ##Installation
 
