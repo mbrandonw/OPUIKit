@@ -36,6 +36,10 @@
 
 -(id) initWithStyle:(OPStyle*)style {
     _style = style;
+    
+    // default stylings (defaults must be set this way so that they are recorded in the "touched" set)
+    [(OPStyle*)self setTitleShadowOffset:-1.0f];
+    
     return self;
 }
 
