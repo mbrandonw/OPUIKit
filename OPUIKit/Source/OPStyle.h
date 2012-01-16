@@ -55,11 +55,11 @@
 /**
  Returns the style object for this class.
  */
-+(OPStyle*) op_style;
++(OPStyle*) styling;
 
 /**
  Returns the style object for this object's class.
  */
--(OPStyle*) op_style;
+-(OPStyle*) styling;
 
 @end

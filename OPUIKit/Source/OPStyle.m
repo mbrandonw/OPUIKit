@@ -134,7 +134,7 @@ static NSMutableDictionary *OPStylesByClass;
 
 @implementation NSObject (OPStyle)
 
-+(OPStyle*) op_style {
++(OPStyle*) styling {
     
     // lazily create the dictionary that maps classes to style objects
     if (! OPStylesByClass)
@@ -152,7 +152,7 @@ static NSMutableDictionary *OPStylesByClass;
     return [OPStylesByClass objectForKey:classString];
 }
 
--(OPStyle*) op_style {
+-(OPStyle*) styling {
     return [[self class] op_style];
 }
 
