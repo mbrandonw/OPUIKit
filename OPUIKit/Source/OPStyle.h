@@ -36,7 +36,7 @@
 @property (nonatomic, strong) UIFont *subtitleFont;
 @property (nonatomic, strong) UIColor *titleColor;
 @property (nonatomic, strong) UIColor *titleShadowColor;
-@property (nonatomic, assign) CGSize titleShadowOffset;
+@property (nonatomic, assign) CGFloat titleShadowOffset;
 @property (nonatomic, strong) NSString *defaultTitle;
 @property (nonatomic, strong) NSString *defaultSubtitle;
 @property (nonatomic, strong) UIImage *defaultTitleImage;
