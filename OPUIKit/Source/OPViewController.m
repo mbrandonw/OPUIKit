@@ -14,6 +14,7 @@
 
 @implementation OPViewController
 
+// OPStyle storage
 @synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize defaultTitle = _defaultTitle;
@@ -58,14 +59,6 @@
         self.view.backgroundColor = self.backgroundColor;
     else
         self.view.backgroundColor = [UIColor whiteColor];
-}
-
--(void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
-        [self simulateMemoryWarning];
-    DLog(@"%@", OPCoalesce(self.title, NSStringFromClass([self class])));
 }
 
 @end
