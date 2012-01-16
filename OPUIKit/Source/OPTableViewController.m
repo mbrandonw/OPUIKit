@@ -8,17 +8,9 @@
 
 #import "OPTableViewController.h"
 #import "UIView+Opetopic.h"
-//#import "OPTableView.h"
 #import "UIViewController+Opetopic.h"
+#import "UIViewController+OPUIKit.h"
 #import "OPMacros.h"
-
-#pragma mark Styling vars
-static UIColor *OPTableViewControllerDefaultBackgroundColor;
-static UIColor *OPTableViewControllerDefaultTitleTextColor;
-static UIColor *OPTableViewControllerDefaultTitleShadowColor;
-static CGSize OPTableViewControllerDefaultTitleShadowOffset;
-static UIImage *OPTableViewControllerDefaultTitleImage;
-#pragma mark -
 
 #pragma mark Private methods
 @interface OPTableViewController (/*Private*/)
@@ -30,37 +22,27 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 
 @implementation OPTableViewController
 
-@synthesize useOPTableView;
-@synthesize resignKeyboardWhileScrolling;
-@synthesize resignKeyboardScrollDelta;
-@synthesize restoreExpandableSelectionOnViewWillAppear;
-@synthesize beginDraggingContentOffset;
-@synthesize touchIsDown;
+@synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
+@synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
+@synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
+@synthesize touchIsDown = _touchIsDown;
 
-#pragma mark Styling methods
-+(void) setDefaultBackgroundColor:(UIColor*)color {
-	OPTableViewControllerDefaultBackgroundColor = color;
-}
+// OPStyle storage
+@synthesize backgroundColor = _backgroundColor;
+@synthesize backgroundImage = _backgroundImage;
+@synthesize defaultTitle = _defaultTitle;
+@synthesize defaultSubtitle = _defaultSubtitle;
+@synthesize defaultTitleImage = _defaultTitleImage;
+@synthesize titleFont = _titleFont;
+@synthesize subtitleFont = _subtitleFont;
+@synthesize titleColor = _titleColor;
+@synthesize titleShadowColor = _titleShadowColor;
+@synthesize titleShadowOffset = _titleShadowOffset;
 
-+(void) setDefaultTitleTextColor:(UIColor*)color {
-	OPTableViewControllerDefaultTitleTextColor = color;
-}
-
-+(void) setDefaultTitleShadowColor:(UIColor*)color {
-	OPTableViewControllerDefaultTitleShadowColor = color;
-}
-
-+(void) setDefaultTitleShadowOffset:(CGSize)offset {
-    OPTableViewControllerDefaultTitleShadowOffset = offset;
-}
-
-+(void) setDefaultTitleImage:(UIImage*)image {
-	OPTableViewControllerDefaultTitleImage = image;
-}
+#pragma mark -
+#pragma mark Object lifecycle
 #pragma mark -
 
-
-#pragma mark Object lifecycle
 -(id) initWithStyle:(UITableViewStyle)style title:(NSString *)title subtitle:(NSString *)subtitle {
 	if (! (self = [self initWithStyle:style]))
 		return nil;
@@ -74,7 +56,10 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 	if (! (self = [super initWithStyle:style]))
 		return nil;
 	
-	self.navigationItem.titleView = [[UIImageView alloc] initWithImage:OPTableViewControllerDefaultTitleImage];
+    // apply stylings
+    [[self styling] applyTo:self];
+	
+    // default ivars
     self.resignKeyboardScrollDelta = 40.0f;
 	
 	return self;
@@ -83,8 +68,11 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 -(id) init {
 	if (! (self = [super init]))
 		return nil;
+    
+    // apply stylings
+    [[self styling] applyTo:self];
 	
-	self.navigationItem.titleView = [[UIImageView alloc] initWithImage:OPTableViewControllerDefaultTitleImage];
+    // default ivars
     self.resignKeyboardScrollDelta = 40.0f;
 	
 	return self;
@@ -98,115 +86,47 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
     // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
+#pragma mark -
+#pragma mark View lifecycle
 #pragma mark -
 
-
-#pragma mark View lifecycle
--(void) loadView {
-    [super loadView];
+-(void) viewDidLoad {
+    [super viewDidLoad];
     
-//    if (self.useOPTableView)
-//        self.tableView = [[[OPTableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style] autorelease];
+    // set up default background color
+	if (self.backgroundImage)
+		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
+    else if (self.backgroundColor)
+        self.view.backgroundColor = self.backgroundColor;
+    else
+        self.view.backgroundColor = self.tableView.style == UITableViewStylePlain ? [UIColor whiteColor] : [UIColor groupTableViewBackgroundColor];
     
-    // default the background color if the view doesn't already have one
-    if (OPTableViewControllerDefaultBackgroundColor)
-        self.tableView.backgroundColor = OPTableViewControllerDefaultBackgroundColor;
-}
-
--(void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    // set up default navigation item title view
+    if (self.defaultTitleImage)
+        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
+    if (self.defaultTitle)
+        [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
     
-    // reselect the expanded row if needed
-//    if (self.restoreExpandableSelectionOnViewWillAppear && [self.opTableView.expandedIndexPaths count] == 1) {
-//        [NSObject performBlockNextRunloop:^{
-//            [self.opTableView selectRowAtIndexPath:[self.opTableView.expandedIndexPaths lastObject] animated:NO scrollPosition:UITableViewScrollPositionNone];
-//        }];
-//    }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self performSelector:@selector(lazilyLoadImages) withObject:nil afterDelay:0.3f];
-    
-    if (OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
-        [self simulateMemoryWarning];
-    
-    DLog(@"%@", OPCoalesce(self.title, NSStringFromClass([self class])));
+}
+
+- (void)viewDidUnload {
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
 }
 
 -(UITableView*) activeTableView {
     return self.searchDisplayController.active ? self.searchDisplayController.searchResultsTableView : self.tableView;
 }
 
--(OPTableView*) opTableView {
-//    return [self.tableView isKindOfClass:[OPTableView class]] ? (OPTableView*)self.tableView : nil;
-    return nil;
-}
 #pragma mark -
-
-
-#pragma mark Titling methods
--(void) setTitle:(NSString *)title {
-    [self setTitle:title subtitle:nil];
-}
-
--(void) setTitle:(NSString*)title subtitle:(NSString*)subtitle {
-    
-    [super setTitle:title];
-	
-	UIView *wrapper = [[UIView alloc] initWithFrame:CGRectZero];
-	
-	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	titleLabel.text = title;
-	titleLabel.textColor = OPTableViewControllerDefaultTitleTextColor;
-	titleLabel.shadowColor = OPTableViewControllerDefaultTitleShadowColor;
-	titleLabel.shadowOffset = OPTableViewControllerDefaultTitleShadowOffset;
-	titleLabel.textAlignment = UITextAlignmentCenter;
-	titleLabel.font = [UIFont boldSystemFontOfSize:subtitle ? 15.0f : 18.0f];
-	titleLabel.numberOfLines = 1;
-	titleLabel.backgroundColor = [UIColor clearColor];
-	titleLabel.opaque = NO;
-	titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	[titleLabel sizeToFit];
-	titleLabel.width = MIN(titleLabel.width, 190.0f);
-	
-	UILabel *subtitleLabel = nil;
-	if (subtitle != nil) {
-		subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		subtitleLabel.text = subtitle;
-		subtitleLabel.textColor = OPTableViewControllerDefaultTitleTextColor;
-		subtitleLabel.shadowColor = OPTableViewControllerDefaultTitleShadowColor;
-		subtitleLabel.shadowOffset = OPTableViewControllerDefaultTitleShadowOffset;
-		subtitleLabel.textAlignment = UITextAlignmentCenter;
-		subtitleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
-		subtitleLabel.numberOfLines = 1;
-		subtitleLabel.backgroundColor = [UIColor clearColor];
-		subtitleLabel.opaque = NO;
-		subtitleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-		[subtitleLabel sizeToFit];
-		subtitleLabel.width = MIN(subtitleLabel.width, 190.0f);
-	}
-	
-	CGFloat maxWidth = MAX(titleLabel.frame.size.width, subtitleLabel.frame.size.width);
-	wrapper.frame = CGRectMake(0.0, 0.0, maxWidth, 44.0);
-	titleLabel.frame = CGRectMake(0.0, (subtitle ? 4.0 : 11.0), maxWidth, 20.0);
-	[wrapper addSubview:titleLabel];
-	
-	if (subtitleLabel) {
-		subtitleLabel.frame = CGRectMake(0.0, 22.0, maxWidth, 16.0);
-		[wrapper addSubview:subtitleLabel];
-	}
-	
-	self.navigationItem.titleView = wrapper;
-}
-#pragma mark -
-
-
 #pragma mark UIScrollViewDelegate methods
+#pragma mark -
+
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 	if (! decelerate) {
 		[self lazilyLoadImages];
@@ -248,21 +168,25 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 			[cell performSelector:@selector(lazilyLoadImages)];
 	}
 }
+
+#pragma mark -
+#pragma mark Overridden touch methods
 #pragma mark -
 
-
-#pragma mark Touch methods
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
     self.touchIsDown = YES;
 }
 
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
     self.touchIsDown = NO;
 }
+
+#pragma mark -
+#pragma mark Data source methods
 #pragma mark -
 
-
-#pragma mark Data source methods
 -(void) reloadData {
 	
 	if (self.searchDisplayController.active)
@@ -272,17 +196,19 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 	
 	[self lazilyLoadImages];
 }
+
+#pragma mark -
+#pragma mark UITableView methods
 #pragma mark -
 
-
-#pragma mark UITableView methods
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     
 }
+
+#pragma mark -
+#pragma mark NSFetchedResultsControllerDelegate methods
 #pragma mark -
 
-
-#pragma mark NSFetchedResultsController methods
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView beginUpdates];
 }
@@ -327,15 +253,5 @@ static UIImage *OPTableViewControllerDefaultTitleImage;
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
 }
-#pragma mark -
-
-
-#pragma mark Memory methods
--(void) simulateMemoryWarning {
-#if TARGET_IPHONE_SIMULATOR && defined(DEBUG)
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"UISimulatedMemoryWarningNotification", NULL, NULL, true);
-#endif
-}
-#pragma mark -
 
 @end
