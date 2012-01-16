@@ -33,7 +33,7 @@ We love [CocoaPods](http://github.com/cocoapods/cocoapods), so we recommend you 
 
 ##Dependencies
 
-We make use extensive of [OPQuartzKit](http://www.opetopic.com) and [OPExtensionKit](http://www.opetopic.com). They have some pretty kick ass things though, so you may want to check them out anyway :)
+We make extensive use of [OPQuartzKit](http://www.opetopic.com) and [OPExtensionKit](http://www.opetopic.com). They have some pretty kick ass things though, so you may want to check them out anyway :)
 
 ##Demo
 
