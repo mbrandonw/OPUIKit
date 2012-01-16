@@ -33,18 +33,19 @@
     
     OPTabBarController *root = [[OPTabBarController alloc] init];
     
-    self.window.rootViewController = root;
-    
-    root.tabBar.backgroundColor = [UIColor hex:0xbf3030];
-    root.tabBar.style = OPTabBarStyleGloss;
+    root.tabBar.backgroundColor = $hex(0xbf3030);
     root.tabBar.glossAmount = 0.05f;
+    root.tabBar.glossOffset = 1.0f;
+    root.tabBar.gradientAmount = 0.1f;
     root.tabBar.shadowHeight = [UIDevice isPad] ? 6.0f : 4.0f;
     root.tabBarPortraitHeight = 49.0f;
-    root.tabBarLandscapeHeight = [UIDevice isPad] ? 49.0f : 40.0f;
+    root.tabBarLandscapeHeight = [UIDevice isPad] ? 49.0f : 36.0f;
     root.hidesToolbarTitlesInLandscape = [UIDevice isPad] ? NO : YES;
-    root.tabBar.itemDistribution = OPTabBarItemDistributionEvenlySpaced;
+    root.tabBar.itemLayout = [UIDevice isPad] ? OPTabBarItemLayoutCenterGrouped : OPTabBarItemLayoutEvenlySpaced;
+    root.tabBar.maxItemWidth = [UIDevice isPad] ? 160.0f : CGFLOAT_MAX;
     
     __block OPTabBar *blockTabBar = root.tabBar;
+    
     [root.tabBar addDrawingBlock:^(OPView *v, CGRect r, CGContextRef c) {
         [[blockTabBar.backgroundColor darken:0.5f] set];
         CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
@@ -53,12 +54,12 @@
     }];
     
     NSArray *titles = $array(@"Playlists", @"Artists", @"Songs", @"Albums");
-    
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < [titles count]; i++)
     {
         OPTabBarItem *item = [[OPTabBarItem alloc] init];
         item.iconView.image = [UIImage imageNamed:[NSString stringWithFormat:@"icon%i.png", i]];
+        item.iconViewInsets = UIEdgeInsetsMake(2.0f, 0.0f, 0.0f, 0.0f);
         item.titleLabel.text = [titles objectAtIndex:i];
         item.titleLabel.shadowColor = [UIColor blackColor];
         item.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
@@ -75,6 +76,15 @@
                                   locations:$array($float(0.0f), $float(0.75f))]
              fillRectLinearly:CGRectMake(0.0f, 2.0f, r.size.width, r.size.height-2.0f)];
             
+            if (i > 0) {
+                [[blockTabBar.backgroundColor lighten:0.1f] set];
+                CGContextFillRect(c, CGRectMake(0.0f, 2.0f, 1.0f, b.height));
+            }
+            if (i < [titles count] - 1) {
+                [[blockTabBar.backgroundColor lighten:0.1f] set];
+                CGContextFillRect(c, CGRectMake(b.width-1.0f, 2.0f, 1.0f, b.height));
+            }
+            
         } forState:UIControlStateSelected];
     }
     
@@ -87,6 +97,7 @@
     
     [root setViewControllers:controllers withTabBarItems:items];
     
+    self.window.rootViewController = root;
     [self.window makeKeyAndVisible];
     
     return YES;
