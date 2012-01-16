@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "OPBlockDefinitions.h"
+#import "OPStyleProtocol.h"
 
-@interface OPView : UIView
+@interface OPView : UIView <OPStyleProtocol>
 
--(void) addDrawingBlock:(UIViewDrawingBlock)block;
--(void) removeAllDrawingBlocks;
+@property (nonatomic, strong) NSMutableArray *drawingBlocks;
 
 @end

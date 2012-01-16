@@ -7,27 +7,31 @@
 //
 
 #import "OPView.h"
-
-@interface OPView (/**/)
-@property (nonatomic, strong) NSMutableArray *drawingBlocks;
-@end
+#import "OPStyle.h"
 
 @implementation OPView
 
-@synthesize drawingBlocks;
+@synthesize drawingBlocks = _drawingBlocks;
 
--(void) addDrawingBlock:(UIViewDrawingBlock)block {
-    
-    if (! self.drawingBlocks)
-        self.drawingBlocks = [NSMutableArray new];
-    [self.drawingBlocks addObject:[block copy]];
-    
-    [self setNeedsDisplay];
+-(id) init {
+    if (! (self = [super init]))
+        return nil;
+    [[[self class] styling] applyTo:self];
+    return self;
 }
 
--(void) removeAllDrawingBlocks {
-    [self.drawingBlocks removeAllObjects];
-    [self setNeedsDisplay];
+-(id) initWithCoder:(NSCoder *)aDecoder {
+    if (! (self = [super initWithCoder:aDecoder]))
+        return nil;
+    [[[self class] styling] applyTo:self];
+    return self;
+}
+
+-(id) initWithFrame:(CGRect)frame {
+    if (! (self = [super initWithFrame:frame]))
+        return nil;
+    [[[self class] styling] applyTo:self];
+    return self;
 }
 
 -(void) drawRect:(CGRect)rect {
