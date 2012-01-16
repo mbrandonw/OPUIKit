@@ -7,10 +7,8 @@
 //
 
 #import "OPStyle.h"
-#import "NSObject+Opetopic.h"
 #import "RTProtocol.h"
 #import "RTMethod.h"
-#import "MARTNSObject.h"
 
 #pragma mark -
 #pragma mark Private OPStyle interface

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "OPStyleProtocol.h"
-#import "OPView.h"
 
 @interface OPStyle : NSObject <OPStyleProtocol>
 
