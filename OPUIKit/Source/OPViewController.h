@@ -7,20 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OPStyle.h"
 
+#if !defined(OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
+#define OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS NO
+#endif
 
-@interface OPViewController : UIViewController
-
-// styling methods
-+(void) setDefaultBackgroundColor:(UIColor*)color;
-+(void) setDefaultTitleTextColor:(UIColor*)color;
-+(void) setDefaultTitleShadowColor:(UIColor*)color;
-+(void) setDefaultTitleImage:(UIImage*)image;
-
-// initialization methods
--(id) initWithTitle:(NSString*)title subtitle:(NSString*)subtitle;
-
-// titling methods
--(void) setTitle:(NSString*)title subtitle:(NSString*)subtitle;
+@interface OPViewController : UIViewController <OPStyleProtocol>
 
 @end
