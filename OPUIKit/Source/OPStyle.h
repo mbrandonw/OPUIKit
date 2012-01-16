@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OPView.h"
 
 @protocol OPStyleProtocol <NSObject>
 @optional
@@ -30,7 +31,8 @@
 @property (nonatomic, assign) CGFloat shadowHeight;
 @property (nonatomic, strong) NSArray *shadowColors;
 
-/** Ways of customizing titles (i.e. title views for navigiation items on controllers).
+/** 
+ Ways of customizing titles (i.e. title views for navigiation items on controllers).
  */
 @property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, strong) UIFont *subtitleFont;
@@ -40,6 +42,12 @@
 @property (nonatomic, strong) NSString *defaultTitle;
 @property (nonatomic, strong) NSString *defaultSubtitle;
 @property (nonatomic, strong) UIImage *defaultTitleImage;
+
+/**
+ Styles specific to navigation bars.
+ */
+@property (nonatomic, assign) NSInteger translucent;
+@property (nonatomic, copy) UIViewDrawingBlock drawingBlock;
 
 /**
  Determines if a swipe gesture pops the current view controller from the stack. Of course this is
