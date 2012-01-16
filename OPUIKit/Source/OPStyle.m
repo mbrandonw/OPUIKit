@@ -94,7 +94,7 @@
     
     // first apply any stylings from the superclass so that styles inherit
     if ([self.styledClass superclass])
-        [[[self.styledClass superclass] op_style] applyTo:target];
+        [[[self.styledClass superclass] styling] applyTo:target];
     
     // loop through the methods in our protocol so we can apply the properties to the object passed in
     RTProtocol *protocol = [RTProtocol protocolWithObjCProtocol:@protocol(OPStyleProtocol)];
@@ -153,7 +153,7 @@ static NSMutableDictionary *OPStylesByClass;
 }
 
 -(OPStyle*) styling {
-    return [[self class] op_style];
+    return [[self class] styling];
 }
 
 @end
