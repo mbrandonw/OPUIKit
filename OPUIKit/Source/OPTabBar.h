@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "OPView.h"
+#import "OPStyle.h"
 
 typedef enum {
     OPTabBarItemLayoutEvenlySpaced = 0,
@@ -22,19 +23,9 @@ typedef enum {
 -(void) tabBar:(OPTabBar*)tabBar didSelectItem:(OPTabBarItem*)item atIndex:(NSUInteger)index;
 @end
 
-@interface OPTabBar : OPView
+@interface OPTabBar : OPView <OPStyleProtocol>
 
 @property (nonatomic, assign) id<OPTabBarDelegate> delegate;
-
-/**
- Styling methods
- */
-@property (nonatomic, strong) UIImage *backgroundImage;
-@property (nonatomic, assign) CGFloat glossAmount;      // % alpha to apply to the top half of the tab bar for the gloss effect
-@property (nonatomic, assign) CGFloat glossOffset;      // how many pixels from the center to offset the gloss
-@property (nonatomic, assign) CGFloat gradientAmount;   // a number between 0 and 1 that determines how much to lighten/darken the background color for the gradient
-@property (nonatomic, assign) CGFloat shadowHeight;
--(void) setShadowAlphaStops:(NSArray*)stops;
 
 /**
  Managing tab bar items.

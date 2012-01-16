@@ -31,11 +31,15 @@
 
 @synthesize delegate = _delegate;
 
-@synthesize backgroundImage = _backgroundImage; // Image that is drawn in the background of the tab bar.
+// Supported OPStyle storage
+@synthesize backgroundImage = _backgroundImage;
+@synthesize backgroundColor = _backgroundColor;
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;
 @synthesize gradientAmount = _gradientAmount;
 @synthesize shadowHeight = _shadowHeight;
+@synthesize shadowColors = _shadowColors;
+@synthesize translucent = _translucent;
 
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;
@@ -55,15 +59,14 @@
     
     // default ivars
     _maxItemWidth = CGFLOAT_MAX;
-    _glossAmount = 0.0f;
-    _glossOffset = 0.0f;
-    _gradientAmount = 0.0f;
     _itemLayout = OPTabBarItemLayoutDefault;
     
     // init shadow view
     _shadowView = [[OPGradientView alloc] initWithFrame:CGRectZero];
     [self addSubview:_shadowView];
-    [self setShadowAlphaStops:$array($float(0.0f), $float(0.3f))];
+    
+    // apply stylings
+    [[[self class] styling] applyTo:self];
     
     return self;
 }
@@ -163,12 +166,9 @@
     [self setNeedsLayout];
 }
 
--(void) setShadowAlphaStops:(NSArray*)stops {
-    
-    NSMutableArray *colors = [NSMutableArray arrayWithCapacity:[stops count]];
-    for (NSNumber *stop in stops)
-        [colors addObject:(id)$WAf(0.0f, [stop floatValue]).CGColor];
-    self.shadowView.gradientLayer.colors = colors;
+-(void) setShadowColors:(NSArray *)shadowColors {
+    _shadowColors = shadowColors;
+    self.shadowView.gradientLayer.colors = shadowColors;
 }
 
 -(void) setItemLayout:(OPTabBarItemLayout)l {
