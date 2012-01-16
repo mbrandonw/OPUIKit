@@ -111,6 +111,11 @@
         [super drawRect:rect];
 }
 
+-(void) layoutSubviews {
+    [super layoutSubviews];
+    self.shadowView.frame = CGRectMake(0.0f, self.height, self.width, self.shadowView.height);
+}
+
 #pragma mark -
 #pragma mark Custom getters/setters
 #pragma mark -
