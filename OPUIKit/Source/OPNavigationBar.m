@@ -10,35 +10,64 @@
 #import "UIImage+Opetopic.h"
 #import "UIColor+Opetopic.h"
 #import "OPGradient.h"
+#import "OPGradientView.h"
+#import "UIView+Opetopic.h"
+
+@interface OPNavigationBar (/**/)
+@property (nonatomic, strong) OPGradientView *shadowView;
+@end
 
 @implementation OPNavigationBar
+
+@synthesize shadowHidden = _shadowHidden;
+@synthesize shadowView = _shadowView;
 
 // Supported OPStyle storage
 @synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
+@synthesize shadowHeight = _shadowHeight;
+@synthesize shadowColors = _shadowColors;
 @synthesize gradientAmount = _gradientAmount;
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;
 @synthesize translucent = _translucent;
 @synthesize drawingBlock = _drawingBlock;
 
-#pragma mark Initialization methods
+#pragma mark -
+#pragma mark Object lifecycle
+#pragma mark -
+
 -(id) initWithCoder:(NSCoder *)aDecoder {
 	if (! (self = [super initWithCoder:aDecoder]))
 		return nil;
+    
+    self.clipsToBounds = NO;
 	
+    self.shadowView = [[OPGradientView alloc] initWithFrame:CGRectMake(0.0f, self.height, self.width, self.shadowHeight)];
+    self.shadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.shadowView.gradientLayer.startPoint = CGPointMake(0.5f, 1.0f);
+    self.shadowView.gradientLayer.endPoint = CGPointMake(0.5f, 0.0);
+    [self addSubview:self.shadowView];
+    
     // apply stylings
     [[[self class] styling] applyTo:self];
     
+    // pass the background color to the tint color so that default bar button items inherit some of the styling
     if (self.backgroundColor)
         self.tintColor = self.backgroundColor;
     
+    if (self.shadowHeight == 0.0f)
+        [self setShadowHidden:YES];
+    else
+        [self setShadowHidden:NO];
+    
 	return self;
 }
+
+#pragma mark -
+#pragma mark Drawing methods
 #pragma mark -
 
-
-#pragma mark Drawing methods
 -(void) drawRect:(CGRect)rect {
     BOOL shouldCallSuper = YES;
     CGContextRef c = UIGraphicsGetCurrentContext();
@@ -81,6 +110,35 @@
     if (shouldCallSuper)
         [super drawRect:rect];
 }
+
 #pragma mark -
+#pragma mark Custom getters/setters
+#pragma mark -
+
+-(void) setShadowHeight:(CGFloat)shadowHeight {
+    _shadowHeight = shadowHeight;
+    self.shadowView.height = shadowHeight;
+    if (shadowHeight == 0.0f)
+        [self setShadowHidden:YES];
+}
+
+-(void) setShadowColors:(NSArray *)shadowColors {
+    _shadowColors = shadowColors;
+    self.shadowView.gradientLayer.colors = shadowColors;
+}
+
+-(void) setShadowHidden:(BOOL)hidden {
+    [self setShadowHidden:hidden animated:NO];
+}
+
+-(void) setShadowHidden:(BOOL)hidden animated:(BOOL)animated {
+    _shadowHeight = hidden;
+    
+    [UIView animateWithDuration:(0.3f * animated) animations:^{
+        self.shadowView.alpha = hidden ? 0.0f : 1.0f;
+    } completion:^(BOOL finished) {
+        self.shadowView.hidden = hidden;
+    }];
+}
 
 @end

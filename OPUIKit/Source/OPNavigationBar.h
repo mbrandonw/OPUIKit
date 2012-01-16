@@ -11,4 +11,7 @@
 
 @interface OPNavigationBar : UINavigationBar <OPStyleProtocol>
 
+@property (nonatomic, assign) BOOL shadowHidden;
+-(void) setShadowHidden:(BOOL)hidden animated:(BOOL)animated;
+
 @end
