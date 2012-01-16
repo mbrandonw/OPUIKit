@@ -1,5 +1,5 @@
 //
-//  OPBlockDefinitions.h
+//  OPUIKitBlockDefinitions.h
 //  OPUIKit
 //
 //  Created by Brandon Williams on 1/16/12.

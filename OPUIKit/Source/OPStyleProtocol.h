@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OPBlockDefinitions.h"
+#import "OPUIKitBlockDefinitions.h"
 
 @protocol OPStyleProtocol <NSObject>
 @optional

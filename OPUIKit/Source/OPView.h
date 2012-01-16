@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OPBlockDefinitions.h"
+#import "OPUIKitBlockDefinitions.h"
 #import "OPStyleProtocol.h"
 
 @interface OPView : UIView <OPStyleProtocol>
