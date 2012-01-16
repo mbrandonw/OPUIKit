@@ -70,7 +70,7 @@
 
 -(void) drawRect:(CGRect)rect {
     
-    // background images take precendence over background colors
+    // draw background images & colors
     if (self.backgroundImage)
     {
         // figure out if we need to draw a stretchable image or a pattern image
@@ -79,14 +79,17 @@
         else
             [self.backgroundImage drawAsPatternInRect:rect];
     }
-    else if (self.backgroundColor)
+    if (self.backgroundColor)
     {
-        CGContextRef c = UIGraphicsGetCurrentContext();
-        
         [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount])]
          fillRectLinearly:rect];
         
-        // gloss = transparent white overlay on upper half of background
+    }
+    
+    // apply gloss over everything
+    if (self.glossAmount)
+    {
+        CGContextRef c = UIGraphicsGetCurrentContext();
         [$WAf(1.0f,self.glossAmount) set];
         CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f + self.glossOffset)));
     }
