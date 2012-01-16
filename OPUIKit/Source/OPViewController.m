@@ -37,11 +37,6 @@
     // apply stylings
     [[self styling] applyTo:self];
 	
-    if (self.defaultTitleImage)
-        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-    if (self.defaultTitle)
-        [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
-    
 	return self;
 }
 
@@ -49,8 +44,8 @@
 #pragma mark View lifecycle
 #pragma mark -
 
--(void) loadView {
-    [super loadView];
+-(void) viewDidLoad {
+    [super viewDidLoad];
     
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
@@ -59,6 +54,12 @@
         self.view.backgroundColor = self.backgroundColor;
     else
         self.view.backgroundColor = [UIColor whiteColor];
+    
+    // set the default navigation item title view
+    if (self.defaultTitleImage)
+        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
+    if (! self.title)
+        [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
 }
 
 @end
