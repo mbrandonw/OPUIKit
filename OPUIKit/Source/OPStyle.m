@@ -70,10 +70,11 @@
 @synthesize shadowColors = _shadowColors;
 @synthesize titleFont = _titleFont;
 @synthesize subtitleFont = _subtitleFont;
-@synthesize titleTextColor = _titleTextColor;
+@synthesize titleColor = _titleColor;
 @synthesize titleShadowColor = _titleShadowColor;
 @synthesize titleShadowOffset = _titleShadowOffset;
 @synthesize defaultTitle = _defaultTitle;
+@synthesize defaultSubtitle = _defaultSubtitle;
 @synthesize defaultTitleImage = _defaultTitleImage;
 
 -(id) initForClass:(Class)styledClass {
