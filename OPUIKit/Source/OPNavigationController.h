@@ -7,22 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPStyle.h"
 
-@interface OPNavigationController : UINavigationController <UINavigationControllerDelegate>
-
-@property (nonatomic, assign) BOOL showNavigationBarShadow;
-@property (nonatomic, assign) CGFloat shadowHeight;
-@property (nonatomic, strong) NSArray *shadowAlphaStops;
-@property (nonatomic, assign) BOOL allowSwipeToPopController;
+@interface OPNavigationController : UINavigationController <UINavigationControllerDelegate, OPStyleProtocol>
 
 // initialization methods (don't use any of the alloc+init methods)
 +(id) controller;
 +(id) controllerWithRootViewController:(UIViewController*)rootViewController;
-
-// global customization methods
-+(void) setDefaultShowNavigationBarShadow:(BOOL)show;
-+(void) setDefaultShadowHeight:(CGFloat)height;
-+(void) setDefaultShadowAlphaStops:(NSArray*)stops;
-+(void) setDefaultSwipeToPopController:(BOOL)swipeToPop;
 
 @end

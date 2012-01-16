@@ -14,45 +14,21 @@
 #import "OPBarButtonItem.h"
 #import "OPMacros.h"
 
-#if !defined(OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
-#define OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS   NO
-#endif
-
-#pragma mark Styling vars
-static BOOL OPNavigationControllerDefaultShowNavigationBarShadow;
-static CGFloat OPNavigationControllerDefaultShadowHeight;
-static NSArray *OPNavigationControllerDefaultShadowAlphaStops;
-static BOOL OPNavigationControllerDefaultSwipeToPopController;
-#pragma mark -
-
 #pragma mark Private methods
 @interface OPNavigationController (/**/)
-@property (nonatomic, strong) OPGradientView *navigationBarShadowView;
 @property (nonatomic, strong) UISwipeGestureRecognizer *popRecognizer;
--(void) setupNavigationBarShadow;
+-(void) configurePopRecognizer; // will force a loading of the view
 @end
 #pragma mark -
 
 @implementation OPNavigationController
 
-@synthesize showNavigationBarShadow;
-@synthesize shadowHeight;
-@synthesize shadowAlphaStops;
-@synthesize allowSwipeToPopController;
-@synthesize navigationBarShadowView;
-@synthesize popRecognizer;
+@synthesize allowSwipeToPop = _allowSwipeToPop;
+@synthesize popRecognizer = _popRecognizer;
 
-#pragma mark Initialization methods
-+(void) initialize {
-    if (self == [OPNavigationController class])
-    {
-        OPNavigationControllerDefaultShadowHeight = 4.0f;
-        OPNavigationControllerDefaultShadowAlphaStops = [NSArray arrayWithObjects:
-                                                         [NSNumber numberWithFloat:0.4f],
-                                                         [NSNumber numberWithFloat:0.1f],
-                                                         [NSNumber numberWithFloat:0.0f], nil];
-    }
-}
+#pragma mark -
+#pragma mark Object lifecycle
+#pragma mark -
 
 +(id) controller {
     return [self controllerWithRootViewController:nil];
@@ -66,9 +42,8 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     while (controller == nil && controllerClass != nil)
     {
         if ([[NSFileManager defaultManager] fileExistsAtPath:[[NSBundle mainBundle] pathForResource:NSStringFromClass(controllerClass) ofType:@"nib"]])
-        {
             controller = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(controllerClass) owner:self options:nil] lastObject];
-        }
+        
         controllerClass = [controllerClass superclass];
     }
     
@@ -78,47 +53,15 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     
 	return controller;
 }
-#pragma mark -
 
-
-#pragma mark Styling methods
-+(void) setDefaultShowNavigationBarShadow:(BOOL)show {
-    OPNavigationControllerDefaultShowNavigationBarShadow = show;
-}
-
-+(void) setDefaultSwipeToPopController:(BOOL)swipeToPop {
-    OPNavigationControllerDefaultSwipeToPopController = swipeToPop;
-}
-
-+(void) setDefaultShadowHeight:(CGFloat)height {
-    
-    OPNavigationControllerDefaultShadowHeight = height;
-}
-
-+(void) setDefaultShadowAlphaStops:(NSArray*)stops {
-    
-    OPNavigationControllerDefaultShadowAlphaStops = [stops copy];
-}
-#pragma mark -
-
-
-#pragma mark Object lifecycle
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
-    
-    self.showNavigationBarShadow     = OPNavigationControllerDefaultShowNavigationBarShadow;
-    self.shadowHeight                = OPNavigationControllerDefaultShadowHeight;
-    self.shadowAlphaStops            = OPNavigationControllerDefaultShadowAlphaStops;
-    self.allowSwipeToPopController   = OPNavigationControllerDefaultSwipeToPopController;
+    // apply stylings
+    [[[self class] styling] applyTo:self];
     
     return self;
-}
-
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,22 +71,14 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     
     // Release any cached data, images, etc. that aren't in use.
 }
+
+#pragma mark -
+#pragma mark View lifecycle
 #pragma mark -
 
-
-#pragma mark View lifecycle
 -(void) viewDidLoad {
     [super viewDidLoad];
-    [self setupNavigationBarShadow];
-}
-
--(void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (OP_NAVIGATION_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
-        [self simulateMemoryWarning];
-    
-    DLog(@"%@", OPCoalesce(self.title, NSStringFromClass([self class])));
+    [self configurePopRecognizer];
 }
 
 - (void)viewDidUnload {
@@ -152,24 +87,24 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return UI_RESTRICTIVE_INTERFACE_ORIENTATIONS(interfaceOrientation);
-}
+#pragma mark -
+#pragma mark Custom getters/setters
 #pragma mark -
 
-
-#pragma mark Custom getters/setters
--(void) setShowNavigationBarShadow:(BOOL)s {
-    showNavigationBarShadow = s;
-    [self setupNavigationBarShadow];
+-(void) setAllowSwipeToPop:(NSInteger)a {
+    _allowSwipeToPop = a;
+    
+    // handle gesture recognizers only if our view is loaded (to prevent accidental loading of the view)
+    if ([self isViewLoaded])
+        [self configurePopRecognizer];
 }
 
--(void) setAllowSwipeToPopController:(BOOL)a {
-    allowSwipeToPopController = a;
+-(void) configurePopRecognizer {
     
-    if (allowSwipeToPopController)
+    if (self.allowSwipeToPop)
     {
-        [self.view addGestureRecognizer:self.popRecognizer];
+        if (! [self.view.gestureRecognizers containsObject:self.popRecognizer])
+            [self.view addGestureRecognizer:self.popRecognizer];
     }
     else
     {
@@ -179,56 +114,25 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
 }
 
 -(UISwipeGestureRecognizer*) popRecognizer {
-    if (! popRecognizer)
+    if (! _popRecognizer && self.allowSwipeToPop)
     {
         self.popRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiped:)];
-        popRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _popRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _popRecognizer.numberOfTouchesRequired = 1;
     }
-    return popRecognizer;
+    return _popRecognizer;
 }
 
 -(void) swiped:(UISwipeGestureRecognizer*)sender {
     
-    if (sender.state == UIGestureRecognizerStateBegan)
+    if (sender.state == UIGestureRecognizerStateEnded)
         [self popViewControllerAnimated:YES];
 }
+
 #pragma mark -
-
-
-#pragma mark Private methods
--(void) setupNavigationBarShadow {
-    
-    [self.navigationBarShadowView removeFromSuperview];
-    self.navigationBarShadowView = nil;
-    
-    if (self.showNavigationBarShadow)
-    {
-        self.navigationBarShadowView = [[OPGradientView alloc] initWithFrame:CGRectMake(0.0f, self.navigationBar.bottom, self.navigationBar.width, self.shadowHeight)];
-        self.navigationBarShadowView.opaque = NO;
-        self.navigationBarShadowView.backgroundColor = [UIColor clearColor];
-        self.navigationBarShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        
-        // set up the shadow gradient from the stops
-        NSMutableArray *colors = [NSMutableArray arrayWithCapacity:[self.shadowAlphaStops count]];
-        for (NSNumber *stop in self.shadowAlphaStops)
-            [colors addObject:(id)[UIColor colorWithWhite:0.0f alpha:[stop floatValue]].CGColor];
-        self.navigationBarShadowView.gradientLayer.colors = colors;
-        
-        if ([self isViewLoaded])
-            [self.view addSubview:self.navigationBarShadowView];
-    }
-}
-
--(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    self.navigationBarShadowView.top = self.navigationBar.bottom;
-}
-
--(void) statusBarFrameWillChange:(NSNotification*)notification {
-}
-#pragma mark -
-
-
 #pragma mark UINavigationControllerDelegate methods
+#pragma mark -
+
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
     if([navigationController.viewControllers count] > 1 && 
@@ -255,6 +159,5 @@ static BOOL OPNavigationControllerDefaultSwipeToPopController;
 
 -(void) navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
 }
-#pragma mark -
 
 @end
