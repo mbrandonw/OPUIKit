@@ -19,6 +19,7 @@
 @property (nonatomic, readwrite, strong) NSArray *viewControllers;
 @property (nonatomic, readwrite, strong) UIViewController *selectedViewController;
 @property (nonatomic, readwrite, assign) NSUInteger selectedIndex;
+@property (nonatomic, strong) UIView *containerView;
 @end
 
 @implementation OPTabBarController
@@ -34,6 +35,8 @@
 @synthesize selectedViewController = _selectedViewController;
 @synthesize selectedIndex = _selectedIndex;
 
+@synthesize containerView;
+
 #pragma mark -
 #pragma mark Object Lifecycle
 #pragma mark -
@@ -45,11 +48,6 @@
     // default ivars
     self.tabBarPortraitHeight = 49.0f;
     self.tabBarLandscapeHeight = 40.0f;
-    
-    // init the tab bar
-    self.tabBar = [[OPTabBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.width, 0.0f)];
-    self.tabBar.delegate = self;
-    self.tabBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
     return self;
 }
@@ -67,7 +65,15 @@
 
 - (void)loadView {
     [super loadView];
+#ifdef DEBUG
     self.view.backgroundColor = [UIColor redColor];
+#else
+    self.view.backgroundColor = [UIColor blackColor];
+#endif
+    
+    // configure the container view
+    self.containerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.containerView];
     
     // configure the tab bar
     self.tabBar.frame = CGRectMake(0.0f, 0.0f, self.view.width, UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.tabBarPortraitHeight : self.tabBarLandscapeHeight);
@@ -84,6 +90,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.containerView = nil;
+    self.tabBar = nil;
 }
 
 #pragma mark -
@@ -132,7 +141,7 @@
     [self.tabBar setNeedsDisplayAndLayout];
     
     // make the selected view controller fill the entire containing view so that it autoresizes to remain full view
-    self.selectedViewController.view.height += height - heightDelta;
+    self.selectedViewController.view.height += (height - heightDelta) * (!self.tabBar.hidden);
     
     // forward rotation events to the selected view controller
     [self.selectedViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -141,7 +150,7 @@
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     
     // adjust the selected view controller's height to stop at the bottom tab bar
-    self.selectedViewController.view.height -= self.tabBar.height;
+    self.selectedViewController.view.height -= self.tabBar.height * (!self.tabBar.hidden);
     
     // forward rotation events to the selected view controller
     [self.selectedViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
@@ -164,11 +173,13 @@
 #pragma mark -
 
 -(OPTabBar*) tabBar {
-    if (! _tabBar && ! [self isViewLoaded]) {
-        DLog(@"--------------------------------------------------------");
-        DLog(@"OPTabBarController Error:");
-        DLog(@"Cannot configure `tabBar` until controller is presented.");
-        DLog(@"--------------------------------------------------------");
+    
+    // lazily load the tab bar
+    if (! _tabBar)
+    {
+        self.tabBar = [[OPTabBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.width, 0.0f)];
+        self.tabBar.delegate = self;
+        self.tabBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     return _tabBar;
 }
