@@ -7,13 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OPStyle.h"
 
-@interface OPNavigationBar : UINavigationBar
-
-@property (nonatomic, strong) UIColor *barColor;
-
-// styling methods
-+(void) setDefaultColor:(UIColor*)color;
-+(void) setDefaultTranslucent:(BOOL)translucent;
+@interface OPNavigationBar : UINavigationBar <OPStyleProtocol>
 
 @end

@@ -7,35 +7,32 @@
 //
 
 #import "OPNavigationBar.h"
-
-#pragma mark Styling vars
-static UIColor *OPNavigationBarDefaultColor;
-static BOOL OPNavigationBarDefaultTranslucent;
-#pragma mark -
+#import "UIImage+Opetopic.h"
+#import "UIColor+Opetopic.h"
+#import "OPGradient.h"
 
 @implementation OPNavigationBar
 
-@synthesize barColor;
-
-#pragma mark Styling methods
-+(void) setDefaultColor:(UIColor*)color {
-	OPNavigationBarDefaultColor = color;
-}
-
-+(void) setDefaultTranslucent:(BOOL)translucent {
-	OPNavigationBarDefaultTranslucent = translucent;
-}
-#pragma mark -
-
+// Supported OPStyle storage
+@synthesize backgroundColor = _backgroundColor;
+@synthesize backgroundImage = _backgroundImage;
+@synthesize gradientAmount = _gradientAmount;
+@synthesize glossAmount = _glossAmount;
+@synthesize glossOffset = _glossOffset;
+@synthesize translucent = _translucent;
+@synthesize drawingBlock = _drawingBlock;
 
 #pragma mark Initialization methods
 -(id) initWithCoder:(NSCoder *)aDecoder {
 	if (! (self = [super initWithCoder:aDecoder]))
 		return nil;
 	
-	barColor = OPNavigationBarDefaultColor;
-	self.translucent = OPNavigationBarDefaultTranslucent;
-	
+    // apply stylings
+    [[[self class] styling] applyTo:self];
+    
+    if (self.backgroundColor)
+        self.tintColor = self.backgroundColor;
+    
 	return self;
 }
 #pragma mark -
@@ -43,32 +40,47 @@ static BOOL OPNavigationBarDefaultTranslucent;
 
 #pragma mark Drawing methods
 -(void) drawRect:(CGRect)rect {
+    BOOL shouldCallSuper = YES;
+    CGContextRef c = UIGraphicsGetCurrentContext();
 	
-	if (self.barColor)
-	{
-		CGContextRef c = UIGraphicsGetCurrentContext();
-		[self.barColor set];
-		CGContextFillRect(c, rect);
-	}
-	else
-		[super drawRect:rect];
+    // draw background images & colors
+    if (self.backgroundImage)
+    {
+        shouldCallSuper = NO;
+        
+        // figure out if we need to draw a stretchable image or a pattern image
+        if ([self.backgroundImage isStretchableImage])
+            [self.backgroundImage drawInRect:rect];
+        else
+            [self.backgroundImage drawAsPatternInRect:rect];
+    }
+    if (self.backgroundColor)
+    {
+        shouldCallSuper = NO;
+        
+        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:
+                                         [self.backgroundColor lighten:self.gradientAmount], 
+                                         self.backgroundColor, 
+                                         [self.backgroundColor darken:self.gradientAmount],
+                                         nil]]
+         fillRectLinearly:rect];
+    }
+    
+    // apply gloss over everything
+    if (self.glossAmount)
+    {
+        shouldCallSuper = NO;
+        [$WAf(1.0f,self.glossAmount) set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f + self.glossOffset)));
+    }
+    
+    // apply additional block based drawing
+    if (self.drawingBlock)
+        self.drawingBlock(self, rect, c);
+    
+    if (shouldCallSuper)
+        [super drawRect:rect];
 }
 #pragma mark -
-
-
-#pragma mark Custom getters/setters
--(void) setBarColor:(UIColor *)c {
-	barColor = c;
-	[self setNeedsDisplay];
-}
-#pragma mark -
-
-
-#pragma mark Overridden methods
--(void) setTintColor:(UIColor *)c {
-	[super setTintColor:[self tintColor]];
-}
-#pragma mark -
-
 
 @end
