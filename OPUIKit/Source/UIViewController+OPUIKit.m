@@ -25,6 +25,7 @@
     
     self.title = title;
     
+    // get defaults from OPStyle
     UIColor *titleColor = OPCoalesce([self respondsToSelector:@selector(titleColor)] ? [(id<OPStyleProtocol>)self titleColor] : nil, [UIColor whiteColor]);
     UIFont *subtitleFont = OPCoalesce([self respondsToSelector:@selector(subtitleFont)] ? [(id<OPStyleProtocol>)self subtitleFont] : nil, [UIFont boldSystemFontOfSize:13.0f]);
     UIFont *titleFont = OPCoalesce([self respondsToSelector:@selector(titleFont)] ? [(id<OPStyleProtocol>)self titleFont] : nil, [UIFont boldSystemFontOfSize:18.0f]);
@@ -48,9 +49,9 @@
 	titleLabel.opaque = NO;
 	[titleLabel sizeToFit];
 	
-	UILabel *subtitleLabel = nil;
-	if (subtitle != nil) {
-		subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	if (subtitle)
+    {
 		subtitleLabel.text = subtitle;
 		subtitleLabel.textColor = titleColor;
 		subtitleLabel.shadowColor = titleShadowColor;
@@ -68,7 +69,8 @@
 	titleLabel.frame = CGRectMake(0.0, (subtitle ? 3.0 : 11.0), maxWidth, 20.0);
 	[wrapper addSubview:titleLabel];
 	
-	if (subtitleLabel) {
+	if (subtitle)
+    {
 		subtitleLabel.frame = CGRectMake(0.0, 21.0, maxWidth, 16.0);
 		[wrapper addSubview:subtitleLabel];
 	}
