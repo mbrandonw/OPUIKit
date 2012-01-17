@@ -45,6 +45,9 @@
     self.titleLabelInsets = UIEdgeInsetsMake(0.0f, 0.0f, 1.0f, 0.0f);
     [self addSubview:self.titleLabel];
     
+    // apply stylings
+    [[[self class] styling] applyTo:self];
+    
     return self;
 }
 

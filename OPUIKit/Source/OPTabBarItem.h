@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPStyle.h"
 #import "OPControl.h"
 
-@interface OPTabBarItem : OPControl
+@interface OPTabBarItem : OPControl <OPStyleProtocol>
 
 @property (nonatomic, strong, readonly) UIImageView *iconView;
 @property (nonatomic, assign) UIEdgeInsets iconViewInsets;
