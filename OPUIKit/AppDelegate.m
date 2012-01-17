@@ -34,7 +34,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    UIColor *baseColor = [UIColor grayColor];
+    UIColor *baseColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
     
     // global stylings
     [[UIViewController styling] setBackgroundColor:[UIColor veryLightGrayColor]];
@@ -54,14 +54,17 @@
                                                 nil]];
     
     [[OPNavigationBar styling] setDrawingBlock:^(UIView *v, CGRect r, CGContextRef c) {
+        
+        // add a little highlight at the top, and a darkish border line at bottom
         [[UIColor colorWithWhite:1.0f alpha:0.5f] set];
         CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 1.0f));
         [[UIColor colorWithWhite:0.0f alpha:0.5f] set];
         CGContextFillRect(c, CGRectMake(0.0f, r.size.height-1.0f, r.size.width, 1.0f));
     }];
     
-    
-    [[OPView styling] setDrawingBlocks:[NSArray arrayWithObject:[^(UIView *v, CGRect r, CGContextRef c) {
+    [[OPTabBar styling] setDrawingBlocks:[NSArray arrayWithObject:[^(UIView *v, CGRect r, CGContextRef c) {
+        
+        // add a nice little border at the top of the tab bar
         [[baseColor darken:0.5f] set];
         CGContextFillRect(c, CGRectMake(0.0f, 0.0f, r.size.width, 2.0f));
         [[baseColor lighten:0.3f] set];
