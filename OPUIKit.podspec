@@ -4,15 +4,15 @@ Pod::Spec.new do |s|
   s.license  = 'MIT'
   
   s.summary  = 'UIKit additions.'
-  s.homepage = 'https://brandonwilliams.beanstalkapp.com/opuikit'
+  s.homepage = 'https://github.com/mbrandonw/OPUIKit'
   s.author   = { 'Brandon Williams' => 'brandon@opetopic.com' }
-  s.source   = { :git => 'git@brandonwilliams.beanstalkapp.com:/opuikit.git' }
+  s.source   = { :git => 'git@github.com:mbrandonw/OPUIKit.git' }
   
-  s.source_files = 'Source/**/*.{h,m}'
+  s.source_files = 'OPUIKit/Source/**/*.{h,m}'
   
   s.frameworks = 'UIKit'
   
-  s.dependency 'OPExtensionKit', :git => 'git@brandonwilliams.beanstalkapp.com:/opextensionkit.git'
-  s.dependency 'OPQuartzKit', :git => 'git@brandonwilliams.beanstalkapp.com:/opquartzkit.git'
+  s.dependency 'OPExtensionKit', :git => 'git@github.com:mbrandonw/OPExtensionKit.git'
+  s.dependency 'OPQuartzKit', :git => 'git@github.com:mbrandonw/OPQuartzKit.git'
   
 end
