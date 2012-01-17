@@ -12,6 +12,6 @@
 
 @interface OPView : UIView <OPStyleProtocol>
 
-@property (nonatomic, strong) NSMutableArray *drawingBlocks;
+@property (nonatomic, copy) NSMutableArray *drawingBlocks;
 
 @end
