@@ -23,6 +23,10 @@ There is a category on `NSObject` that adds an instance method `-styling` and cl
 	[[OPNavigationBar styling] setShadowHeight:4.0f];
 
 Now all new instances of `OPNavigationBar` will be styled accordingly. For a list of styles that can be applied, see `OPStyleProtocol.h`.
+
+##A note about UIColor objects and iOS 4.x
+
+There seems to be a change in the way iOS handles UIColor objects of varying color spaces from 4.x to 5.x. If you need to support 4.x devices we suggest always using the RGB color space, which means you shouldn't use helpers like `[UIColor grayColor]`, and instead use `[UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f]`.
     
 ##Installation
 
