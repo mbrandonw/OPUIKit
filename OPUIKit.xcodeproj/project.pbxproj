@@ -257,7 +257,7 @@
 		A77512D714C49AD90020AF09 /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTUnregisteredClass.m; sourceTree = "<group>"; };
 		A77512E414C4BE560020AF09 /* UIViewController+OPUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+OPUIKit.h"; sourceTree = "<group>"; };
 		A77512E514C4BE570020AF09 /* UIViewController+OPUIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+OPUIKit.m"; sourceTree = "<group>"; };
-		A77512E814C4E04D0020AF09 /* OPUIKitBlockDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; path = OPUIKitBlockDefinitions.h; sourceTree = "<group>"; };
+		A77512E814C4E04D0020AF09 /* OPUIKitBlockDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPUIKitBlockDefinitions.h; sourceTree = "<group>"; };
 		A77512EC14C4E9870020AF09 /* OPStyleProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPStyleProtocol.h; sourceTree = "<group>"; };
 		A79606B914C33230001A9B06 /* OPControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPControl.h; sourceTree = "<group>"; };
 		A79606BA14C33230001A9B06 /* OPControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPControl.m; sourceTree = "<group>"; };
@@ -409,29 +409,10 @@
 			isa = PBXGroup;
 			children = (
 				A77512E814C4E04D0020AF09 /* OPUIKitBlockDefinitions.h */,
-				A77512EE14C4EE2D0020AF09 /* OP Controllers */,
-				A77512ED14C4EE1E0020AF09 /* OPStyle */,
 				A77512CB14C49AD90020AF09 /* MAObjCRuntime */,
-				A706D73D14B9253400B469BB /* OPBarButtonItem.h */,
-				A706D73E14B9253400B469BB /* OPBarButtonItem.m */,
-				A706D73F14B9253400B469BB /* OPGradientView.h */,
-				A706D74014B9253400B469BB /* OPGradientView.m */,
-				A706D74114B9253400B469BB /* OPNavigationBar.h */,
-				A706D74214B9253400B469BB /* OPNavigationBar.m */,
-				A706D74B14B9253400B469BB /* OPTextView.h */,
-				A706D74C14B9253400B469BB /* OPTextView.m */,
-				A706D74D14B9253400B469BB /* OPView.h */,
-				A706D74E14B9253400B469BB /* OPView.m */,
-				A79606B914C33230001A9B06 /* OPControl.h */,
-				A79606BA14C33230001A9B06 /* OPControl.m */,
-				A7A9C1C514C22AF600C39504 /* OPButton.h */,
-				A7A9C1C614C22AF700C39504 /* OPButton.m */,
-				A7A9C16814C1024900C39504 /* OPTabBar.h */,
-				A7A9C16914C1024900C39504 /* OPTabBar.m */,
-				A7A9C16D14C1025800C39504 /* OPTabBarItem.h */,
-				A7A9C16E14C1025800C39504 /* OPTabBarItem.m */,
-				A7A9C17114C1026600C39504 /* OPTabBarController.h */,
-				A7A9C17214C1026600C39504 /* OPTabBarController.m */,
+				A77512ED14C4EE1E0020AF09 /* OPStyle */,
+				A77512EE14C4EE2D0020AF09 /* OP Controllers */,
+				A7991B8F14C4F560005032D3 /* OP Views */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -576,18 +557,85 @@
 			children = (
 				A77512E414C4BE560020AF09 /* UIViewController+OPUIKit.h */,
 				A77512E514C4BE570020AF09 /* UIViewController+OPUIKit.m */,
+				A7991B8E14C4F54E005032D3 /* OPTabBarController */,
+				A7991B8A14C4F51E005032D3 /* OPNavigationController */,
+				A7991B8B14C4F522005032D3 /* OPSidebarNavigationController */,
+				A7991B8C14C4F523005032D3 /* OPTableViewController */,
+				A7991B8D14C4F525005032D3 /* OPViewController */,
+			);
+			name = "OP Controllers";
+			sourceTree = "<group>";
+		};
+		A7991B8A14C4F51E005032D3 /* OPNavigationController */ = {
+			isa = PBXGroup;
+			children = (
 				A706D74314B9253400B469BB /* OPNavigationController.h */,
 				A706D74414B9253400B469BB /* OPNavigationController.m */,
 				A706D74514B9253400B469BB /* OPNavigationController.xib */,
+			);
+			name = OPNavigationController;
+			sourceTree = "<group>";
+		};
+		A7991B8B14C4F522005032D3 /* OPSidebarNavigationController */ = {
+			isa = PBXGroup;
+			children = (
 				A706D74614B9253400B469BB /* OPSidebarNavigationController.h */,
 				A706D74714B9253400B469BB /* OPSidebarNavigationController.m */,
 				A706D74814B9253400B469BB /* OPSidebarNavigationController.xib */,
+			);
+			name = OPSidebarNavigationController;
+			sourceTree = "<group>";
+		};
+		A7991B8C14C4F523005032D3 /* OPTableViewController */ = {
+			isa = PBXGroup;
+			children = (
 				A706D74914B9253400B469BB /* OPTableViewController.h */,
 				A706D74A14B9253400B469BB /* OPTableViewController.m */,
+			);
+			name = OPTableViewController;
+			sourceTree = "<group>";
+		};
+		A7991B8D14C4F525005032D3 /* OPViewController */ = {
+			isa = PBXGroup;
+			children = (
 				A706D74F14B9253400B469BB /* OPViewController.h */,
 				A706D75014B9253400B469BB /* OPViewController.m */,
 			);
-			name = "OP Controllers";
+			name = OPViewController;
+			sourceTree = "<group>";
+		};
+		A7991B8E14C4F54E005032D3 /* OPTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				A7A9C16814C1024900C39504 /* OPTabBar.h */,
+				A7A9C16914C1024900C39504 /* OPTabBar.m */,
+				A7A9C16D14C1025800C39504 /* OPTabBarItem.h */,
+				A7A9C16E14C1025800C39504 /* OPTabBarItem.m */,
+				A7A9C17114C1026600C39504 /* OPTabBarController.h */,
+				A7A9C17214C1026600C39504 /* OPTabBarController.m */,
+			);
+			name = OPTabBarController;
+			sourceTree = "<group>";
+		};
+		A7991B8F14C4F560005032D3 /* OP Views */ = {
+			isa = PBXGroup;
+			children = (
+				A706D73D14B9253400B469BB /* OPBarButtonItem.h */,
+				A706D73E14B9253400B469BB /* OPBarButtonItem.m */,
+				A706D73F14B9253400B469BB /* OPGradientView.h */,
+				A706D74014B9253400B469BB /* OPGradientView.m */,
+				A706D74114B9253400B469BB /* OPNavigationBar.h */,
+				A706D74214B9253400B469BB /* OPNavigationBar.m */,
+				A706D74B14B9253400B469BB /* OPTextView.h */,
+				A706D74C14B9253400B469BB /* OPTextView.m */,
+				A706D74D14B9253400B469BB /* OPView.h */,
+				A706D74E14B9253400B469BB /* OPView.m */,
+				A79606B914C33230001A9B06 /* OPControl.h */,
+				A79606BA14C33230001A9B06 /* OPControl.m */,
+				A7A9C1C514C22AF600C39504 /* OPButton.h */,
+				A7A9C1C614C22AF700C39504 /* OPButton.m */,
+			);
+			name = "OP Views";
 			sourceTree = "<group>";
 		};
 		A7A9C23F14C24FED00C39504 /* OPQuartzKit */ = {
