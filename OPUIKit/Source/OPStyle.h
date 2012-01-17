@@ -11,6 +11,8 @@
 
 @interface OPStyle : NSObject <OPStyleProtocol>
 
+@property (nonatomic, strong, readonly) NSMutableSet *touchedMethods;
+
 /**
  Apply this style object's properties to a target.
  */

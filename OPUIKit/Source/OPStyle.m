@@ -11,16 +11,6 @@
 #import "RTMethod.h"
 
 #pragma mark -
-#pragma mark Private OPStyle interface
-#pragma mark -
-
-@interface OPStyle (/**/)
-@property (nonatomic, assign) Class styledClass;
-@property (nonatomic, strong) NSMutableSet *touchedMethods;
--(id) initForClass:(Class)styledClass;
-@end
-
-#pragma mark -
 #pragma mark OPStyleProxy
 #pragma mark -
 
@@ -55,6 +45,18 @@
 @end
 
 #pragma mark -
+#pragma mark Private OPStyle interface
+#pragma mark -
+
+@interface OPStyle (/**/)
+@property (nonatomic, assign) Class styledClass;
+@property (nonatomic, strong, readwrite) NSMutableSet *touchedMethods;
+@property (nonatomic, strong) NSMutableDictionary *keyValuePairs;
+@property (nonatomic, strong) NSMutableDictionary *keyPathValuePairs;
+-(id) initForClass:(Class)styledClass;
+@end
+
+#pragma mark -
 #pragma mark OPStyle implementation
 #pragma mark -
 
@@ -62,6 +64,8 @@
 
 @synthesize styledClass = _styledClass;
 @synthesize touchedMethods = _touchedMethods;
+@synthesize keyValuePairs = _keyValuePairs;
+@synthesize keyPathValuePairs = _keyPathValuePairs;
 
 @synthesize backgroundImage = _backgroundImage;
 @synthesize backgroundColor = _backgroundColor;
@@ -94,6 +98,8 @@
     if (! (self = [super init]))
         return nil;
     _touchedMethods = [NSMutableSet new];
+    _keyValuePairs = [NSMutableDictionary new];
+    _keyPathValuePairs = [NSMutableDictionary new];
     return self;
 }
 
@@ -125,6 +131,41 @@
                 [target rt_returnValue:NULL sendSelector:method.selector, RTARG(value)];
         }
     }
+    
+    // apply stylings that were stored in our key value dictionary
+    [self.keyValuePairs enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        if ([target respondsToSelector:NSSelectorFromString(key)])
+        {
+            [target setValue:value forKey:key];
+        }
+    }];
+    
+    // apply stylings that were stored in our key path value dictionary
+    [self.keyPathValuePairs enumerateKeysAndObjectsUsingBlock:^(id keyPath, id value, BOOL *stop) {
+        
+        // iterate through the keypath to find the last object
+        NSArray *keyPathComponents = [keyPath componentsSeparatedByString:@"."];
+        id obj = target;
+        for (NSString *key in keyPathComponents)
+        {
+            if ([obj respondsToSelector:NSSelectorFromString(key)])
+            {
+                obj = [obj valueForKey:key];
+                if (key == [keyPathComponents lastObject])
+                    [target setValue:value forKeyPath:keyPath];
+            }
+            else
+                *stop = YES;
+        }
+    }];
+}
+
+-(void) setValue:(id)value forKey:(NSString *)key {
+    [self.keyValuePairs setObject:value forKey:key];
+}
+
+-(void) setValue:(id)value forKeyPath:(NSString *)keyPath {
+    [self.keyPathValuePairs setObject:value forKey:keyPath];
 }
 
 -(NSString*) description {
