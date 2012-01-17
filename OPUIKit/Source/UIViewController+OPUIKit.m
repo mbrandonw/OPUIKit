@@ -26,11 +26,22 @@
     self.title = title;
     
     // get defaults from OPStyle
-    UIColor *titleColor = OPCoalesce([self respondsToSelector:@selector(titleColor)] ? [(id<OPStyleProtocol>)self titleColor] : nil, [UIColor whiteColor]);
-    UIFont *subtitleFont = OPCoalesce([self respondsToSelector:@selector(subtitleFont)] ? [(id<OPStyleProtocol>)self subtitleFont] : nil, [UIFont boldSystemFontOfSize:13.0f]);
-    UIFont *titleFont = OPCoalesce([self respondsToSelector:@selector(titleFont)] ? [(id<OPStyleProtocol>)self titleFont] : nil, [UIFont boldSystemFontOfSize:18.0f]);
-    UIColor *titleShadowColor = OPCoalesce([self respondsToSelector:@selector(titleShadowColor)] ? [(id<OPStyleProtocol>)self titleShadowColor] : nil, [UIColor colorWithWhite:0.0f alpha:0.8f]);
-    CGFloat titleShadowOffset = [self respondsToSelector:@selector(titleShadowOffset)] ? [(id<OPStyleProtocol>)self titleShadowOffset] : -1.0f;
+    
+    UIColor *titleColor = [[[self class] styling] titleColor];
+    if (! titleColor)   titleColor = [UIColor whiteColor];
+    
+    UIFont *titleFont = [[[self class] styling] titleFont];
+    if (! titleFont)    titleFont = [UIFont boldSystemFontOfSize:18.0f];
+    
+    UIFont *subtitleFont = [[[self class] styling] subtitleFont];
+    if (! subtitleFont) subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
+    
+    UIColor *titleShadowColor = [[[self class] styling] titleShadowColor];
+    if (! titleShadowColor) titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+    
+    CGFloat titleShadowOffset = [[[self class] styling] titleShadowOffset];
+    if (titleShadowOffset == 0.0f)  titleShadowOffset = -1.0f;
+    
     
     if (title && subtitle)
         titleFont = [UIFont fontWithName:subtitleFont.fontName size:subtitleFont.pointSize+2.0f];
