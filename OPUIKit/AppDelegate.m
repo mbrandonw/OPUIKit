@@ -53,7 +53,7 @@
                                                 (id)[UIColor colorWithWhite:0.0f alpha:0.3f].CGColor, 
                                                 nil]];
     
-    [[OPNavigationBar styling] setDrawingBlock:^(UIView *v, CGRect r, CGContextRef c) {
+    [[OPNavigationBar styling] setNavigationBarDrawingBlock:^(UIView *v, CGRect r, CGContextRef c) {
         
         // add a little highlight at the top, and a darkish border line at bottom
         [[UIColor colorWithWhite:1.0f alpha:0.5f] set];
