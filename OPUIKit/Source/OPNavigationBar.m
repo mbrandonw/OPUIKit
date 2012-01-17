@@ -31,7 +31,7 @@
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;
 @synthesize translucent = _translucent;
-@synthesize drawingBlock = _drawingBlock;
+@synthesize navigationBarDrawingBlock = _navigationBarDrawingBlock;
 
 #pragma mark -
 #pragma mark Object lifecycle
@@ -104,8 +104,8 @@
     }
     
     // apply additional block based drawing
-    if (self.drawingBlock)
-        self.drawingBlock(self, rect, c);
+    if (self.navigationBarDrawingBlock)
+        self.navigationBarDrawingBlock(self, rect, c);
     
     if (shouldCallSuper)
         [super drawRect:rect];

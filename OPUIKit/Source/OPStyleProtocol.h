@@ -47,12 +47,12 @@
  Styles specific to navigation bars.
  */
 @property (nonatomic, assign) NSInteger translucent;
-@property (nonatomic, copy) UIViewDrawingBlock drawingBlock;
+@property (nonatomic, copy) UIViewDrawingBlock navigationBarDrawingBlock;
 
 /**
  Styles specific to OPView instances.
  */
-@property (nonatomic, strong) NSArray *drawingBlocks;
+@property (nonatomic, copy) NSArray *drawingBlocks;
 
 /**
  Determines if a swipe gesture pops the current view controller from the stack. Of course this is
