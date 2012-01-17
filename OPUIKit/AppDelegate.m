@@ -113,10 +113,10 @@
     }
     
     NSArray *controllers = [NSArray arrayWithObjects:
+                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
                             [OPNavigationController controllerWithRootViewController:[[OPViewController alloc] initWithTitle:@"OPUIKit" subtitle:@"it's da shizz"]],
+                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
                             [OPNavigationController controllerWithRootViewController:[[OPViewController alloc] initWithTitle:@"Wazzzzzup!" subtitle:nil]],
-                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
-                            [OPNavigationController controllerWithRootViewController:[TestViewController new]],
                             nil];
     
     [root setViewControllers:controllers withTabBarItems:items];

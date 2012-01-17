@@ -7,6 +7,7 @@ OPUIKit was built to accomodate the many interface patterns we saw repeatedly wh
 * `OPSideBarNavigationController` : A subclass of `UINavigationController` giving a Facebook-esque navigation interface.
 * `OPView`, `OPControl`, `OPButton` : Subclasses of `UIView`, `UIControl` and `UIButton` respectively giving a block based interface for low level drawing.
 * `OPTabBarController` : A tab bar controller written from scratch, supporting most of the features of `UITabBarController`, but highly customizable. The tab bar and tab bar items are instances of `OPView` and `OPControl`, respectively, hence subject to the awesomeness that is the block based drawing mentioned above.
+* `OPStyle` : a unified interface for skinning UI components. More below.
 
 ##Other cool stuff
 
