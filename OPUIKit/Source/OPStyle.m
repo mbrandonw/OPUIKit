@@ -26,7 +26,7 @@
     _style = style;
     
     // default stylings (defaults must be set this way so that they are recorded in the "touched" set)
-    [(OPStyle*)self setTitleShadowOffset:-1.0f];
+    [(OPStyle*)self setTitleShadowOffset:CGSizeMake(0.0f, -1.0f)];
     
     return self;
 }
@@ -34,7 +34,7 @@
 -(void) forwardInvocation:(NSInvocation *)invocation {
     
     // forward everything to the style, but keep track of which properties were edited
-    [self.style.touchedMethods addObject:NSStringFromSelector(invocation.selector)];
+    [self.style.editedProperties addObject:NSStringFromSelector(invocation.selector)];
     [invocation invokeWithTarget:self.style];
 }
 
@@ -50,7 +50,7 @@
 
 @interface OPStyle (/**/)
 @property (nonatomic, assign) Class styledClass;
-@property (nonatomic, strong, readwrite) NSMutableSet *touchedMethods;
+@property (nonatomic, strong, readwrite) NSMutableSet *editedProperties;
 @property (nonatomic, strong) NSMutableDictionary *keyValuePairs;
 @property (nonatomic, strong) NSMutableDictionary *keyPathValuePairs;
 -(id) initForClass:(Class)styledClass;
@@ -63,7 +63,7 @@
 @implementation OPStyle
 
 @synthesize styledClass = _styledClass;
-@synthesize touchedMethods = _touchedMethods;
+@synthesize editedProperties = _editedProperties;
 @synthesize keyValuePairs = _keyValuePairs;
 @synthesize keyPathValuePairs = _keyPathValuePairs;
 
@@ -97,7 +97,7 @@
 -(id) init {
     if (! (self = [super init]))
         return nil;
-    _touchedMethods = [NSMutableSet new];
+    _editedProperties = [NSMutableSet new];
     _keyValuePairs = [NSMutableDictionary new];
     _keyPathValuePairs = [NSMutableDictionary new];
     return self;
@@ -116,19 +116,15 @@
         // only look at setter methods
         if ([method.selectorName hasPrefix:@"set"] && [target respondsToSelector:method.selector])
         {
-            // find the corresponding getter method
-            NSString *selector = [method.selectorName substringFromIndex:3];
-            selector = [selector stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[selector substringToIndex:1] lowercaseString]];
-            selector = [selector substringToIndex:[selector length]-1];
-            SEL getterSelector = NSSelectorFromString(selector);
+            // find the corresponding getter selector name
+            NSString *getter = [method.selectorName substringFromIndex:3];
+            getter = [getter stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[getter substringToIndex:1] lowercaseString]];
+            getter = [getter substringToIndex:[getter length]-1];
             
-            // get the value stored in this class so that we can send it to the target
-            void *value = NULL;
-            [self rt_returnValue:&value sendSelector:getterSelector];
-            
-            // send the setter method to the target (but only if this property has been touched while styling)
-            if ([self.touchedMethods containsObject:method.selectorName])
-                [target rt_returnValue:NULL sendSelector:method.selector, RTARG(value)];
+            // transfer the value from the style to the target (but only if it has been edited)
+            id value = [self valueForKey:getter];
+            if ([self.editedProperties containsObject:method.selectorName])
+                [target setValue:value forKeyPath:getter];
         }
     }
     
@@ -188,7 +184,7 @@ static NSMutableDictionary *OPStylesByClass;
     if (! OPStylesByClass)
         OPStylesByClass = [NSMutableDictionary new];
     
-    // lazily create the style object for this class
+    // lazily create the style object for this class (well, secretly the style proxy... shhh)
     NSString *classString = NSStringFromClass([self class]);
     if (! [OPStylesByClass objectForKey:classString])
     {

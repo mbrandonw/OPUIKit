@@ -39,8 +39,7 @@
     UIColor *titleShadowColor = [[[self class] styling] titleShadowColor];
     if (! titleShadowColor) titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
     
-    CGFloat titleShadowOffset = [[[self class] styling] titleShadowOffset];
-    if (titleShadowOffset == 0.0f)  titleShadowOffset = -1.0f;
+    CGSize titleShadowOffset = [[[self class] styling] titleShadowOffset];
     
     
     if (title && subtitle)
@@ -52,7 +51,7 @@
 	titleLabel.text = title;
 	titleLabel.textColor = titleColor;
 	titleLabel.shadowColor = titleShadowColor;
-    titleLabel.shadowOffset = CGSizeMake(0.0f, titleShadowOffset);
+    titleLabel.shadowOffset = titleShadowOffset;
 	titleLabel.textAlignment = UITextAlignmentCenter;
 	titleLabel.font = titleFont;
 	titleLabel.numberOfLines = 1;
@@ -66,7 +65,7 @@
 		subtitleLabel.text = subtitle;
 		subtitleLabel.textColor = titleColor;
 		subtitleLabel.shadowColor = titleShadowColor;
-        subtitleLabel.shadowOffset = CGSizeMake(0.0f, titleShadowOffset);
+        subtitleLabel.shadowOffset = titleShadowOffset;
 		subtitleLabel.textAlignment = UITextAlignmentCenter;
 		subtitleLabel.font = subtitleFont;
 		subtitleLabel.numberOfLines = 1;

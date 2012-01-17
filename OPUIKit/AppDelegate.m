@@ -39,7 +39,7 @@
     // global stylings
     [[UIViewController styling] setBackgroundColor:[UIColor veryLightGrayColor]];
     [[UIViewController styling] setDefaultTitle:@"OPUIKit"];
-    [[UIViewController styling] setTitleShadowOffset:-1.0f];
+    [[UIViewController styling] setTitleShadowOffset:CGSizeMake(0.0f, -1.0f)];
     [[UITableViewController styling] setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     [[OPNavigationController styling] setAllowSwipeToPop:1];
     
