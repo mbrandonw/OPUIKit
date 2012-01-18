@@ -10,10 +10,12 @@ Pod::Spec.new do |s|
   
   s.source_files = 'OPUIKit/Source/**/*.{h,m}'
   s.resource     = 'OPUIKit/Source/**/*.{xib}'
+  s.requires_arc = true
   
   s.frameworks = 'UIKit'
   
   s.dependency 'OPExtensionKit', :git => 'git@github.com:mbrandonw/OPExtensionKit.git'
   s.dependency 'OPQuartzKit', :git => 'git@github.com:mbrandonw/OPQuartzKit.git'
+  s.dependency 'MAObjCRuntime', :git => 'https://github.com/mikeash/MAObjCRuntime.git'
   
 end
