@@ -85,6 +85,7 @@
 @synthesize navigationBarDrawingBlock = _navigationBarDrawingBlock;
 @synthesize translucent = _translucent;
 @synthesize drawingBlocks = _drawingBlocks;
+@synthesize drawingBlocksByControlState = _drawingBlocksByControlState;
 @synthesize allowSwipeToPop = _allowSwipeToPop;
 
 -(id) initForClass:(Class)styledClass {
