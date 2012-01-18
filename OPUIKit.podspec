@@ -16,6 +16,11 @@ Pod::Spec.new do |s|
   
   s.dependency 'OPExtensionKit', :git => 'git@github.com:mbrandonw/OPExtensionKit.git'
   s.dependency 'OPQuartzKit', :git => 'git@github.com:mbrandonw/OPQuartzKit.git'
-  s.dependency 'MAObjCRuntime', :git => 'https://github.com/mikeash/MAObjCRuntime.git'
   
+  dependency do |s|
+    s.name = 'MAObjCRuntime'
+    s.platform = :ios
+    s.source = { :git => 'https://github.com/mikeash/MAObjCRuntime.git' }
+    s.source_files = '{MARTNSObject,RTIvar,RTMethod,RTProperty,RTProtocol,RTUnregisteredClass}.{h,m}'
+  end
 end
