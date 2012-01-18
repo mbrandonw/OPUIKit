@@ -36,16 +36,7 @@
 
 +(id) controllerWithRootViewController:(UIViewController*)rootViewController {
 	
-    // traverse the subclasses to find the NIB that contains this controller
-	OPNavigationController *controller = nil;
-    Class controllerClass = [self class];
-    while (controller == nil && controllerClass != nil)
-    {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[[NSBundle mainBundle] pathForResource:NSStringFromClass(controllerClass) ofType:@"nib"]])
-            controller = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(controllerClass) owner:self options:nil] lastObject];
-        
-        controllerClass = [controllerClass superclass];
-    }
+	OPNavigationController *controller = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] lastObject];
     
     if (rootViewController)
         controller.viewControllers = [NSArray arrayWithObject:rootViewController];
