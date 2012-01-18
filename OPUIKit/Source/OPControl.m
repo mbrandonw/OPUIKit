@@ -44,15 +44,6 @@
     [self setNeedsDisplay];
 }
 
--(void) removeDrawingBlocksForState:(UIControlState)state {
-    
-}
-
--(void) removeAllDrawingBlocks {
-    self.drawingBlocksByControlState = [NSMutableDictionary new];
-    [self setNeedsDisplay];
-}
-
 -(void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     
@@ -70,5 +61,11 @@
         }
     }
 }
+
+-(void) setDrawingBlocksByControlState:(NSMutableDictionary *)drawingBlocksByControlState {
+    _drawingBlocksByControlState = drawingBlocksByControlState;
+    [self setNeedsDisplay];
+}
+
 
 @end

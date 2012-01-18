@@ -43,4 +43,14 @@
         block(self, rect, c);
 }
 
+-(void) setDrawingBlocks:(NSMutableArray *)drawingBlocks {
+    _drawingBlocks = drawingBlocks;
+    [self setNeedsDisplay];
+}
+
+-(void) insertObject:(UIViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
+    [_drawingBlocks insertObject:block atIndex:index];
+    [self setNeedsDisplay];
+}
+
 @end

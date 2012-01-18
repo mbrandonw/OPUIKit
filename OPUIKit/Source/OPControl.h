@@ -12,6 +12,7 @@
 
 @interface OPControl : UIControl <OPStyleProtocol>
 
+@property (nonatomic, copy) NSMutableDictionary *drawingBlocksByControlState;
 -(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state;
 
 @end
