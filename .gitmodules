@@ -1,6 +1,6 @@
 [submodule "OPUIKit/opextensionkit"]
 	path = OPUIKit/opextensionkit
-	url = git@brandonwilliams.beanstalkapp.com:/opextensionkit.git
+	url = git@github.com:mbrandonw/OPExtensionKit.git
 [submodule "OPUIKit/OPQuartzKit"]
 	path = OPUIKit/OPQuartzKit
-	url = git@brandonwilliams.beanstalkapp.com:/opquartzkit.git
+	url = git@github.com:mbrandonw/OPQuartzKit.git
