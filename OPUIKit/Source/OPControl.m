@@ -7,7 +7,7 @@
 //
 
 #import "OPControl.h"
-#import "NSNumber+Opetopic.h"
+#import "OPUIKitBlockDefinitions.h"
 #import "OPStyle.h"
 
 @implementation OPControl
@@ -49,14 +49,14 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (UIViewDrawingBlock block in [self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
+    for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
         block(self, rect, c);
     
     for (NSNumber *drawState in self.drawingBlocksByControlState)
     {
         if ([drawState intValue] & self.state)
         {
-            for (UIViewDrawingBlock block in [self.drawingBlocksByControlState objectForKey:drawState])
+            for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:drawState])
                 block(self, rect, c);
         }
     }
