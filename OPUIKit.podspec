@@ -8,7 +8,8 @@ Pod::Spec.new do |s|
   s.author   = { 'Brandon Williams' => 'brandon@opetopic.com' }
   s.source   = { :git => 'git@github.com:mbrandonw/OPUIKit.git' }
   
-  s.source_files = 'OPUIKit/Source/**/*.{h,m,xib}'
+  s.source_files = 'OPUIKit/Source/**/*.{h,m}'
+  s.resource     = 'OPUIKit/Source/**/*.{xib}'
   
   s.frameworks = 'UIKit'
   
