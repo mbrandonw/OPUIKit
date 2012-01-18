@@ -4,3 +4,6 @@
 [submodule "OPUIKit/OPQuartzKit"]
 	path = OPUIKit/OPQuartzKit
 	url = git@github.com:mbrandonw/OPQuartzKit.git
+[submodule "OPUIKit/MAObjCRuntime"]
+	path = OPUIKit/MAObjCRuntime
+	url = https://github.com/mikeash/MAObjCRuntime.git
