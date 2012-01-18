@@ -286,6 +286,7 @@
 		A7F0596E14B9F58D005CF16F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A7F0597014B9F5A8005CF16F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A7F0597214B9F5B8005CF16F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		CAAE536314C72FAB006DC713 /* OPUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPUIKit.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -409,6 +410,7 @@
 			isa = PBXGroup;
 			children = (
 				A77512E814C4E04D0020AF09 /* OPUIKitBlockDefinitions.h */,
+				CAAE536314C72FAB006DC713 /* OPUIKit.h */,
 				A77512CB14C49AD90020AF09 /* MAObjCRuntime */,
 				A77512ED14C4EE1E0020AF09 /* OPStyle */,
 				A77512EE14C4EE2D0020AF09 /* OP Controllers */,
