@@ -122,9 +122,10 @@
             getter = [getter substringToIndex:[getter length]-1];
             
             // transfer the value from the style to the target (but only if it has been edited)
-            id value = [self valueForKey:getter];
-            if ([self.editedProperties containsObject:method.selectorName])
+            if ([self.editedProperties containsObject:method.selectorName]) {
+                id value = [self valueForKey:getter];
                 [target setValue:value forKeyPath:getter];
+            }
         }
     }
     
