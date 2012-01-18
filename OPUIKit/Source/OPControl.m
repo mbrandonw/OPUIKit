@@ -8,41 +8,38 @@
 
 #import "OPControl.h"
 #import "NSNumber+Opetopic.h"
-
-@interface OPControl (/**/)
-@property (nonatomic, strong) NSMutableDictionary *drawingBlocks;
-@end
+#import "OPStyle.h"
 
 @implementation OPControl
 
-@synthesize drawingBlocks;
+@synthesize drawingBlocksByControlState = _drawingBlocksByControlState;
 
 -(id) initWithFrame:(CGRect)frame {
     if (! (self = [super initWithFrame:frame]))
         return nil;
     
-    self.drawingBlocks = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                          [NSMutableArray new], [NSNumber numberWithInt:UIControlStateNormal], 
-                          [NSMutableArray new], [NSNumber numberWithInt:UIControlStateHighlighted], 
-                          [NSMutableArray new], [NSNumber numberWithInt:UIControlStateDisabled], 
-                          [NSMutableArray new], [NSNumber numberWithInt:UIControlStateSelected], nil];
+    self.drawingBlocksByControlState = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                        [NSMutableArray new], [NSNumber numberWithInt:UIControlStateNormal], 
+                                        [NSMutableArray new], [NSNumber numberWithInt:UIControlStateHighlighted], 
+                                        [NSMutableArray new], [NSNumber numberWithInt:UIControlStateDisabled], 
+                                        [NSMutableArray new], [NSNumber numberWithInt:UIControlStateSelected], nil];
     
     return self;
 }
 
--(void) addDrawingBlock:(OPControlDrawingBlock)block forState:(UIControlState)state {
+-(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state {
     
     if (state == UIControlStateNormal)
-        [[self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateNormal]] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]] addObject:[block copy]];
     
     if (state & UIControlStateHighlighted)
-        [[self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateHighlighted]] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateHighlighted]] addObject:[block copy]];
     
     if (state & UIControlStateDisabled)
-        [[self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateDisabled]] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateDisabled]] addObject:[block copy]];
     
     if (state & UIControlStateSelected)
-        [[self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateSelected]] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateSelected]] addObject:[block copy]];
     
     [self setNeedsDisplay];
 }
@@ -52,7 +49,7 @@
 }
 
 -(void) removeAllDrawingBlocks {
-    self.drawingBlocks = [NSMutableDictionary new];
+    self.drawingBlocksByControlState = [NSMutableDictionary new];
     [self setNeedsDisplay];
 }
 
@@ -61,14 +58,14 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (OPControlDrawingBlock block in [self.drawingBlocks objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
+    for (UIViewDrawingBlock block in [self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
         block(self, rect, c);
     
-    for (NSNumber *drawState in self.drawingBlocks)
+    for (NSNumber *drawState in self.drawingBlocksByControlState)
     {
         if ([drawState intValue] & self.state)
         {
-            for (OPControlDrawingBlock block in [self.drawingBlocks objectForKey:drawState])
+            for (UIViewDrawingBlock block in [self.drawingBlocksByControlState objectForKey:drawState])
                 block(self, rect, c);
         }
     }

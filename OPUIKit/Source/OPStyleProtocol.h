@@ -55,6 +55,11 @@
 @property (nonatomic, copy) NSArray *drawingBlocks;
 
 /**
+ Styles specific to OPControl instances. It maps UIControlState enums to arrays of UIViewDrawingBlocks.
+ */
+@property (nonatomic, copy) NSMutableDictionary *drawingBlocksByControlState;
+
+/**
  Determines if a swipe gesture pops the current view controller from the stack. Of course this is
  only application to instances of OPNavigationController. We gotta use an NSInteger for this
  datatype because MAObjCRuntime doesn't seem to handle BOOL types.

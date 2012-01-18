@@ -97,7 +97,7 @@
         item.width = self.window.width/4;
         [items addObject:item];
         
-        [item addDrawingBlock:^(OPControl *b, CGRect r, CGContextRef c) {
+        [item addDrawingBlock:^(UIControl *b, CGRect r, CGContextRef c) {
             
             [[OPGradient gradientWithColors:$array([baseColor darken:0.3f], [baseColor darken:0.1f]) 
                                   locations:$array($float(0.0f), $float(0.75f))]

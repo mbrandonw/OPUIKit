@@ -7,14 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPStyleProtocol.h"
+#import "OPUIKitBlockDefinitions.h"
 
-@class OPControl;
-typedef void(^OPControlDrawingBlock)(OPControl* b, CGRect r, CGContextRef c);
+@interface OPControl : UIControl <OPStyleProtocol>
 
-@interface OPControl : UIControl
-
--(void) addDrawingBlock:(OPControlDrawingBlock)block forState:(UIControlState)state;
--(void) removeDrawingBlocksForState:(UIControlState)state;
--(void) removeAllDrawingBlocks;
+-(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state;
 
 @end
