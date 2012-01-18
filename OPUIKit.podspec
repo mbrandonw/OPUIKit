@@ -19,9 +19,9 @@ Pod::Spec.new do |s|
   
   s.dependency do |m|
     m.name = 'MAObjCRuntime'
+    m.version = '0.0.0'
     m.platform = :ios
     m.source = { :git => 'https://github.com/mikeash/MAObjCRuntime.git' }
     m.source_files = '{MARTNSObject,RTIvar,RTMethod,RTProperty,RTProtocol,RTUnregisteredClass}.{h,m}'
   end
-  
 end
