@@ -71,35 +71,6 @@
     return self;
 }
 
--(void) drawRect:(CGRect)rect {
-    
-    // draw background images & colors
-    if (self.backgroundImage)
-    {
-        // figure out if we need to draw a stretchable image or a pattern image
-        if ([self.backgroundImage isStretchableImage])
-            [self.backgroundImage drawInRect:rect];
-        else
-            [self.backgroundImage drawAsPatternInRect:rect];
-    }
-    if (self.backgroundColor)
-    {
-        [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount])]
-         fillRectLinearly:rect];
-        
-    }
-    
-    // apply gloss over everything
-    if (self.glossAmount)
-    {
-        CGContextRef c = UIGraphicsGetCurrentContext();
-        [$WAf(1.0f,self.glossAmount) set];
-        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f + self.glossOffset)));
-    }
-    
-    [super drawRect:rect];
-}
-
 #pragma mark -
 #pragma mark Item management methods
 #pragma mark -
@@ -198,6 +169,35 @@
 #pragma mark -
 #pragma mark UIView drawing methods
 #pragma mark -
+
+-(void) drawRect:(CGRect)rect {
+    
+    // draw background images & colors
+    if (self.backgroundImage)
+    {
+        // figure out if we need to draw a stretchable image or a pattern image
+        if ([self.backgroundImage isStretchableImage])
+            [self.backgroundImage drawInRect:rect];
+        else
+            [self.backgroundImage drawAsPatternInRect:rect];
+    }
+    if (self.backgroundColor)
+    {
+        [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount])]
+         fillRectLinearly:rect];
+        
+    }
+    
+    // apply gloss over everything
+    if (self.glossAmount)
+    {
+        CGContextRef c = UIGraphicsGetCurrentContext();
+        [$WAf(1.0f,self.glossAmount) set];
+        CGContextFillRect(c, CGRectMake(0.0f, 0.0f, rect.size.width, roundf(rect.size.height/2.0f + self.glossOffset)));
+    }
+    
+    [super drawRect:rect];
+}
 
 -(void) layoutSubviews {
     [super layoutSubviews];
