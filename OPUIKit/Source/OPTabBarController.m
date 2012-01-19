@@ -7,6 +7,7 @@
 //
 
 #import "OPTabBarController.h"
+#import <objc/runtime.h>
 #import "OPTabBarItem.h"
 #import "OPTabBar.h"
 #import "OPMacros.h"
@@ -96,10 +97,15 @@
     self.viewControllers = viewControllers;
     self.tabBar.items = tabBarItems;
     
-    // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
     for (UIViewController *controller in self.viewControllers)
+    {
+        // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
         if ([controller isKindOfClass:[UINavigationController class]])
             [(UINavigationController*)controller setDelegate:self];
+        
+        // let the controller know who it's parent tab bar controller is
+        controller.tabController = self;
+    }
     
     if (self.selectedIndex < [self.viewControllers count])
         self.selectedIndex = self.selectedIndex;
@@ -292,5 +298,23 @@
         [(id<UINavigationControllerDelegate>)navigationController navigationController:navigationController didShowViewController:viewController animated:animated];
 }
 
+
+@end
+
+#define OPTabBarViewControllerKey     @"tabControllerProperty"
+
+@implementation UIViewController (OPTabBarController)
+
+-(OPTabBarController*) tabController {
+    id retVal = objc_getAssociatedObject(self, OPTabBarViewControllerKey);
+    if (retVal)
+        return retVal;
+    return [self.parentViewController tabController];
+}
+
+-(void) setTabController:(OPTabBarController*)controller {
+    objc_setAssociatedObject(self, OPTabBarViewControllerKey, nil, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, OPTabBarViewControllerKey, controller, OBJC_ASSOCIATION_ASSIGN);
+}
 
 @end

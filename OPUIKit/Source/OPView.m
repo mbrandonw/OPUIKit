@@ -9,6 +9,10 @@
 #import "OPView.h"
 #import "OPStyle.h"
 
+@interface OPView (/**/)
+-(void) __init;
+@end
+
 @implementation OPView
 
 @synthesize drawingBlocks = _drawingBlocks;
@@ -16,25 +20,28 @@
 -(id) init {
     if (! (self = [super init]))
         return nil;
-    self.drawingBlocks = [NSMutableArray new];
-    [[[self class] styling] applyTo:self];
+    [self __init];
     return self;
 }
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
-    self.drawingBlocks = [NSMutableArray new];
-    [[[self class] styling] applyTo:self];
+    [self __init];
     return self;
 }
 
 -(id) initWithFrame:(CGRect)frame {
     if (! (self = [super initWithFrame:frame]))
         return nil;
-    self.drawingBlocks = [NSMutableArray new];
-    [[[self class] styling] applyTo:self];
+    [self __init];
     return self;
+}
+
+-(void) __init {
+    self.drawingBlocks = [NSMutableArray new];
+    [self addObserver:self forKeyPath:@"drawingBlocks" options:0 context:NULL];
+    [[[self class] styling] applyTo:self];
 }
 
 -(void) drawRect:(CGRect)rect {
@@ -53,6 +60,10 @@
 
 -(void) insertObject:(UIViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
     [_drawingBlocks insertObject:block atIndex:index];
+    [self setNeedsDisplay];
+}
+
+-(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     [self setNeedsDisplay];
 }
 

@@ -8,10 +8,12 @@
 
 #import "OPTabBarItem.h"
 #import "UIView+Opetopic.h"
+#import "OPTabBarItemBadge.h"
 
 @interface OPTabBarItem (/**/)
 @property (nonatomic, strong, readwrite) UIImageView *iconView;
 @property (nonatomic, strong, readwrite) UILabel *titleLabel;
+@property (nonatomic, strong, readwrite) OPTabBarItemBadge *badge;
 -(BOOL) iconViewIsHidden;
 -(BOOL) titleLabelIsHidden;
 @end
@@ -22,6 +24,8 @@
 @synthesize iconViewInsets = _iconViewInsets;
 @synthesize titleLabel = _titleLabel;
 @synthesize titleLabelInsets = _titleLabelInsets;
+@synthesize badge = _badge;
+@synthesize rememberBadgeValue = _rememberBadgeValue;
 
 -(id) init {
     if (! (self = [super init]))
@@ -44,6 +48,10 @@
     self.titleLabel.highlightedTextColor = [UIColor whiteColor];
     self.titleLabelInsets = UIEdgeInsetsMake(0.0f, 0.0f, 1.0f, 0.0f);
     [self addSubview:self.titleLabel];
+    
+    // init badge subview
+    self.badge = [OPTabBarItemBadge new];
+    [self addSubview:self.badge];
     
     // apply stylings
     [[[self class] styling] applyTo:self];
@@ -109,6 +117,11 @@
     self.iconView.top += self.iconViewInsets.top - self.iconViewInsets.bottom;
     self.titleLabel.left += self.titleLabelInsets.left - self.titleLabelInsets.right;
     self.titleLabel.top += self.titleLabelInsets.top - self.titleLabelInsets.bottom;
+    
+    
+    // layout the badge view
+    self.badge.center = CGPointMake(self.width * self.badge.relativeCenter.x, self.height * self.badge.relativeCenter.y);
+    self.badge.frame = CGRectIntegral(self.badge.frame);
 }
 
 #pragma mark -

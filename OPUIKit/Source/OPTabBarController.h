@@ -33,3 +33,13 @@
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems;
 
 @end
+
+
+/**
+ Adds a `tabController` property to all UIViewController instances in order to 
+ replicate the `tabBarController` property you get when using the standard
+ UIKit components
+ */
+@interface UIViewController (OPTabBarControllerDelegate)
+@property (nonatomic, retain) OPTabBarController *tabController;
+@end
