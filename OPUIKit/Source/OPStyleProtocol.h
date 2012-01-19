@@ -52,7 +52,7 @@
 /**
  Styles specific to OPView instances.
  */
-@property (nonatomic, copy) NSArray *drawingBlocks;
+@property (nonatomic, copy) NSMutableArray *drawingBlocks;
 
 /**
  Styles specific to OPControl instances. It maps UIControlState enums to arrays of UIViewDrawingBlocks.
