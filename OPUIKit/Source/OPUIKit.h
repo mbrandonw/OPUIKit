@@ -14,6 +14,7 @@
 #import "OPTabBar.h"
 #import "OPTabBarController.h"
 #import "OPTabBarItem.h"
+#import "OPTabBarItemBadge.h"
 #import "OPSidebarNavigationController.h"
 #import "OPTableViewController.h"
 #import "OPViewController.h"
