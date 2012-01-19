@@ -16,6 +16,7 @@
 -(id) init {
     if (! (self = [super init]))
         return nil;
+    self.drawingBlocks = [NSMutableArray new];
     [[[self class] styling] applyTo:self];
     return self;
 }
@@ -23,6 +24,7 @@
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
+    self.drawingBlocks = [NSMutableArray new];
     [[[self class] styling] applyTo:self];
     return self;
 }
@@ -30,6 +32,7 @@
 -(id) initWithFrame:(CGRect)frame {
     if (! (self = [super initWithFrame:frame]))
         return nil;
+    self.drawingBlocks = [NSMutableArray new];
     [[[self class] styling] applyTo:self];
     return self;
 }
