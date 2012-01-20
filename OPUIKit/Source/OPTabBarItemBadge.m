@@ -151,7 +151,7 @@
         [[UIBezierPath bezierPathWithRoundedRect:r cornerRadius:r.size.height] fill];
         
         // fill the background color and gloss
-        [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(r, 2.0f, 2.0f) cornerRadius:r.size.height-2.0f] addClip];
+        [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(r, 1.5f, 1.5f) cornerRadius:r.size.height-2.0f] addClip];
         [[OPGradient gradientWithColors:[NSArray arrayWithObjects:[color lighten:0.08f], [color darken:0.08f], nil]]
          fillRectLinearly:r];
         [[OPGradient gradientWithColors:[NSArray arrayWithObjects:$WAf(1.0f,0.85f),$WAf(1.0f,0.2f), nil]]
