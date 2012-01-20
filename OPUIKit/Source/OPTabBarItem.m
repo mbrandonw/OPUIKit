@@ -141,8 +141,9 @@
     
     
     // layout the badge view
-    self.badge.center = CGPointMake(self.width * self.badge.relativeCenter.x, self.height * self.badge.relativeCenter.y);
-    self.badge.frame = CGRectIntegral(self.badge.frame);
+    self.badge.frame = CGRectMake(floorf(self.width * self.badge.relativeCenter.x - self.badge.width/2.0f), 
+                                  floorf(self.height * self.badge.relativeCenter.y - self.badge.height/2.0f), 
+                                  self.badge.width, self.badge.height);
 }
 
 #pragma mark -
