@@ -72,7 +72,11 @@
 #pragma mark Item management methods
 #pragma mark -
 
--(void) setItems:(NSArray *)i {
+-(void) setItems:(NSArray *)items {
+    [self setItems:items animated:NO];
+}
+
+-(void) setItems:(NSArray*)items animated:(BOOL)animated {
     
     // remove previous items
     for (UIControl *item in self.items) {
@@ -80,7 +84,7 @@
         [item removeFromSuperview];
     }
     
-    _items = i;
+    _items = items;
     
     // add new items
     for (UIControl *item in self.items)
