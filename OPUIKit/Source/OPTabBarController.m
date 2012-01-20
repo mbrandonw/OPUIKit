@@ -63,11 +63,7 @@
 
 - (void)loadView {
     [super loadView];
-#ifdef DEBUG
-    self.view.backgroundColor = [UIColor redColor];
-#else
     self.view.backgroundColor = [UIColor blackColor];
-#endif
     
     // configure the tab bar
     self.tabBar.frame = CGRectMake(0.0f, 0.0f, self.view.width, UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.tabBarPortraitHeight : self.tabBarLandscapeHeight);

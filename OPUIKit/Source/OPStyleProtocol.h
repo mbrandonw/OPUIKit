@@ -13,9 +13,8 @@
 @optional
 
 /**
- Ways of customizing background images/colors if supported.
+ Ways of customizing background images if supported.
  */
-@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIImage *backgroundImage;
 
 /**
@@ -46,7 +45,6 @@
 /**
  Styles specific to navigation bars.
  */
-@property (nonatomic, assign) BOOL translucent;
 @property (nonatomic, copy) UIViewDrawingBlock navigationBarDrawingBlock;
 
 /**

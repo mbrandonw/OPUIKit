@@ -17,6 +17,8 @@
 #define kBadgeSmallTransform    CATransform3DMakeScale(kBadgeMinScale, kBadgeMinScale, kBadgeMinScale)
 #define kBadgeLargeTransform    CATransform3DMakeScale(kBadgeMaxScale, kBadgeMaxScale, kBadgeMaxScale)
 
+#define kUserDefaultsBadgePrefix    @"UserDefaultsBadgePrefix"
+
 @interface OPTabBarItemBadge (/**/)
 @property (nonatomic, strong, readwrite) UILabel *valueLabel;
 @end
@@ -107,7 +109,6 @@
 
 -(void) setValue:(NSString*)value animated:(BOOL)animated {
     [self setNeedsLayout];
-    
     self.hidden = NO;
     
     // animation can only happen when the value changes from nil to non-nil, or vice-versa
@@ -116,13 +117,14 @@
     
     if (animated)
     {
+        // we need to use CA animations in order to avoid weird UIView layout problems.
         CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
         animation.values = [NSArray arrayWithObjects:
                             [NSValue valueWithCATransform3D:self.valueLabel.text ? kBadgeSmallTransform : CATransform3DIdentity],
                             [NSValue valueWithCATransform3D:self.valueLabel.text ? kBadgeLargeTransform : kBadgeLargeTransform],
                             [NSValue valueWithCATransform3D:self.valueLabel.text ? CATransform3DIdentity : kBadgeSmallTransform], nil];
         animation.delegate = self;
-        [self.layer addAnimation:animation forKey:@"pop"];
+        [self.layer addAnimation:animation forKey:@"animation"];
     }
     else
     {

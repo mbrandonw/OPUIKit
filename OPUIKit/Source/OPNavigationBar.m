@@ -23,7 +23,6 @@
 @synthesize shadowView = _shadowView;
 
 // Supported OPStyle storage
-@synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize shadowHeight = _shadowHeight;
 @synthesize shadowColors = _shadowColors;

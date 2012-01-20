@@ -33,13 +33,11 @@
 
 // Supported OPStyle storage
 @synthesize backgroundImage = _backgroundImage;
-@synthesize backgroundColor = _backgroundColor;
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;
 @synthesize gradientAmount = _gradientAmount;
 @synthesize shadowHeight = _shadowHeight;
 @synthesize shadowColors = _shadowColors;
-@synthesize translucent = _translucent;
 
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;

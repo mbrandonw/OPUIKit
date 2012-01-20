@@ -68,7 +68,6 @@
 @synthesize keyPathValuePairs = _keyPathValuePairs;
 
 @synthesize backgroundImage = _backgroundImage;
-@synthesize backgroundColor = _backgroundColor;
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;
 @synthesize gradientAmount = _gradientAmount;
@@ -83,7 +82,6 @@
 @synthesize defaultSubtitle = _defaultSubtitle;
 @synthesize defaultTitleImage = _defaultTitleImage;
 @synthesize navigationBarDrawingBlock = _navigationBarDrawingBlock;
-@synthesize translucent = _translucent;
 @synthesize drawingBlocks = _drawingBlocks;
 @synthesize drawingBlocksByControlState = _drawingBlocksByControlState;
 @synthesize allowSwipeToPop = _allowSwipeToPop;
