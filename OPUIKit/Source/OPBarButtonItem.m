@@ -17,6 +17,7 @@
 #import "OPView.h"
 #import "NSDictionary+Opetopic.h"
 #import "NSNumber+Opetopic.h"
+#import "UIDevice+Opetopic.h"
 
 @interface OPBarButtonItem (/**/)
 @property (nonatomic, strong, readwrite) UIButton *button;
@@ -49,16 +50,15 @@
                                                                        OPViewDrawingGradientAmountKey, $float(0.2f),
                                                                        OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
                                                                        OPViewDrawingCornerRadiusKey, $float(4.0f),
-                                                                       OPViewDrawingBevelKey, $bool(YES))]
-                        forState:UIControlStateNormal];
+                                                                       OPViewDrawingBevelKey, $bool(YES))] forState:UIControlStateNormal];
     
-    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, [$RGBi(9, 130, 191) darken:0.3f],
+    OPGradient *gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[$RGBi(46,169,232) darken:0.7f], [$RGBi(46,169,232) darken:0.3], nil]];
+    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseGradientKey, gradient,
                                                                        OPViewDrawingGradientAmountKey, $float(0.2f),
                                                                        OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
                                                                        OPViewDrawingCornerRadiusKey, $float(4.0f),
                                                                        OPViewDrawingInvertedKey, $bool(YES),
-                                                                       OPViewDrawingBevelKey, $bool(NO))]
-                        forState:UIControlStateHighlighted];
+                                                                       OPViewDrawingBevelKey, $bool(NO))] forState:UIControlStateHighlighted];
     
     return self;
 }
@@ -74,7 +74,7 @@
 -(void) orientationChanged:(NSNotification*)notification {
     
     UIInterfaceOrientation orientation = [[notification.userInfo objectForKey:UIApplicationStatusBarOrientationUserInfoKey] intValue];
-    self.button.height = UIInterfaceOrientationIsPortrait(orientation) ? 24.0f : 30.0f;
+    self.button.height = [UIDevice isPad] || UIInterfaceOrientationIsLandscape(orientation) ? 30.0f : 24.0f;
     [self.button setNeedsDisplay];
     
 }
