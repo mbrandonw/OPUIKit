@@ -28,6 +28,7 @@
 @synthesize touchIsDown = _touchIsDown;
 
 // OPStyle storage
+@synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize defaultTitle = _defaultTitle;
 @synthesize defaultSubtitle = _defaultSubtitle;
@@ -95,7 +96,9 @@
     // set up default background color
 	if (self.backgroundImage)
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
-    else if (! self.view.backgroundColor)
+    else if (self.backgroundColor)
+        self.view.backgroundColor = self.backgroundColor;
+    else
         self.view.backgroundColor = self.tableView.style == UITableViewStylePlain ? [UIColor whiteColor] : [UIColor groupTableViewBackgroundColor];
     
     // set up default navigation item title view

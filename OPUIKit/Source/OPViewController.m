@@ -15,6 +15,7 @@
 @implementation OPViewController
 
 // OPStyle storage
+@synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize defaultTitle = _defaultTitle;
 @synthesize defaultSubtitle = _defaultSubtitle;
@@ -49,7 +50,9 @@
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
-    else if (! self.view.backgroundColor)
+    else if (self.backgroundColor)
+        self.view.backgroundColor = self.backgroundColor;
+    else
         self.view.backgroundColor = [UIColor whiteColor];
     
     // set the default navigation item title view
