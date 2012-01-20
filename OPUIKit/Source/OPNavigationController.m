@@ -132,13 +132,13 @@
 	{
         UIViewController *lastController = [navigationController.viewControllers objectAtIndex:[navigationController.viewControllers indexOfObject:viewController]-1];
         
-        if ([OPBarButtonItem hasDefaultBackBackgroundImage])
-        {
-            viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:(lastController.title ? lastController.title : @"Back") 
-                                                                                                   target:self
-                                                                                                   action:@selector(dismissModalViewControllerWithAnimation)];
-        }
-        else
+//        if ([OPBarButtonItem hasDefaultBackBackgroundImage])
+//        {
+//            viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:(lastController.title ? lastController.title : @"Back") 
+//                                                                                                   target:self
+//                                                                                                   action:@selector(dismissModalViewControllerWithAnimation)];
+//        }
+//        else
         {
             viewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(lastController.title ? lastController.title : @"Back")
                                                                                                style:UIBarButtonItemStylePlain

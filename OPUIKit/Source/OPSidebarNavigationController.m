@@ -115,7 +115,7 @@
     
     if ([self.viewControllers count] == 1 && ! viewController.navigationItem.hidesBackButton)
     {
-        viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:@"Menu" target:self action:@selector(menuButtonPressed)];
+//        viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:@"Menu" target:self action:@selector(menuButtonPressed)];
     }
 }
 
