@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "OPStyleProtocol.h"
+#import "OPUIKitBlockDefinitions.h"
+
+extern NSString * const OPViewDrawingBaseColorKey;
+extern NSString * const OPViewDrawingGradientAmountKey;
+extern NSString * const OPViewDrawingInvertedKey;
+extern NSString * const OPViewDrawingBorderColorKey;
+extern NSString * const OPViewDrawingCornerRadiusKey;
+extern NSString * const OPViewDrawingBevelKey;
 
 @interface OPView : UIView <OPStyleProtocol>
+
++(UIViewDrawingBlock) drawingBlockWithOptions:(NSDictionary*)options;
 
 @end
