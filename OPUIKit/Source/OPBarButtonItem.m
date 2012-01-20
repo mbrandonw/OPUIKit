@@ -52,18 +52,13 @@
                                                                        OPViewDrawingBevelKey, $bool(YES))]
                         forState:UIControlStateNormal];
     
-    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, [$RGBi(9, 130, 191) darken:0.5f],
-                                                                       OPViewDrawingGradientAmountKey, $float(0.3f),
+    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, [$RGBi(9, 130, 191) darken:0.3f],
+                                                                       OPViewDrawingGradientAmountKey, $float(0.2f),
                                                                        OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
                                                                        OPViewDrawingCornerRadiusKey, $float(4.0f),
-                                                                       OPViewDrawingBevelKey, $bool(YES))]
-                        forState:UIControlStateSelected];
-    
-    [self.button addEventHandler:^(id sender) {
-        
-        DLog(@"");
-        
-    } forControlEvents:UIControlEventTouchUpInside];
+                                                                       OPViewDrawingInvertedKey, $bool(YES),
+                                                                       OPViewDrawingBevelKey, $bool(NO))]
+                        forState:UIControlStateHighlighted];
     
     return self;
 }
