@@ -109,12 +109,12 @@ NSString * const OPViewDrawingBevelKey = @"OPViewDrawingBevelKey";
         [insetPath addClip];
         [gradient fillRectLinearly:CGRectMake(1.0f, 1.0f, r.size.width-2.0f, r.size.height-3.0f)];
         
-        // and a light border
-        [[UIColor colorWithWhite:1.0f alpha:0.15f] setStroke];
-        [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.5f, 1.5f, r.size.width-3.0f, r.size.height-4.0f) cornerRadius:radius-1.0f] stroke];
-        
         if (bevel)
         {
+            // and a light border
+            [[UIColor colorWithWhite:1.0f alpha:0.15f] setStroke];
+            [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.5f, 1.5f, r.size.width-3.0f, r.size.height-4.0f) cornerRadius:radius-1.0f] stroke];
+            
             CGContextSaveGState(c);
             {
                 UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.0f, 1.0f, r.size.width-2.0f, radius*3.0f) cornerRadius:radius-1.0f];
