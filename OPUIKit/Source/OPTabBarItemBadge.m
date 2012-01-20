@@ -76,33 +76,27 @@
                            MAX(self.minSize.height, self.valueLabel.height + self.valueLabelInsets.top + self.valueLabelInsets.bottom));
     
     self.valueLabel.frame = CGRectMake(0.0f, self.valueLabelInsets.top, self.width, self.valueLabel.height);
+    
+    [self.superview setNeedsLayout];
 }
 
 #pragma mark -
 #pragma Custom getters/setters
 #pragma mark -
 
--(UILabel*) valueLabel {
-    [self.superview setNeedsDisplayAndLayout];
-    return _valueLabel;
-}
-
 -(void) setValueLabelInsets:(UIEdgeInsets)valueLabelInsets {
     _valueLabelInsets = valueLabelInsets;
     [self setNeedsDisplayAndLayout];
-    [self.superview setNeedsDisplayAndLayout];
 }
 
 -(void) setMinSize:(CGSize)minSize {
     _minSize = minSize;
     [self setNeedsDisplayAndLayout];
-    [self.superview setNeedsDisplayAndLayout];
 }
 
 -(void) setRelativeCenter:(CGPoint)relativeCenter {
     _relativeCenter = relativeCenter;
     [self setNeedsDisplayAndLayout];
-    [self.superview setNeedsDisplayAndLayout];
 }
 
 -(void) setValue:(NSString*)value {
@@ -110,7 +104,7 @@
 }
 
 -(void) setValue:(NSString*)value animated:(BOOL)animated {
-    [self setNeedsLayout];
+    [self setNeedsDisplayAndLayout];
     self.hidden = NO;
     
     // animation can only happen when the value changes from nil to non-nil, or vice-versa
