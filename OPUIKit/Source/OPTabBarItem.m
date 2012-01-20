@@ -9,11 +9,15 @@
 #import "OPTabBarItem.h"
 #import "UIView+Opetopic.h"
 #import "OPTabBarItemBadge.h"
+#import "NSString+Opetopic.h"
+
+#define kUserDefaultsBadgeKey(title)    $strfmt(@"%@_%@", @"UserDefaultsBadgePrefix", title)
 
 @interface OPTabBarItem (/**/)
 @property (nonatomic, strong, readwrite) UIImageView *iconView;
 @property (nonatomic, strong, readwrite) UILabel *titleLabel;
 @property (nonatomic, strong, readwrite) OPTabBarItemBadge *badge;
+@property (nonatomic, assign) BOOL valueNotChanged;
 -(BOOL) iconViewIsHidden;
 -(BOOL) titleLabelIsHidden;
 @end
@@ -26,6 +30,7 @@
 @synthesize titleLabelInsets = _titleLabelInsets;
 @synthesize badge = _badge;
 @synthesize rememberBadgeValue = _rememberBadgeValue;
+@synthesize valueNotChanged = _valueNotChanged;
 
 -(id) init {
     if (! (self = [super init]))
@@ -55,6 +60,22 @@
     
     // apply stylings
     [[[self class] styling] applyTo:self];
+    
+    return self;
+}
+
+-(id) initWithTitle:(NSString *)title {
+    if (! (self = [self init]))
+        return nil;
+    
+    self.titleLabel.text = title;
+    
+    // check if we should restore the previously saved badge value
+    if (self.rememberBadgeValue)
+        [self.badge setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsBadgeKey(title)]];
+    
+    // observe changes in the badge value so that we can remember it
+    [self.badge.valueLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:NULL];
     
     return self;
 }
@@ -122,6 +143,20 @@
     // layout the badge view
     self.badge.center = CGPointMake(self.width * self.badge.relativeCenter.x, self.height * self.badge.relativeCenter.y);
     self.badge.frame = CGRectIntegral(self.badge.frame);
+}
+
+#pragma mark -
+#pragma KVO methods
+#pragma mark -
+
+-(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    // record the badge value when it changes
+    id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+    if (newValue != [NSNull null])
+        [[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
+    else
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
 }
 
 #pragma mark -

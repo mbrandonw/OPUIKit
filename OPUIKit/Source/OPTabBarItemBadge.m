@@ -17,8 +17,6 @@
 #define kBadgeSmallTransform    CATransform3DMakeScale(kBadgeMinScale, kBadgeMinScale, kBadgeMinScale)
 #define kBadgeLargeTransform    CATransform3DMakeScale(kBadgeMaxScale, kBadgeMaxScale, kBadgeMaxScale)
 
-#define kUserDefaultsBadgePrefix    @"UserDefaultsBadgePrefix"
-
 @interface OPTabBarItemBadge (/**/)
 @property (nonatomic, strong, readwrite) UILabel *valueLabel;
 @end
@@ -38,6 +36,7 @@
     // customize view
     self.backgroundColor = [UIColor clearColor];
     self.hidden = YES;
+    self.userInteractionEnabled = NO;
     
     // init the value label subview with some sensible defaults
     self.valueLabel = [UILabel new];
@@ -49,15 +48,18 @@
     self.minSize = CGSizeMake(23.0f, 23.0f);
     self.relativeCenter = CGPointMake(0.75f, 0.2f);
     self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
     self.layer.shadowOpacity = 0.5f;
+    self.layer.shadowRadius = 4.0f;
     self.layer.shouldRasterize = YES;
     [self addSubview:self.valueLabel];
     
     // apply stylings
     [[[self class] styling] applyTo:self];
     
-    [self.drawingBlocks addObject:[[self class] defaultBadgeDrawingBlock]];
+    // use the default badge draw block (looks like apple's red badge)
+    if ([self.drawingBlocks count] == 0)
+        [self.drawingBlocks addObject:[[self class] defaultBadgeDrawingBlock]];
     
     return self;
 }
@@ -143,21 +145,23 @@
 #pragma mark -
 
 +(UIViewDrawingBlock) defaultBadgeDrawingBlock {
+    return [[self class] defaultBadgeDrawingBlockWithColor:$RGBi(235,0,0)];
+}
+
++(UIViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color {
     
     return [^(UIView* v, CGRect r, CGContextRef c){
         
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:r cornerRadius:r.size.height];
+        // fill the white background border
         [[UIColor whiteColor] set];
-        [path fill];
+        [[UIBezierPath bezierPathWithRoundedRect:r cornerRadius:r.size.height] fill];
         
-        path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(r, 2.0f, 2.0f) cornerRadius:r.size.height-2.0f];
-        [path addClip];
-        
-        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:$RGBi(255,0,0),$RGBi(215,0,0), nil]]
+        // fill the background color and gloss
+        [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(r, 2.0f, 2.0f) cornerRadius:r.size.height-2.0f] addClip];
+        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:[color lighten:0.08f], [color darken:0.08f], nil]]
          fillRectLinearly:r];
-        
-        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:$WAf(1.0f,0.85f),$WAf(1.0f,0.1f), nil]]
-         fillRectLinearly:CGRectMake(0.0f, 0.0f, r.size.width, r.size.height/2.0f)];
+        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:$WAf(1.0f,0.85f),$WAf(1.0f,0.2f), nil]]
+         fillRectLinearly:CGRectMake(0.0f, 0.0f, r.size.width, ceilf(r.size.height/2.0f))];
         
     } copy];
 }

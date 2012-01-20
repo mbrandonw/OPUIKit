@@ -22,4 +22,6 @@
 @property (nonatomic, strong, readonly) OPTabBarItemBadge *badge;
 @property (nonatomic, assign) BOOL rememberBadgeValue;
 
+-(id) initWithTitle:(NSString*)title;
+
 @end

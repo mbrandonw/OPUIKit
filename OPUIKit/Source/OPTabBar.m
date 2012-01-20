@@ -31,6 +31,13 @@
 
 @synthesize delegate = _delegate;
 
+@synthesize items = _items;
+@synthesize selectedItem = _selectedItem;
+@synthesize selectedItemIndex = _selectedItemIndex;
+@synthesize itemLayout = _itemLayout;
+@synthesize maxItemWidth = _maxItemWidth;
+@synthesize shadowView = _shadowView;
+
 // Supported OPStyle storage
 @synthesize backgroundImage = _backgroundImage;
 @synthesize glossAmount = _glossAmount;
@@ -38,14 +45,6 @@
 @synthesize gradientAmount = _gradientAmount;
 @synthesize shadowHeight = _shadowHeight;
 @synthesize shadowColors = _shadowColors;
-
-@synthesize items = _items;
-@synthesize selectedItem = _selectedItem;
-@synthesize selectedItemIndex = _selectedItemIndex;
-@synthesize itemLayout = _itemLayout;
-@synthesize maxItemWidth = _maxItemWidth;
-
-@synthesize shadowView = _shadowView;
 
 #pragma mark -
 #pragma mark Object lifecycle

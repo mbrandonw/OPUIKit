@@ -24,5 +24,6 @@
 
 // some default drawing blocks
 +(UIViewDrawingBlock) defaultBadgeDrawingBlock;
++(UIViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color;
 
 @end
