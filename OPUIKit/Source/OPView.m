@@ -71,6 +71,7 @@
 }
 
 NSString * const OPViewDrawingBaseColorKey = @"OPViewDrawingBaseColorKey";
+NSString * const OPViewDrawingBaseGradientKey = @"OPViewDrawingBaseGradientKey";
 NSString * const OPViewDrawingGradientAmountKey = @"OPViewDrawingGradientAmountKey";
 NSString * const OPViewDrawingInvertedKey = @"OPViewDrawingInvertedKey";
 NSString * const OPViewDrawingBorderColorKey = @"OPViewDrawingBorderColorKey";
@@ -80,17 +81,18 @@ NSString * const OPViewDrawingBevelKey = @"OPViewDrawingBevelKey";
 +(UIViewDrawingBlock) drawingBlockWithOptions:(NSDictionary*)options {
     
     // grab values from the options dictionary
-    UIColor *baseColor      = [options objectForKey:OPViewDrawingBaseColorKey];
-    CGFloat gradientAmount  = [[options numberForKey:OPViewDrawingGradientAmountKey] floatValue];
-    BOOL inverted           = [[options numberForKey:OPViewDrawingInvertedKey] boolValue];
-    UIColor *borderColor    = [options objectForKey:OPViewDrawingBorderColorKey];
-    CGFloat radius          = [[options numberForKey:OPViewDrawingCornerRadiusKey] floatValue];
-    BOOL bevel              = [[options numberForKey:OPViewDrawingBevelKey] boolValue];
+    UIColor *baseColor       = [options objectForKey:OPViewDrawingBaseColorKey];
+    OPGradient *baseGradient = [options objectForKey:OPViewDrawingBaseGradientKey];
+    CGFloat gradientAmount   = [[options numberForKey:OPViewDrawingGradientAmountKey] floatValue];
+    BOOL inverted            = [[options numberForKey:OPViewDrawingInvertedKey] boolValue];
+    UIColor *borderColor     = [options objectForKey:OPViewDrawingBorderColorKey];
+    CGFloat radius           = [[options numberForKey:OPViewDrawingCornerRadiusKey] floatValue];
+    BOOL bevel               = [[options numberForKey:OPViewDrawingBevelKey] boolValue];
     
-    OPGradient *gradient = nil;
-    if (! inverted)
+    OPGradient *gradient = baseGradient;
+    if (! gradient && ! inverted)
         gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
-    else
+    else if (! gradient)
         gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
     
     return [^(UIView *v, CGRect r, CGContextRef c){

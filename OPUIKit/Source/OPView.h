@@ -11,6 +11,7 @@
 #import "OPUIKitBlockDefinitions.h"
 
 extern NSString * const OPViewDrawingBaseColorKey;
+extern NSString * const OPViewDrawingBaseGradientKey;
 extern NSString * const OPViewDrawingGradientAmountKey;
 extern NSString * const OPViewDrawingInvertedKey;
 extern NSString * const OPViewDrawingBorderColorKey;
