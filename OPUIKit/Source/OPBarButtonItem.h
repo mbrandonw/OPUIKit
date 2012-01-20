@@ -7,29 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OPStyleProtocol.h"
 
-@interface OPBarButtonItem : UIBarButtonItem
+@class OPButton;
 
-@property (nonatomic, strong, readonly) UIButton *backingButton;
+@interface OPBarButtonItem : UIBarButtonItem <OPStyleProtocol>
 
-// styling methods
-+(void) setDefaultBackgroundImage:(UIImage*)image;
-+(void) setDefaultBackgroundDownStateImage:(UIImage*)image;
-+(void) setDefaultBackBackgroundImage:(UIImage*)image;
-+(void) setDefaultBackBackgroundDownStateImage:(UIImage*)image;
-+(BOOL) hasDefaultBackBackgroundImage;
-+(void) setDefaultTextColor:(UIColor*)color;
-+(void) setDefaultShadowColor:(UIColor*)color;
-+(void) setDefaultShadowOffset:(CGSize)offset;
+@property (nonatomic, strong, readonly) OPButton *button;
 
-// initialization methods
-+(id) defaultButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
-+(id) defaultButtonWithIcon:(UIImage *)icon target:(id)target action:(SEL)action;
-+(id) defaultBackButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
-+(id) defaultButtonWithGlyphishIcon:(NSString*)character target:(id)target action:(SEL)action;
-
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage title:(NSString*)title target:(id)target action:(SEL)action;
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage*)downStateImage icon:(UIImage*)icon target:(id)target action:(SEL)action;
-
+/**
+ Helper create method.
+ */
+//+(id) buttonWithTitle:(NSString*)title;
+//+(id) buttonWithIcon:(UIImage*)icon;
+//+(id) buttonWithGlyphish:(NSString*)glyph;
 
 @end

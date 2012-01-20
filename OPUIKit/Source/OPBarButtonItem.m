@@ -1,3 +1,4 @@
+
 //
 //  OPBarButtonItem.m
 //  OPUIKit
@@ -7,145 +8,80 @@
 //
 
 #import "OPBarButtonItem.h"
+#import "OPStyle.h"
+#import "OPButton.h"
+#import "OPControl.h"
+#import "UIColor+Opetopic.h"
 #import "UIView+Opetopic.h"
-
-#pragma mark Styling vars
-static UIImage *OPBarButtonItemDefaultBackgroundImage;
-static UIImage *OPBarButtonItemDefaultBackgroundDownStateImage;
-static UIImage *OPBarButtonItemDefaultBackBackgroundImage;
-static UIImage *OPBarButtonItemDefaultBackBackgroundDownStateImage;
-static UIColor *OPBarButtonItemDefaultTextColor;
-static UIColor *OPBarButtonItemDefaultShadowColor;
-static CGSize OPBarButtonItemDefaultShadowOffset;
-#pragma mark -
+#import "OPGradient.h"
+#import "OPView.h"
+#import "NSDictionary+Opetopic.h"
+#import "NSNumber+Opetopic.h"
 
 @interface OPBarButtonItem (/**/)
-@property (nonatomic, strong, readwrite) UIButton *backingButton;
+@property (nonatomic, strong, readwrite) UIButton *button;
 @end
 
 @implementation OPBarButtonItem
 
-@synthesize backingButton;
+@synthesize button;
 
-#pragma mark Styling methods
-+(void) setDefaultBackgroundImage:(UIImage *)image {
-	OPBarButtonItemDefaultBackgroundImage = image;
+// Storage for supported OPStyle
+@synthesize backgroundColor = _backgroundColor;
+
+-(id) init {
+    if (! (self = [super init]))
+        return nil;
+    
+    // init button custom view
+    self.button = [OPButton buttonWithType:UIButtonTypeCustom];
+    self.button.size = CGSizeMake(50.0f, 30.0f);
+    self.button.layer.contentsScale = [UIScreen mainScreen].scale;
+    self.customView = self.button;
+    
+    // gotta be able to respond to orientation changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    
+    // applying styles
+    [[[self class] styling] applyTo:self];
+    
+    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, $RGBi(46,169,232),
+                                                                       OPViewDrawingGradientAmountKey, $float(0.2f),
+                                                                       OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
+                                                                       OPViewDrawingCornerRadiusKey, $float(4.0f),
+                                                                       OPViewDrawingBevelKey, $bool(YES))]
+                        forState:UIControlStateNormal];
+    
+    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, [$RGBi(9, 130, 191) darken:0.5f],
+                                                                       OPViewDrawingGradientAmountKey, $float(0.3f),
+                                                                       OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
+                                                                       OPViewDrawingCornerRadiusKey, $float(4.0f),
+                                                                       OPViewDrawingBevelKey, $bool(YES))]
+                        forState:UIControlStateSelected];
+    
+    [self.button addEventHandler:^(id sender) {
+        
+        DLog(@"");
+        
+    } forControlEvents:UIControlEventTouchUpInside];
+    
+    return self;
 }
 
-+(void) setDefaultBackgroundDownStateImage:(UIImage *)image {
-    OPBarButtonItemDefaultBackgroundDownStateImage = image;
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
-+(void) setDefaultBackBackgroundImage:(UIImage *)image {
-	OPBarButtonItemDefaultBackBackgroundImage = image;
-}
-
-+(void) setDefaultBackBackgroundDownStateImage:(UIImage *)image {
-    OPBarButtonItemDefaultBackBackgroundDownStateImage = image;
-}
-
-+(BOOL) hasDefaultBackBackgroundImage {
-    return OPBarButtonItemDefaultBackBackgroundImage != nil;
-}
-
-+(void) setDefaultTextColor:(UIColor*)color {
-	OPBarButtonItemDefaultTextColor = color;
-}
-
-+(void) setDefaultShadowColor:(UIColor*)color {
-	OPBarButtonItemDefaultShadowColor = color;
-}
-
-+(void) setDefaultShadowOffset:(CGSize)offset {
-    OPBarButtonItemDefaultShadowOffset = offset;
-}
+#pragma mark -
+#pragma Notification methods
 #pragma mark -
 
-
-#pragma mark Initialization methods
-+(id) defaultButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+-(void) orientationChanged:(NSNotification*)notification {
     
-	return [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage
-                            downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
-                                     title:title 
-                                   target:target 
-                                    action:action];
-}
-
-+(id) defaultButtonWithIcon:(UIImage *)icon target:(id)target action:(SEL)action {
+    UIInterfaceOrientation orientation = [[notification.userInfo objectForKey:UIApplicationStatusBarOrientationUserInfoKey] intValue];
+    self.button.height = UIInterfaceOrientationIsPortrait(orientation) ? 24.0f : 30.0f;
+    [self.button setNeedsDisplay];
     
-	return [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage 
-                            downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
-                                      icon:icon 
-                                    target:target
-                                    action:action];
-}
-
-+(id) defaultBackButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
-	
-	OPBarButtonItem *retVal = [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackBackgroundImage
-                                               downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage
-                                                        title:title 
-                                                       target:target
-                                                       action:action];
-    [retVal.backingButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f)];
-    return retVal;
-}
-
-+(id) defaultButtonWithGlyphishIcon:(NSString*)character target:(id)target action:(SEL)action {
-	
-	OPBarButtonItem *retVal = [self buttonWithBackgroundImage:OPBarButtonItemDefaultBackgroundImage
-                                               downStateImage:OPBarButtonItemDefaultBackgroundDownStateImage 
-                                                        title:character 
-                                                       target:target 
-                                                       action:action];
-	
-	retVal.backingButton.titleLabel.font = [UIFont fontWithName:@"glyphish" size:34.0f];
-	[retVal.backingButton sizeToFit];
-	retVal.backingButton.height = 30.0f;
-	[retVal.backingButton setTitleEdgeInsets:UIEdgeInsetsMake(8.0f, 0.0f, 0.0f, 0.0f)];
-	
-    return retVal;
-}
-
-+(id) buttonWithBackgroundImage:(UIImage *)image downStateImage:(UIImage *)downStateImage title:(NSString *)title target:(id)target action:(SEL)action {
-	
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	
-	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:OPBarButtonItemDefaultTextColor forState:UIControlStateNormal];
-	[button setTitleShadowColor:OPBarButtonItemDefaultShadowColor forState:UIControlStateNormal];
-	button.titleLabel.shadowOffset = OPBarButtonItemDefaultShadowOffset;
-	button.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-	[button setBackgroundImage:image forState:UIControlStateNormal];
-    [button setBackgroundImage:downStateImage forState:UIControlStateHighlighted];
-	[button sizeToFit];
-	button.width += 20.0f;
-	button.width = MIN(MAX(button.width, 53.0f), 90.0f);
-	button.height = 30.0f;
-	
-	[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-	
-	OPBarButtonItem *barButtonItem = [[self alloc] initWithCustomView:button];
-	barButtonItem.backingButton = button;
-	return barButtonItem;
-}
-
-+(id) buttonWithBackgroundImage:(UIImage*)image downStateImage:(UIImage *)downStateImage icon:(UIImage *)icon target:(id)target action:(SEL)action {
-	
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	
-	[button setBackgroundImage:image forState:UIControlStateNormal];
-    [button setBackgroundImage:downStateImage forState:UIControlStateHighlighted];
-	[button setImage:icon forState:UIControlStateNormal];
-	button.width = icon.size.width + 20.0f;
-	button.height = 30.0f;
-	
-	[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-	
-    id barButtonItem = [[self alloc] initWithCustomView:button];
-	[(id)barButtonItem setBackingButton:button];
-	return barButtonItem;
 }
 
 @end
