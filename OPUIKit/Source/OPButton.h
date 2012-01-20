@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPUIKitBlockDefinitions.h"
+#import "OPStyleProtocol.h"
 
 @class OPButton;
-typedef void(^OPButtonDrawingBlock)(OPButton* b, CGRect r, CGContextRef c);
 
-@interface OPButton : UIButton
+@interface OPButton : UIButton <OPStyleProtocol>
 
--(void) addDrawingBlock:(OPButtonDrawingBlock)block forState:(UIControlState)state;
--(void) removeDrawingBlocksForState:(UIControlState)state;
--(void) removeAllDrawingBlocks;
+@property (nonatomic, copy) NSMutableDictionary *drawingBlocksByControlState;
+-(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state;
 
 @end
