@@ -67,6 +67,7 @@
 @synthesize keyValuePairs = _keyValuePairs;
 @synthesize keyPathValuePairs = _keyPathValuePairs;
 
+@synthesize backgroundColor = _backgroundColor;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize glossAmount = _glossAmount;
 @synthesize glossOffset = _glossOffset;

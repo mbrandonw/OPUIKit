@@ -13,8 +13,9 @@
 @optional
 
 /**
- Ways of customizing background images if supported.
+ Ways of customizing background images/colors if supported.
  */
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIImage *backgroundImage;
 
 /**
