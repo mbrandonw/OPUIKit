@@ -14,6 +14,10 @@
 
 @synthesize drawingBlocksByControlState = _drawingBlocksByControlState;
 
+#pragma mark -
+#pragma mark Object lifecycle
+#pragma mark -
+
 -(id) initWithFrame:(CGRect)frame {
     if (! (self = [super initWithFrame:frame]))
         return nil;
@@ -24,8 +28,17 @@
                                         [NSMutableArray new], [NSNumber numberWithInt:UIControlStateDisabled], 
                                         [NSMutableArray new], [NSNumber numberWithInt:UIControlStateSelected], nil];
     
+    // observe states so we can redraw the button when it changes
+    [self addObserver:self forKeyPath:@"enabled" options:0 context:NULL];
+    [self addObserver:self forKeyPath:@"selected" options:0 context:NULL];
+    [self addObserver:self forKeyPath:@"highlighted" options:0 context:NULL];
+    
     return self;
 }
+
+#pragma mark -
+#pragma mark Helper methods
+#pragma mark -
 
 -(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state {
     
@@ -44,9 +57,12 @@
     [self setNeedsDisplay];
 }
 
+#pragma mark -
+#pragma mark Drawing methods
+#pragma mark -
+
 -(void) drawRect:(CGRect)rect {
     [super drawRect:rect];
-    
     CGContextRef c = UIGraphicsGetCurrentContext();
     
     for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
@@ -62,8 +78,20 @@
     }
 }
 
+#pragma mark -
+#pragma mark Custom getters/setters
+#pragma mark -
+
 -(void) setDrawingBlocksByControlState:(NSMutableDictionary *)drawingBlocksByControlState {
     _drawingBlocksByControlState = drawingBlocksByControlState;
+    [self setNeedsDisplay];
+}
+
+#pragma mark -
+#pragma mark KVO methods
+#pragma mark -
+
+-(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     [self setNeedsDisplay];
 }
 
