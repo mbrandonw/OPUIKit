@@ -43,22 +43,8 @@
     // gotta be able to respond to orientation changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
-    // applying styles
+    // apply styles
     [[[self class] styling] applyTo:self];
-    
-    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseColorKey, $RGBi(46,169,232),
-                                                                       OPViewDrawingGradientAmountKey, $float(0.2f),
-                                                                       OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
-                                                                       OPViewDrawingCornerRadiusKey, $float(4.0f),
-                                                                       OPViewDrawingBevelKey, $bool(YES))] forState:UIControlStateNormal];
-    
-    OPGradient *gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[$RGBi(46,169,232) darken:0.7f], [$RGBi(46,169,232) darken:0.3], nil]];
-    [self.button addDrawingBlock:[OPView drawingBlockWithOptions:$dict(OPViewDrawingBaseGradientKey, gradient,
-                                                                       OPViewDrawingGradientAmountKey, $float(0.2f),
-                                                                       OPViewDrawingBorderColorKey, [UIColor colorWithWhite:0.0f alpha:0.75f],
-                                                                       OPViewDrawingCornerRadiusKey, $float(4.0f),
-                                                                       OPViewDrawingInvertedKey, $bool(YES),
-                                                                       OPViewDrawingBevelKey, $bool(NO))] forState:UIControlStateHighlighted];
     
     return self;
 }
@@ -73,6 +59,7 @@
 
 -(void) orientationChanged:(NSNotification*)notification {
     
+    // reset the button's height based on device idiom and orientation
     UIInterfaceOrientation orientation = [[notification.userInfo objectForKey:UIApplicationStatusBarOrientationUserInfoKey] intValue];
     self.button.height = [UIDevice isPad] || UIInterfaceOrientationIsLandscape(orientation) ? 30.0f : 24.0f;
     [self.button setNeedsDisplay];

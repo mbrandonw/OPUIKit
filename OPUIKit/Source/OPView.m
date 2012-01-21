@@ -78,7 +78,7 @@ NSString * const OPViewDrawingBorderColorKey = @"OPViewDrawingBorderColorKey";
 NSString * const OPViewDrawingCornerRadiusKey = @"OPViewDrawingCornerRadiusKey";
 NSString * const OPViewDrawingBevelKey = @"OPViewDrawingBevelKey";
 
-+(UIViewDrawingBlock) drawingBlockWithOptions:(NSDictionary*)options {
++(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options {
     
     // grab values from the options dictionary
     UIColor *baseColor       = [options objectForKey:OPViewDrawingBaseColorKey];

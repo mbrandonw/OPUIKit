@@ -20,6 +20,9 @@ extern NSString * const OPViewDrawingBevelKey;
 
 @interface OPView : UIView <OPStyleProtocol>
 
-+(UIViewDrawingBlock) drawingBlockWithOptions:(NSDictionary*)options;
+/**
+ Some fancy custom drawing blocks.
+ */
++(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options;
 
 @end
