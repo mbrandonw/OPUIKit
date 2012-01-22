@@ -17,6 +17,7 @@
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic, strong) NSMutableDictionary *backgroundImageByControlState;
 
 /**
  Ways of customizing background effects if supported.

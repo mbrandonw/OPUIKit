@@ -13,6 +13,7 @@
 @implementation OPButton
 
 @synthesize drawingBlocksByControlState = _drawingBlocksByControlState;
+@synthesize backgroundImageByControlState = _backgroundImageByControlState;
 
 #pragma mark -
 #pragma mark Object lifecycle
@@ -97,6 +98,16 @@
         [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateSelected)];
     if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateDisabled)])
         [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateDisabled)];
+    
+    [self setNeedsDisplay];
+}
+
+-(void) setBackgroundImageByControlState:(NSMutableDictionary *)backgroundImageByControlState {
+    _backgroundImageByControlState = [backgroundImageByControlState mutableCopy];
+    
+    [self.backgroundImageByControlState enumerateKeysAndObjectsUsingBlock:^(NSNumber *state, UIImage *image, BOOL *stop) {
+        [self setBackgroundImage:image forState:[state intValue]];
+    }];
     
     [self setNeedsDisplay];
 }

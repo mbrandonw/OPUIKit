@@ -27,9 +27,6 @@
 
 @synthesize button;
 
-// Storage for supported OPStyle
-@synthesize backgroundColor = _backgroundColor;
-
 -(id) init {
     if (! (self = [super init]))
         return nil;
