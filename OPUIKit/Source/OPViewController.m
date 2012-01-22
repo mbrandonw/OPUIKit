@@ -11,6 +11,7 @@
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
 #import "OPMacros.h"
+#import "Quartz+Opetopic.h"
 
 @implementation OPViewController
 
@@ -49,7 +50,14 @@
     
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
+    {
+        if (! CGSizeIsPowerOfTwo(self.backgroundImage.size)) {
+            DLog(@"==============================================================");
+            DLog(@"Pattern image drawing is most efficient with power of 2 images");
+            DLog(@"==============================================================");
+        }
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
+    }
     else if (self.backgroundColor)
         self.view.backgroundColor = self.backgroundColor;
     else
