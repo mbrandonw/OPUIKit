@@ -9,7 +9,6 @@
 
 #import "OPBarButtonItem.h"
 #import "OPStyle.h"
-#import "OPButton.h"
 #import "OPControl.h"
 #import "UIColor+Opetopic.h"
 #import "UIView+Opetopic.h"
@@ -19,6 +18,9 @@
 #import "NSNumber+Opetopic.h"
 #import "UIDevice+Opetopic.h"
 
+#define kOPBarButtonItemMinWidth    40.0f
+#define kOPBarButtonItemMargin      10.0f
+
 @interface OPBarButtonItem (/**/)
 @property (nonatomic, strong, readwrite) UIButton *button;
 @end
@@ -27,13 +29,17 @@
 
 @synthesize button;
 
+#pragma mark -
+#pragma mark Object lifecycle
+#pragma mark -
+
 -(id) init {
     if (! (self = [super init]))
         return nil;
     
     // init button custom view
     self.button = [OPButton buttonWithType:UIButtonTypeCustom];
-    self.button.size = CGSizeMake(50.0f, 30.0f);
+    self.button.size = CGSizeMake(0.0f, [[self class] heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]]);
     self.button.layer.contentsScale = [UIScreen mainScreen].scale;
     self.customView = self.button;
     
@@ -46,8 +52,74 @@
     return self;
 }
 
++(id) buttonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+    
+    OPBarButtonItem *item = [[[self class] alloc] init];
+    
+    [item.button setTitle:title forState:UIControlStateNormal];
+    
+    CGFloat originalHeight = item.button.height;
+    [item.button sizeToFit];
+    item.button.height = originalHeight;
+    item.button.width += kOPBarButtonItemMargin*2.0f + item.button.titleEdgeInsets.left + item.button.titleEdgeInsets.right;
+    item.button.width = MAX(kOPBarButtonItemMinWidth, item.button.width);
+    
+    [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return item;
+}
+
++(id) buttonWithIcon:(UIImage*)icon target:(id)target action:(SEL)action {
+    
+    OPBarButtonItem *item = [[[self class] alloc] init];
+    
+    [item.button setImage:icon forState:UIControlStateNormal];
+    
+    CGFloat originalHeight = item.button.height;
+    [item.button sizeToFit];
+    item.button.height = originalHeight;
+    item.button.width += kOPBarButtonItemMargin*2.0f + item.button.titleEdgeInsets.left + item.button.titleEdgeInsets.right;
+    item.button.width = MAX(kOPBarButtonItemMinWidth, item.button.width);
+    
+    [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return item;
+}
+
++(id) buttonWithGlyphish:(NSString*)glyph target:(id)target action:(SEL)action {
+    
+    OPBarButtonItem *item = [[self class] buttonWithTitle:glyph target:target action:action];
+    item.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:34.0f];
+    item.button.titleEdgeInsets = UIEdgeInsetsMake(80.0f, 0.0f, 0.0f, 0.0f);
+    
+    CGFloat originalHeight = item.button.height;
+    [item.button sizeToFit];
+    item.button.height = originalHeight;
+    item.button.width += kOPBarButtonItemMargin*2.0f + item.button.titleEdgeInsets.left + item.button.titleEdgeInsets.right;
+    item.button.width = MAX(kOPBarButtonItemMinWidth, item.button.width);
+    
+    [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return item;
+}
+
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+#pragma mark -
+#pragma mark Actions
+#pragma mark -
+
+-(void) addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents {
+    [self.button addTarget:target action:action forControlEvents:controlEvents];
+}
+
+#pragma mark -
+#pragma mark Button geometry methods
+#pragma mark -
+
++(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation {
+    
+    // only landscape on non-ipad devices get the smaller buttons
+    return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 24.0f : 30.0f;
 }
 
 #pragma mark -
@@ -55,11 +127,8 @@
 #pragma mark -
 
 -(void) orientationChanged:(NSNotification*)notification {
-    
-    UIInterfaceOrientation orientation = [[notification.userInfo objectForKey:UIApplicationStatusBarOrientationUserInfoKey] intValue];
-    self.button.height = [UIDevice isPad] || UIInterfaceOrientationIsLandscape(orientation) ? 30.0f : 24.0f;
+    self.button.height = [[self class] heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self.button setNeedsDisplay];
-    
 }
 
 @end

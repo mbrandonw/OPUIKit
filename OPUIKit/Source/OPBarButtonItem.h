@@ -8,18 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import "OPStyleProtocol.h"
-
-@class OPButton;
+#import "OPButton.h"
 
 @interface OPBarButtonItem : UIBarButtonItem <OPStyleProtocol>
 
 @property (nonatomic, strong, readonly) OPButton *button;
 
 /**
- Helper create method.
+ Helper create methods.
  */
-//+(id) buttonWithTitle:(NSString*)title;
-//+(id) buttonWithIcon:(UIImage*)icon;
-//+(id) buttonWithGlyphish:(NSString*)glyph;
++(id) buttonWithTitle:(NSString*)title target:(id)target action:(SEL)action;
++(id) buttonWithIcon:(UIImage*)icon target:(id)target action:(SEL)action;
++(id) buttonWithGlyphish:(NSString*)glyph target:(id)target action:(SEL)action;
+
+/**
+ Adding actions to bar buttons (this just forwards to the underlying OPButton).
+ */
+-(void) addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
+
+/**
+ Button geometry methods.
+ */
++(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation;
 
 @end
