@@ -19,6 +19,7 @@
 #import "OPTableViewController.h"
 #import "OPViewController.h"
 #import "OPBarButtonItem.h"
+#import "OPBackBarButtonItem.h"
 #import "OPGradient.h"
 #import "OPGradientView.h"
 #import "OPNavigationBar.h"
