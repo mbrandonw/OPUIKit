@@ -13,6 +13,7 @@
 #import "UIView+Opetopic.h"
 #import "OPBarButtonItem.h"
 #import "OPMacros.h"
+#import "OPBackBarButtonItem.h"
 
 #pragma mark Private methods
 @interface OPNavigationController (/**/)
@@ -132,19 +133,9 @@
 	{
         UIViewController *lastController = [navigationController.viewControllers objectAtIndex:[navigationController.viewControllers indexOfObject:viewController]-1];
         
-//        if ([OPBarButtonItem hasDefaultBackBackgroundImage])
-//        {
-//            viewController.navigationItem.leftBarButtonItem = [OPBarButtonItem defaultBackButtonWithTitle:(lastController.title ? lastController.title : @"Back") 
-//                                                                                                   target:self
-//                                                                                                   action:@selector(dismissModalViewControllerWithAnimation)];
-//        }
-//        else
-        {
-            viewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(lastController.title ? lastController.title : @"Back")
-                                                                                               style:UIBarButtonItemStylePlain
-                                                                                              target:self 
-                                                                                              action:@selector(popViewControllerWithAnimation)];
-        }
+        viewController.navigationItem.leftBarButtonItem = [OPBackBarButtonItem buttonWithTitle:OPCoalesce(lastController.title, NSLocalizedString(@"Back", @"UIBarButtonItem default back label"))
+                                                                                        target:self 
+                                                                                        action:@selector(popViewControllerWithAnimation)];
     }
 }
 
