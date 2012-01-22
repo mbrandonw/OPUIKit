@@ -77,50 +77,60 @@ NSString * const OPViewDrawingInvertedKey = @"OPViewDrawingInvertedKey";
 NSString * const OPViewDrawingBorderColorKey = @"OPViewDrawingBorderColorKey";
 NSString * const OPViewDrawingCornerRadiusKey = @"OPViewDrawingCornerRadiusKey";
 NSString * const OPViewDrawingBevelKey = @"OPViewDrawingBevelKey";
+NSString * const OPViewDrawingBevelInnerColorKey = @"OPViewDrawingBevelInnerColorKey";
+NSString * const OPViewDrawingBevelOuterColorKey = @"OPViewDrawingBevelOuterColorKey";
+NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderColorKey";
 
 +(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options {
     
     // grab values from the options dictionary
-    UIColor *baseColor       = [options objectForKey:OPViewDrawingBaseColorKey];
-    OPGradient *baseGradient = [options objectForKey:OPViewDrawingBaseGradientKey];
-    CGFloat gradientAmount   = [[options numberForKey:OPViewDrawingGradientAmountKey] floatValue];
-    BOOL inverted            = [[options numberForKey:OPViewDrawingInvertedKey] boolValue];
-    UIColor *borderColor     = [options objectForKey:OPViewDrawingBorderColorKey];
-    CGFloat radius           = [[options numberForKey:OPViewDrawingCornerRadiusKey] floatValue];
-    BOOL bevel               = [[options numberForKey:OPViewDrawingBevelKey] boolValue];
+    UIColor *baseColor          = [options objectForKey:OPViewDrawingBaseColorKey];
+    OPGradient *baseGradient    = [options objectForKey:OPViewDrawingBaseGradientKey];
+    CGFloat gradientAmount      = [[options numberForKey:OPViewDrawingGradientAmountKey] floatValue];
+    BOOL inverted               = [[options numberForKey:OPViewDrawingInvertedKey] boolValue];
+    UIColor *borderColor        = [options objectForKey:OPViewDrawingBorderColorKey];
+    CGFloat radius              = [[options numberForKey:OPViewDrawingCornerRadiusKey] floatValue];
+    BOOL bevel                  = [[options numberForKey:OPViewDrawingBevelKey] boolValue];
+    UIColor *bevelInnerColor    = [options objectForKey:OPViewDrawingBevelInnerColorKey];
+    UIColor *bevelOuterColor    = [options objectForKey:OPViewDrawingBevelOuterColorKey];
+    UIColor *bevelBorderColor   = [options objectForKey:OPViewDrawingBevelBorderColorKey];
     
-    OPGradient *gradient = baseGradient;
-    if (! gradient && ! inverted)
-        gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
-    else if (! gradient)
-        gradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
+    // create a baseGradient from the baseColor if no gradient is provided
+    if (! baseGradient && ! inverted)
+        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
+    else if (! baseGradient)
+        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
     
+    // create the drawing block
     return [^(UIView *v, CGRect r, CGContextRef c){
         
+        CGRect fullRect = CGRectMake(0.0f, 0.0f, r.size.width, r.size.height-1.0f);
+        CGRect insetRect = CGRectInset(fullRect, 1.0f, 1.0f);
+        
         if (bevel) {
-            [[UIColor colorWithWhite:1.0f alpha:0.8f] set];
+            [bevelOuterColor set];
             [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0.0f, r.size.height-radius*2.0f, r.size.width, radius*2.0f) cornerRadius:radius] fill];
         }
         
-        UIBezierPath *fullPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0.0f, 0.0f, r.size.width, r.size.height-1.0f) cornerRadius:radius];
-        UIBezierPath *insetPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.0f, 1.0f, r.size.width-2.0f, r.size.height-3.0) cornerRadius:radius-1.0f];
+        UIBezierPath *fullPath = [UIBezierPath bezierPathWithRoundedRect:fullRect cornerRadius:radius];
+        UIBezierPath *insetPath = [UIBezierPath bezierPathWithRoundedRect:insetRect cornerRadius:radius-1.0f];
         
         [borderColor set];
         [fullPath fill];
         
         [insetPath addClip];
-        [gradient fillRectLinearly:CGRectMake(1.0f, 1.0f, r.size.width-2.0f, r.size.height-3.0f)];
+        [baseGradient fillRectLinearly:insetRect];
         
         if (bevel)
         {
             // and a light border
-            [[UIColor colorWithWhite:1.0f alpha:0.15f] setStroke];
-            [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.5f, 1.5f, r.size.width-3.0f, r.size.height-4.0f) cornerRadius:radius-1.0f] stroke];
+            [bevelBorderColor setStroke];
+            [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) cornerRadius:radius-1.0f] stroke];
             
             CGContextSaveGState(c);
             {
-                UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(1.0f, 1.0f, r.size.width-2.0f, radius*3.0f) cornerRadius:radius-1.0f];
-                CGContextSetFillColorWithColor(c, [UIColor colorWithWhite:1.0f alpha:0.3f].CGColor);
+                UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:insetRect cornerRadius:radius-1.0f];
+                CGContextSetFillColorWithColor(c, bevelInnerColor.CGColor);
                 CGContextClipToRect(c, CGRectMake(0.0f, 0.0f, r.size.width, radius));
                 CGContextAddPath(c, path.CGPath);
                 CGContextTranslateCTM(c, 0.0f, 1.0f);
