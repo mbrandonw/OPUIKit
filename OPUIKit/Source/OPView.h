@@ -17,9 +17,16 @@ extern NSString * const OPViewDrawingInvertedKey;
 extern NSString * const OPViewDrawingBorderColorKey;
 extern NSString * const OPViewDrawingCornerRadiusKey;
 extern NSString * const OPViewDrawingBevelKey;
+extern NSString * const OPViewDrawingBevelInnerColorKey;
+extern NSString * const OPViewDrawingBevelOuterColorKey;
+extern NSString * const OPViewDrawingBevelBorderColorKey;
 
 @interface OPView : UIView <OPStyleProtocol>
 
-+(UIViewDrawingBlock) drawingBlockWithOptions:(NSDictionary*)options;
+/**
+ Some fancy custom drawing blocks.
+ */
++(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options;
++(UIViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options;
 
 @end
