@@ -48,6 +48,10 @@
     [[[self class] styling] applyTo:self];
 }
 
+-(void) dealloc {
+    [self removeObserver:self forKeyPath:@"drawingBlocks"];
+}
+
 -(void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     

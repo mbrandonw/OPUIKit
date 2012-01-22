@@ -80,6 +80,10 @@
     return self;
 }
 
+-(void) dealloc {
+    [self.badge.valueLabel removeObserver:self forKeyPath:@"text"];
+}
+
 -(void) layoutSubviews {
     [super layoutSubviews];
     

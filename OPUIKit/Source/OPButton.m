@@ -40,6 +40,12 @@
     return self;
 }
 
+-(void) dealloc {
+    [self removeObserver:self forKeyPath:@"enabled"];
+    [self removeObserver:self forKeyPath:@"selected"];
+    [self removeObserver:self forKeyPath:@"highlighted"];
+}
+
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -
