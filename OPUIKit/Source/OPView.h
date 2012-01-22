@@ -27,5 +27,6 @@ extern NSString * const OPViewDrawingBevelBorderColorKey;
  Some fancy custom drawing blocks.
  */
 +(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options;
++(UIViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options;
 
 @end

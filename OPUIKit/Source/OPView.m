@@ -11,6 +11,7 @@
 #import "OPGradient.h"
 #import "UIColor+Opetopic.h"
 #import "NSDictionary+Opetopic.h"
+#import "UIBezierPath+Opetopic.h"
 
 @interface OPView (/**/)
 -(void) __init;
@@ -130,6 +131,73 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
             CGContextSaveGState(c);
             {
                 UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:insetRect cornerRadius:radius-1.0f];
+                CGContextSetFillColorWithColor(c, bevelInnerColor.CGColor);
+                CGContextClipToRect(c, CGRectMake(0.0f, 0.0f, r.size.width, radius));
+                CGContextAddPath(c, path.CGPath);
+                CGContextTranslateCTM(c, 0.0f, 1.0f);
+                CGContextAddPath(c, path.CGPath);
+                CGContextEOFillPath(c);
+            }
+            CGContextRestoreGState(c);
+        }
+        
+    } copy];
+}
+
++(UIViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options {
+    
+    // grab values from the options dictionary
+    UIColor *baseColor          = [options objectForKey:OPViewDrawingBaseColorKey];
+    OPGradient *baseGradient    = [options objectForKey:OPViewDrawingBaseGradientKey];
+    CGFloat gradientAmount      = [[options numberForKey:OPViewDrawingGradientAmountKey] floatValue];
+    BOOL inverted               = [[options numberForKey:OPViewDrawingInvertedKey] boolValue];
+    UIColor *borderColor        = [options objectForKey:OPViewDrawingBorderColorKey];
+    CGFloat radius              = [[options numberForKey:OPViewDrawingCornerRadiusKey] floatValue];
+    BOOL bevel                  = [[options numberForKey:OPViewDrawingBevelKey] boolValue];
+    UIColor *bevelInnerColor    = [options objectForKey:OPViewDrawingBevelInnerColorKey];
+    UIColor *bevelOuterColor    = [options objectForKey:OPViewDrawingBevelOuterColorKey];
+    UIColor *bevelBorderColor   = [options objectForKey:OPViewDrawingBevelBorderColorKey];
+    
+    // create a baseGradient from the baseColor if no gradient is provided
+    if (! baseGradient && ! inverted)
+        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
+    else if (! baseGradient)
+        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
+    
+    // create the drawing block
+    return [^(UIView *v, CGRect r, CGContextRef c){
+        
+        CGFloat pointerSize = r.size.height == 30.0f ? 8.0f : 6.0f;
+        
+        CGRect fullRect = CGRectMake(0.0f, 0.0f, r.size.width, r.size.height-1.0f);
+        CGRect insetRect = CGRectInset(fullRect, 1.0f, 1.0f);
+        
+        UIBezierPath *fullPath = [UIBezierPath bezierPathWithPointedRoundedRect:fullRect radius:radius pointerSize:pointerSize];
+        UIBezierPath *insetPath = [UIBezierPath bezierPathWithPointedRoundedRect:insetRect radius:radius-1.0f pointerSize:pointerSize];
+        
+        if (bevel) {
+            [bevelOuterColor set];
+            CGContextSaveGState(c);
+            CGContextTranslateCTM(c, 0.0f, 1.0f);
+            [fullPath fill];
+            CGContextRestoreGState(c);
+        }
+        
+        [borderColor set];
+        [fullPath fill];
+        
+        [insetPath addClip];
+        [baseGradient fillRectLinearly:insetRect];
+        
+        if (bevel)
+        {
+            // and a light border
+            [bevelBorderColor setStroke];
+            [[UIBezierPath bezierPathWithPointedRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) radius:radius-1.0f pointerSize:pointerSize] stroke];
+            
+            CGContextSaveGState(c);
+            {
+                UIBezierPath *path = [UIBezierPath bezierPathWithPointedRoundedRect:insetRect radius:radius-1.0f pointerSize:pointerSize];
                 CGContextSetFillColorWithColor(c, bevelInnerColor.CGColor);
                 CGContextClipToRect(c, CGRectMake(0.0f, 0.0f, r.size.width, radius));
                 CGContextAddPath(c, path.CGPath);

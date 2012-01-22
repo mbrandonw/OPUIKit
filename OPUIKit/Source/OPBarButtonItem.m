@@ -59,7 +59,6 @@
 
 -(void) orientationChanged:(NSNotification*)notification {
     
-    // reset the button's height based on device idiom and orientation
     UIInterfaceOrientation orientation = [[notification.userInfo objectForKey:UIApplicationStatusBarOrientationUserInfoKey] intValue];
     self.button.height = [UIDevice isPad] || UIInterfaceOrientationIsLandscape(orientation) ? 30.0f : 24.0f;
     [self.button setNeedsDisplay];
