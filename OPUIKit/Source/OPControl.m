@@ -87,7 +87,7 @@
 #pragma mark -
 
 -(void) setDrawingBlocksByControlState:(NSMutableDictionary *)drawingBlocksByControlState {
-    _drawingBlocksByControlState = drawingBlocksByControlState;
+    _drawingBlocksByControlState = [drawingBlocksByControlState mutableCopy];
     
     // make sure there is an array of drawing blocks for each state
     if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateNormal)])
