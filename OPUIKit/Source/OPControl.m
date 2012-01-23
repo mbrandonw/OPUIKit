@@ -113,7 +113,10 @@
 #pragma mark -
 
 -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    [self setNeedsDisplay];
+    
+    // confirm that the object that changed was this control
+    if (object == self)
+        [self setNeedsDisplay];
 }
 
 @end

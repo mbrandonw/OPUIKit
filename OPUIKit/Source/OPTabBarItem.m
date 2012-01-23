@@ -155,13 +155,19 @@
 #pragma mark -
 
 -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     
-    // record the badge value when it changes
-    id newValue = [change objectForKey:NSKeyValueChangeNewKey];
-    if (newValue != [NSNull null])
-        [[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
-    else
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
+    // check if it is the badge value that changed
+    if (object == self.badge.valueLabel)
+    {
+        // record the badge value when it changes
+        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+        if (newValue != [NSNull null])
+            [[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
+        else
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark -
