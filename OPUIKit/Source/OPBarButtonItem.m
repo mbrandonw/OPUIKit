@@ -18,7 +18,7 @@
 #import "NSNumber+Opetopic.h"
 #import "UIDevice+Opetopic.h"
 
-#define kOPBarButtonItemMinWidth    40.0f
+#define kOPBarButtonItemMinWidth    44.0f
 #define kOPBarButtonItemMargin      10.0f
 
 @interface OPBarButtonItem (/**/)
@@ -88,13 +88,12 @@
     
     OPBarButtonItem *item = [[self class] buttonWithTitle:glyph target:target action:action];
     item.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:34.0f];
-    item.button.titleEdgeInsets = UIEdgeInsetsMake(80.0f, 0.0f, 0.0f, 0.0f);
+    item.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
     
     CGFloat originalHeight = item.button.height;
     [item.button sizeToFit];
     item.button.height = originalHeight;
-    item.button.width += kOPBarButtonItemMargin*2.0f + item.button.titleEdgeInsets.left + item.button.titleEdgeInsets.right;
-    item.button.width = MAX(kOPBarButtonItemMinWidth, item.button.width);
+    item.button.width = kOPBarButtonItemMinWidth;
     
     [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     return item;
