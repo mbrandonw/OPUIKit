@@ -65,7 +65,7 @@
 }
 
 #pragma mark -
-#pragma Overridden UIView methods
+#pragma mark Overridden UIView methods
 #pragma mark -
 
 -(void) layoutSubviews {
@@ -81,7 +81,7 @@
 }
 
 #pragma mark -
-#pragma Custom getters/setters
+#pragma mark Custom getters/setters
 #pragma mark -
 
 -(void) setValueLabelInsets:(UIEdgeInsets)valueLabelInsets {
@@ -135,7 +135,7 @@
 }
 
 #pragma mark -
-#pragma Some default drawing blocks
+#pragma mark Some default drawing blocks
 #pragma mark -
 
 +(UIViewDrawingBlock) defaultBadgeDrawingBlock {
