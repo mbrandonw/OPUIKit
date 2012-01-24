@@ -175,26 +175,26 @@
 /**
  Internal mapping of classes to OPStyle instances.
  */
-static NSMutableDictionary *OPStylesByClass;
+static NSMutableDictionary *OPStyleByClass;
 
 @implementation NSObject (OPStyle)
 
 +(OPStyle*) styling {
     
     // lazily create the dictionary that maps classes to style objects
-    if (! OPStylesByClass)
-        OPStylesByClass = [NSMutableDictionary new];
+    if (! OPStyleByClass)
+        OPStyleByClass = [NSMutableDictionary new];
     
     // lazily create the style object for this class (well, secretly the style proxy... shhh)
     NSString *classString = NSStringFromClass([self class]);
-    if (! [OPStylesByClass objectForKey:classString])
+    if (! [OPStyleByClass objectForKey:classString])
     {
         OPStyle *style = [[OPStyle alloc] initForClass:[self class]];
         OPStyleProxy *styleProxy = [[OPStyleProxy alloc] initWithStyle:style];
-        [OPStylesByClass setObject:styleProxy forKey:classString];
+        [OPStyleByClass setObject:styleProxy forKey:classString];
     }
     
-    return [OPStylesByClass objectForKey:classString];
+    return [OPStyleByClass objectForKey:classString];
 }
 
 -(OPStyle*) styling {
