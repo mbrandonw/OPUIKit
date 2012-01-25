@@ -17,6 +17,7 @@
 #import "NSDictionary+Opetopic.h"
 #import "NSNumber+Opetopic.h"
 #import "UIDevice+Opetopic.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kOPBarButtonItemMinWidth    44.0f
 #define kOPBarButtonItemMargin      10.0f
