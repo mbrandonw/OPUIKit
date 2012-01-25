@@ -1,6 +1,6 @@
 //
 //  OPTableViewController.m
-//  MiStryker
+//  OPUIKit
 //
 //  Created by Brandon Williams on 12/7/10.
 //  Copyright 2010 Opetopic. All rights reserved.
@@ -13,11 +13,13 @@
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
 
+#define kScrollingDidStopDelay  0.3f
+
 #pragma mark Private methods
 @interface OPTableViewController (/*Private*/)
 @property (nonatomic, assign) BOOL touchIsDown;
 @property (nonatomic, assign) CGPoint beginDraggingContentOffset;
--(void) lazilyLoadImages;
+-(void) scrollingDidStop;
 @end
 #pragma mark -
 
@@ -74,7 +76,7 @@
     [[self styling] applyTo:self];
 	
     // default ivars
-    self.resignKeyboardScrollDelta = 40.0f;
+    self.resignKeyboardScrollDelta = 60.0f;
 	
 	return self;
 }
@@ -119,7 +121,7 @@
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self performSelector:@selector(lazilyLoadImages) withObject:nil afterDelay:0.3f];
+	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
 }
 
 - (void)viewDidUnload {
@@ -137,7 +139,7 @@
 
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 	if (! decelerate) {
-		[self lazilyLoadImages];
+		[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
 	}
     
     CGPoint p1 = scrollView.contentOffset;
@@ -147,11 +149,11 @@
 }
 
 -(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	[self lazilyLoadImages];
+	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
 }
 
 -(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-	[self lazilyLoadImages];
+	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -166,14 +168,14 @@
         [self.view endEditing:YES];
 }
 
--(void) lazilyLoadImages {
+-(void) scrollingDidStop {
 	
-	// loop through the visibile table cells to lazily load any images the cells may have
+	// loop through the visibile table cells to notify them of scroll stopping
 	UITableView *tableView = self.searchDisplayController.active ? self.searchDisplayController.searchResultsTableView : self.tableView;
 	for (UITableViewCell *cell in [tableView visibleCells])
 	{
-		if ([cell respondsToSelector:@selector(lazilyLoadImages)])
-			[cell performSelector:@selector(lazilyLoadImages)];
+		if ([cell respondsToSelector:@selector(scrollingDidStop)])
+			[cell performSelector:@selector(scrollingDidStop)];
 	}
 }
 
@@ -202,7 +204,7 @@
 	else
 		[self.tableView reloadData];
 	
-	[self lazilyLoadImages];
+	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
 }
 
 #pragma mark -
