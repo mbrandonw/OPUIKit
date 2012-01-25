@@ -135,6 +135,12 @@
 		A7F0597614B9F65F005CF16F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F0596E14B9F58D005CF16F /* MapKit.framework */; };
 		A7F0597714B9F65F005CF16F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D87714B926FF00B469BB /* CoreData.framework */; };
 		A7F0597814B9F65F005CF16F /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706D73A14B9250C00B469BB /* GHUnitIOS.framework */; };
+		CA07F0C714D0C09B006E8D2D /* UIBezierPath+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0C614D0C09B006E8D2D /* UIBezierPath+Opetopic.m */; };
+		CA07F0C814D0C09B006E8D2D /* UIBezierPath+Opetopic.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0C614D0C09B006E8D2D /* UIBezierPath+Opetopic.m */; };
+		CA07F0CC14D0C0C4006E8D2D /* OPTabBarItemBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0CB14D0C0C4006E8D2D /* OPTabBarItemBadge.m */; };
+		CA07F0CD14D0C0C4006E8D2D /* OPTabBarItemBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0CB14D0C0C4006E8D2D /* OPTabBarItemBadge.m */; };
+		CA07F0D014D0C120006E8D2D /* OPBackBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0CF14D0C120006E8D2D /* OPBackBarButtonItem.m */; };
+		CA07F0D114D0C120006E8D2D /* OPBackBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA07F0CF14D0C120006E8D2D /* OPBackBarButtonItem.m */; };
 		CA128D5814C765CB008F1EA6 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CA128D4D14C765CB008F1EA6 /* MARTNSObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CA128D5914C765CB008F1EA6 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CA128D4D14C765CB008F1EA6 /* MARTNSObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CA128D5A14C765CB008F1EA6 /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = CA128D4F14C765CB008F1EA6 /* RTIvar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -274,6 +280,12 @@
 		A7F0596E14B9F58D005CF16F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A7F0597014B9F5A8005CF16F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A7F0597214B9F5B8005CF16F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		CA07F0C514D0C09B006E8D2D /* UIBezierPath+Opetopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Opetopic.h"; sourceTree = "<group>"; };
+		CA07F0C614D0C09B006E8D2D /* UIBezierPath+Opetopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Opetopic.m"; sourceTree = "<group>"; };
+		CA07F0CA14D0C0C4006E8D2D /* OPTabBarItemBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTabBarItemBadge.h; sourceTree = "<group>"; };
+		CA07F0CB14D0C0C4006E8D2D /* OPTabBarItemBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTabBarItemBadge.m; sourceTree = "<group>"; };
+		CA07F0CE14D0C120006E8D2D /* OPBackBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPBackBarButtonItem.h; sourceTree = "<group>"; };
+		CA07F0CF14D0C120006E8D2D /* OPBackBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPBackBarButtonItem.m; sourceTree = "<group>"; };
 		CA128D4C14C765CB008F1EA6 /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MARTNSObject.h; path = MAObjCRuntime/MARTNSObject.h; sourceTree = "<group>"; };
 		CA128D4D14C765CB008F1EA6 /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MARTNSObject.m; path = MAObjCRuntime/MARTNSObject.m; sourceTree = "<group>"; };
 		CA128D4E14C765CB008F1EA6 /* RTIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTIvar.h; path = MAObjCRuntime/RTIvar.h; sourceTree = "<group>"; };
@@ -503,6 +515,8 @@
 		A706D83014B9269F00B469BB /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				CA07F0C514D0C09B006E8D2D /* UIBezierPath+Opetopic.h */,
+				CA07F0C614D0C09B006E8D2D /* UIBezierPath+Opetopic.m */,
 				A7A9C19A14C125CE00C39504 /* UIColor+Opetopic.h */,
 				A7A9C19B14C125CE00C39504 /* UIColor+Opetopic.m */,
 				A706D83114B9269F00B469BB /* UIApplication+Opetopic.h */,
@@ -596,6 +610,8 @@
 				A7A9C16E14C1025800C39504 /* OPTabBarItem.m */,
 				A7A9C17114C1026600C39504 /* OPTabBarController.h */,
 				A7A9C17214C1026600C39504 /* OPTabBarController.m */,
+				CA07F0CA14D0C0C4006E8D2D /* OPTabBarItemBadge.h */,
+				CA07F0CB14D0C0C4006E8D2D /* OPTabBarItemBadge.m */,
 			);
 			name = OPTabBarController;
 			sourceTree = "<group>";
@@ -603,6 +619,8 @@
 		A7991B8F14C4F560005032D3 /* OP Views */ = {
 			isa = PBXGroup;
 			children = (
+				CA07F0CE14D0C120006E8D2D /* OPBackBarButtonItem.h */,
+				CA07F0CF14D0C120006E8D2D /* OPBackBarButtonItem.m */,
 				A706D73D14B9253400B469BB /* OPBarButtonItem.h */,
 				A706D73E14B9253400B469BB /* OPBarButtonItem.m */,
 				A706D73F14B9253400B469BB /* OPGradientView.h */,
@@ -807,6 +825,9 @@
 				CA128D5E14C765CB008F1EA6 /* RTProperty.m in Sources */,
 				CA128D6014C765CB008F1EA6 /* RTProtocol.m in Sources */,
 				CA128D6214C765CB008F1EA6 /* RTUnregisteredClass.m in Sources */,
+				CA07F0C714D0C09B006E8D2D /* UIBezierPath+Opetopic.m in Sources */,
+				CA07F0CC14D0C0C4006E8D2D /* OPTabBarItemBadge.m in Sources */,
+				CA07F0D014D0C120006E8D2D /* OPBackBarButtonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,6 +890,9 @@
 				CA128D5F14C765CB008F1EA6 /* RTProperty.m in Sources */,
 				CA128D6114C765CB008F1EA6 /* RTProtocol.m in Sources */,
 				CA128D6314C765CB008F1EA6 /* RTUnregisteredClass.m in Sources */,
+				CA07F0C814D0C09B006E8D2D /* UIBezierPath+Opetopic.m in Sources */,
+				CA07F0CD14D0C0C4006E8D2D /* OPTabBarItemBadge.m in Sources */,
+				CA07F0D114D0C120006E8D2D /* OPBackBarButtonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
