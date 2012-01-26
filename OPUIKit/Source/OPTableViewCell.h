@@ -20,18 +20,17 @@ typedef enum {
 
 @interface OPTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) NSString *imageURL;
 @property (nonatomic, assign) OPTableViewCellImageURLLoadingType imageURLLoadingType;
 @property (nonatomic, assign) OPTableViewCellImageURLLoadingAnimation imageURLLoadingAnimation;
-
-/**
- Subclasses should override this.
- */
--(void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted;
 
 /**
  Do remote image loading here if you want. Called only on visible cells when scrolling stops.
  */
 -(void) scrollingDidStop;
+
+-(void) loadImageURL:(NSString*)url;
+-(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder;
+-(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName;
+
 
 @end

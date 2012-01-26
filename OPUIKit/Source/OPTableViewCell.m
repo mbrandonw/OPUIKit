@@ -7,147 +7,96 @@
 //
 
 #import "OPTableViewCell.h"
+#import "OPCache.h"
 
-@interface OPTableViewCellView : UIView
+@interface OPTableViewCell (/**/)
+@property (nonatomic, strong) NSString *imageURL;
+@property (nonatomic, strong) UIImage *placeholder;
+@property (nonatomic, copy) UIImage*(^processing)(UIImage *image);
+@property (nonatomic, strong) NSString *cacheName;
+-(void) immediateLoadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName;
 @end
-
-@interface OPTableViewSelectedCellView : UIView
-@end
-
-@implementation OPTableViewCellView
-
--(id) initWithFrame:(CGRect)frame {
-    if (! (self = [super initWithFrame:frame]))
-        return nil;
-    self.contentMode = UIViewContentModeRedraw;
-    return self;
-}
-
--(void) drawRect:(CGRect)rect {
-    [(OPTableViewCell*)[self superview] drawContentView:rect highlighted:NO];
-}
-
-@end
-
-@implementation OPTableViewSelectedCellView
-
--(id) initWithFrame:(CGRect)frame {
-    if (! (self = [super initWithFrame:frame]))
-        return nil;
-    self.contentMode = UIViewContentModeRedraw;
-    return self;
-}
-
--(void) drawRect:(CGRect)rect {
-    [(OPTableViewCell *)[self superview] drawContentView:rect highlighted:YES];
-}
-
-@end
-
 
 @implementation OPTableViewCell
 
-@synthesize imageURL;
-@synthesize imageURLLoadingType;
-@synthesize imageURLLoadingAnimation;
+@synthesize imageURL = _imageURL;
+@synthesize imageURLLoadingType = _imageURLLoadingType;
+@synthesize imageURLLoadingAnimation = _imageURLLoadingAnimation;
+@synthesize cacheName = _cacheName;
+@synthesize processing = _processing;
+@synthesize placeholder = _placeholder;
 
 -(id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (! (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
         return nil;
     
-    self.backgroundView = [[OPTableViewCellView alloc] initWithFrame:CGRectZero];
-    self.backgroundView.opaque = YES;
-    
-    self.selectedBackgroundView.opaque = YES;
-    self.selectedBackgroundView = [[OPTableViewSelectedCellView alloc] initWithFrame:CGRectZero];
+    self.imageURLLoadingAnimation = OPTableViewCellImageURLLoadingAnimationNone;
+    self.imageURLLoadingType = OPTableViewCellImageURLLoadingTypeScrollStops;
     
     return self;
 }
 
-- (void)setSelected:(BOOL)selected {
-    [self.selectedBackgroundView setNeedsDisplay];
-    
-    if(!selected && self.selected) {
-        [self.backgroundView setNeedsDisplay];
-    }
-    
-    [super setSelected:selected];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [self.selectedBackgroundView setNeedsDisplay];
-    
-    if(!selected && self.selected) {
-        [self.backgroundView setNeedsDisplay];
-    }
-    
-    [super setSelected:selected animated:animated];
-}
-
-- (void)setHighlighted:(BOOL)highlighted {
-    [self.selectedBackgroundView setNeedsDisplay];
-    
-    if(!highlighted && self.highlighted) {
-        [self.backgroundView setNeedsDisplay];
-    }
-    
-    [super setHighlighted:highlighted];
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [self.selectedBackgroundView setNeedsDisplay];
-    
-    if(!highlighted && self.highlighted) {
-        [self.backgroundView setNeedsDisplay];
-    }
-    
-    [super setHighlighted:highlighted animated:animated];
-}
-
-- (void)setFrame:(CGRect)f {
-    [super setFrame:f];
-    CGRect b = [self bounds];
-    [self.backgroundView setFrame:b];
-    [self.selectedBackgroundView setFrame:b];
-}
-
-- (void)setNeedsDisplay {
-    [super setNeedsDisplay];
-    [self.backgroundView setNeedsDisplay];
-    
-    if([self isHighlighted] || [self isSelected]) {
-        [self.selectedBackgroundView setNeedsDisplay];
-    }
-}
-
-- (void)setNeedsDisplayInRect:(CGRect)rect {
-    [super setNeedsDisplayInRect:rect];
-    [self.backgroundView setNeedsDisplayInRect:rect];
-    
-    if([self isHighlighted] || [self isSelected]) {
-        [self.selectedBackgroundView setNeedsDisplayInRect:rect];
-    }
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.contentView.hidden = YES;
-    [self.contentView removeFromSuperview];
-}
-
-- (void)drawContentView:(CGRect)rect highlighted:(BOOL)highlighted {
-    // subclasses should implement this
-}
-
 -(void) prepareForReuse {
+    [super prepareForReuse];
+    [[OPCache sharedCache] cancelFetchForURL:self.imageURL cacheName:self.cacheName];
 }
 
 -(void) scrollingDidStop {
     
     if (self.imageURL && self.imageURLLoadingType == OPTableViewCellImageURLLoadingTypeScrollStops)
     {
-        
+        [self immediateLoadImageURL:self.imageURL placeholder:self.placeholder processing:self.processing cacheName:self.cacheName];
     }
+}
+
+-(void) loadImageURL:(NSString*)url {
+    [self loadImageURL:url placeholder:nil];
+}
+
+-(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder {
+    [self loadImageURL:url placeholder:placeholder processing:nil cacheName:@""];
+}
+
+-(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName {
+    
+    self.imageURL = url;
+    self.placeholder = placeholder;
+    self.processing = processing;
+    self.cacheName = cacheName;
+    
+    if (self.imageURLLoadingType == OPTableViewCellImageURLLoadingTypeImmediate)
+    {
+        [self immediateLoadImageURL:url placeholder:placeholder processing:processing cacheName:cacheName];
+    }
+    else
+    {
+        UIImage *cachedImage = [(OPCache*)[OPCache sharedCache] cachedImageForURL:url cacheName:cacheName];
+        if (cachedImage)
+            self.imageView.image = cachedImage;
+        else
+            self.imageView.image = placeholder;
+        
+        [self setNeedsLayout];
+    }
+}
+
+-(void) immediateLoadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName {
+    
+    self.imageView.image = placeholder;
+    
+    [[OPCache sharedCache] fetchImageForURL:url cacheName:cacheName processing:processing completion:^(UIImage *image, BOOL isCached) {
+        
+        self.imageView.image = image;
+        [self setNeedsLayout];
+        
+        if (! isCached && self.imageURLLoadingAnimation == OPTableViewCellImageURLLoadingAnimationFade)
+        {
+            self.imageView.alpha = 0.0f;
+            [UIView animateWithDuration:0.3f animations:^{
+                self.imageView.alpha = 1.0f;
+            }];
+        }
+    }];
 }
 
 @end
