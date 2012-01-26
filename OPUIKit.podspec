@@ -16,4 +16,15 @@ Pod::Spec.new do |s|
   
   s.dependency 'OPExtensionKit', :git => 'git@github.com:mbrandonw/OPExtensionKit.git'
   s.dependency 'OPQuartzKit', :git => 'git@github.com:mbrandonw/OPQuartzKit.git'
+  s.dependency 'SDURLCache', '~> 1.2'
+  s.dependency do |p|
+    p.name     = 'AFNetworking'
+    p.version  = '0.8.0'
+    p.summary  = 'A delightful iOS and OS X networking framework'
+    p.homepage = 'https://github.com/AFNetworking/AFNetworking'
+    p.authors  = {'Mattt Thompson' => 'm@mattt.me', 'Scott Raymond' => 'sco@gowalla.com'}
+    p.source   = { :git => 'https://github.com/AFNetworking/AFNetworking.git', :tag => '0.8.0' }  
+    p.source_files = 'AFNetworking'
+  end
+  
 end

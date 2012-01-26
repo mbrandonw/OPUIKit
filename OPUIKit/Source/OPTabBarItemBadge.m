@@ -7,9 +7,11 @@
 //
 
 #import "OPTabBarItemBadge.h"
-#import "OPExtensionKit.h"
 #import "OPStyle.h"
 #import "OPGradient.h"
+#import "UIView+Opetopic.h"
+#import "UIColor+Opetopic.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kBadgeMaxScale  1.3f
 #define kBadgeMinScale  0.1f
