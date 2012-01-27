@@ -133,7 +133,8 @@
 	{
         UIViewController *lastController = [navigationController.viewControllers objectAtIndex:[navigationController.viewControllers indexOfObject:viewController]-1];
         
-        viewController.navigationItem.leftBarButtonItem = [OPBackBarButtonItem buttonWithTitle:OPCoalesce(lastController.title, NSLocalizedString(@"Back", @"UIBarButtonItem default back label"))
+        viewController.navigationItem.leftBarButtonItem = [OPBackBarButtonItem buttonWithTitle:
+                                                           lastController.title ?: NSLocalizedString(@"Back", @"UIBarButtonItem default back label")
                                                                                         target:self 
                                                                                         action:@selector(popViewControllerWithAnimation)];
     }
