@@ -36,11 +36,6 @@
     return self;
 }
 
--(void) prepareForReuse {
-    [super prepareForReuse];
-    [[OPCache sharedCache] cancelFetchForURL:self.imageURL cacheName:self.cacheName];
-}
-
 -(void) scrollingDidStop {
     
     if (self.imageURL && self.imageURLLoadingType == OPTableViewCellImageURLLoadingTypeScrollStops)
@@ -58,6 +53,8 @@
 }
 
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName {
+    
+    [[OPCache sharedCache] cancelFetchForURL:self.imageURL cacheName:self.cacheName];
     
     self.imageURL = url;
     self.placeholder = placeholder;
