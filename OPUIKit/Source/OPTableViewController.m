@@ -171,7 +171,13 @@
 -(void) scrollingDidStop {
 	
 	// loop through the visibile table cells to notify them of scroll stopping
-	UITableView *tableView = self.searchDisplayController.active ? self.searchDisplayController.searchResultsTableView : self.tableView;
+    
+	UITableView *tableView = nil;
+    if (self.searchDisplayController.active)
+        tableView = self.searchDisplayController.searchResultsTableView;
+    else if ([self isViewLoaded])
+        tableView = self.tableView;
+    
 	for (UITableViewCell *cell in [tableView visibleCells])
 	{
 		if ([cell respondsToSelector:@selector(scrollingDidStop)])
@@ -201,7 +207,7 @@
 	
 	if (self.searchDisplayController.active)
 		[self.searchDisplayController.searchResultsTableView reloadData];
-	else
+	else if ([self isViewLoaded])
 		[self.tableView reloadData];
 	
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
