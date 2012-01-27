@@ -30,3 +30,4 @@
 #import "OPUIKitBlockDefinitions.h"
 #import "OPTableViewCell.h"
 #import "OPCustomTableViewCell.h"
+#import "NSManagedObjectContext+OPUIKit.h"

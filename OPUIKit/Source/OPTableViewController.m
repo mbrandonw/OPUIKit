@@ -7,6 +7,7 @@
 //
 
 #import "OPTableViewController.h"
+#import "OPActiveScrollViewManager.h"
 #import "UIView+Opetopic.h"
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
@@ -124,6 +125,13 @@
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
 }
 
+-(void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.tableView.decelerating)
+        [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
+}
+
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
@@ -150,6 +158,8 @@
 
 -(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
+    
+    [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
 }
 
 -(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
@@ -158,6 +168,8 @@
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     self.beginDraggingContentOffset = scrollView.contentOffset;
+    
+    [[OPActiveScrollViewManager sharedManager] addActiveScrollView];
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
