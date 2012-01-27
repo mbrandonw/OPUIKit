@@ -160,11 +160,12 @@
     _selectedItemIndex = selectedItemIndex;
     
     [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-        if (idx != selectedItemIndex)
+        if (idx != selectedItemIndex && item.selected)
             item.selected = NO;
     }];
     
-    self.selectedItem.selected = YES;
+    if (! self.selectedItem.selected)
+        self.selectedItem.selected = YES;
 }
 
 #pragma mark -
