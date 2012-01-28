@@ -26,6 +26,7 @@
 
 @implementation OPTableViewController
 
+@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -88,6 +89,11 @@
     [super didReceiveMemoryWarning];
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
+    
+    for (NSManagedObject *obj in [self.fetchedResultsController fetchedObjects])
+        if (! [obj isFault] && ! [obj hasChanges])
+            [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
+    self.fetchedResultsController = nil;
 }
 
 #pragma mark -

@@ -12,6 +12,8 @@
 
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
 
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
 /**
  Determines if we should automatically dismiss the keyboard while scrolling,
  as well as the threshold of scrolling for such behavior.
