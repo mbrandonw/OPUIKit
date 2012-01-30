@@ -12,6 +12,7 @@
 #import "OPTabBar.h"
 #import "OPMacros.h"
 #import "UIView+Opetopic.h"
+#import "UIDevice+Opetopic.h"
 
 #define kOPTabBarRotationFudgePixels    8.0f
 
@@ -198,9 +199,11 @@
     self.selectedViewController = controller;
     
     // remove the previous view controller from our view hierarchy
-    [previousController viewWillDisappear:NO];
+    if (! [UIDevice isAtLeastiOS5])
+        [previousController viewWillDisappear:NO];
     [previousController.view removeFromSuperview];
-    [previousController viewDidDisappear:NO];
+    if (! [UIDevice isAtLeastiOS5])
+        [previousController viewDidDisappear:NO];
     
     // configure the next view controller
     self.selectedViewController.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | 
@@ -211,10 +214,12 @@
                                                         self.view.bounds.size.height - self.tabBar.height);
     
     // add the next view controller to our view hiearchy
-    [self.selectedViewController viewWillAppear:NO];
+    if (! [UIDevice isAtLeastiOS5])
+        [self.selectedViewController viewWillAppear:NO];
     [self.view addSubviewToBack:self.selectedViewController.view];
     [self.selectedViewController.view setNeedsLayout];
-    [self.selectedViewController viewDidAppear:NO];
+    if (! [UIDevice isAtLeastiOS5])
+        [self.selectedViewController viewDidAppear:NO];
 }
 
 #pragma mark -
