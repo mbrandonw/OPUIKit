@@ -235,8 +235,15 @@
 #pragma mark UITableView methods
 #pragma mark -
 
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    return [[self.fetchedResultsController sections] count];
+}
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+}
+
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
-    
 }
 
 #pragma mark -
