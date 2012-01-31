@@ -13,7 +13,7 @@
 typedef enum {
     OPTabBarItemLayoutEvenlySpaced = 0,
     OPTabBarItemLayoutCenterGrouped,
-    OPTabBarItemLayoutDefault = OPTabBarItemLayoutCenterGrouped,
+    OPTabBarItemLayoutDefault = OPTabBarItemLayoutEvenlySpaced,
 } OPTabBarItemLayout;
 
 @class OPTabBar;

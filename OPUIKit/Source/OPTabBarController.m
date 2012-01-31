@@ -106,8 +106,8 @@
     
     if (self.selectedIndex < [self.viewControllers count])
         self.selectedIndex = self.selectedIndex;
-    else if ([self.viewControllers count] > 0)
-        self.selectedIndex = 0;
+    else
+        self.selectedIndex = [self.viewControllers count] - 1;
 }
 
 #pragma mark -
