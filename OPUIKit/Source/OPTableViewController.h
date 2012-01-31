@@ -33,9 +33,14 @@
 
 /**
  Reloads the controlled tableView if it is active, or the searchDisplayController's tableView if it is active.
+ Also sends out the scrollDidStop message so that images can be lazily loaded.
  */
 -(void) reloadData;
 
+/**
+ The preferred place to do any table cell configuration. This method is used in the NSFetchedResultsControllerDelegate
+ methods to update the cells from the data source.
+ */
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
 @end
