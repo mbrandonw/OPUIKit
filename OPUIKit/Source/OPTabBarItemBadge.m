@@ -46,7 +46,7 @@
     self.valueLabel.font = [UIFont boldSystemFontOfSize:15.0f];
     self.valueLabel.textColor = [UIColor whiteColor];
     self.valueLabel.textAlignment = UITextAlignmentCenter;
-    self.valueLabelInsets = UIEdgeInsetsMake(2.0f, 5.0f, 2.0f, 5.0f);
+    self.valueLabelInsets = UIEdgeInsetsMake(2.0f, 6.0f, 2.0f, 6.0f);
     self.minSize = CGSizeMake(23.0f, 23.0f);
     self.relativeCenter = CGPointMake(0.75f, 0.2f);
     self.layer.shadowColor = [UIColor blackColor].CGColor;
