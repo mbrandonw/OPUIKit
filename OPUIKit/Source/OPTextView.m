@@ -8,14 +8,14 @@
 
 #import "OPTextView.h"
 
-@interface OPTextView (Private)
+@interface OPTextView (/**/)
 @property (nonatomic, strong, readwrite) UILabel *placeholderLabel;
 -(void) updatePlaceholderLabel;
 @end
 
 @implementation OPTextView
 
-@synthesize placeholderLabel;
+@synthesize placeholderLabel = _placeholderLabel;
 
 -(id) init {
     if (! (self = [super init]))
@@ -40,15 +40,16 @@
 }
 
 -(UILabel*) placeholderLabel {
-    if (! placeholderLabel)
+    if (! _placeholderLabel)
     {
         self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0f,8.0f,self.bounds.size.width - 16.0f,0)];
-        placeholderLabel.lineBreakMode = UILineBreakModeWordWrap;
-        placeholderLabel.numberOfLines = 0;
-        placeholderLabel.font = self.font;
-        placeholderLabel.backgroundColor = [UIColor clearColor];
+        _placeholderLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _placeholderLabel.numberOfLines = 0;
+        _placeholderLabel.font = self.font;
+        _placeholderLabel.backgroundColor = [UIColor clearColor];
+        _placeholderLabel.textColor = [UIColor grayColor];
     }
-    return placeholderLabel;
+    return _placeholderLabel;
 }
 
 -(void) textDidChange:(NSNotification*)notification {
