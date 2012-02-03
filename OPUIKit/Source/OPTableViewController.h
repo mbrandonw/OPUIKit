@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "OPStyle.h"
 
+extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation);
+
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;

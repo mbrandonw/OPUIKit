@@ -13,8 +13,15 @@
 #import "UIViewController+OPUIKit.h"
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
+#import "UIDevice+Opetopic.h"
 
 #define kScrollingDidStopDelay  0.3f
+
+UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation) {
+    if ([UIDevice isAtLeastiOS5])
+        return UITableViewRowAnimationAutomatic;
+    return rowAnimation;
+}
 
 #pragma mark Private methods
 @interface OPTableViewController (/*Private*/)
@@ -83,7 +90,7 @@
 	return self;
 }
 
-- (void)didReceiveMemoryWarning {
+-(void) didReceiveMemoryWarning {
 	DLog(@"");
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -93,7 +100,7 @@
     for (NSManagedObject *obj in [self.fetchedResultsController fetchedObjects])
         if (! [obj isFault] && ! [obj hasChanges])
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
-    self.fetchedResultsController = nil;
+//    self.fetchedResultsController = nil;
 }
 
 #pragma mark -
@@ -138,7 +145,7 @@
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
 }
 
-- (void)viewDidUnload {
+-(void) viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 }
@@ -182,7 +189,8 @@
     
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
-    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
+    
+    if (self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
         [self.view endEditing:YES];
 }
 
@@ -250,34 +258,38 @@
 #pragma mark NSFetchedResultsControllerDelegate methods
 #pragma mark -
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+-(void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView beginUpdates];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+-(void) controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+                          withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+                          withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
             break;
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+-(void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
     UITableView *tableView = self.tableView;
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
             break;
             
         case NSFetchedResultsChangeUpdate:
@@ -285,13 +297,15 @@
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
             break;
     }
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
 }
 
