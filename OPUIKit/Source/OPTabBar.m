@@ -212,7 +212,7 @@
     {
         CGFloat itemWidth = self.width / [self.items count];
         [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - item.width/2.0f), item.top, itemWidth, item.height);
+            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - itemWidth/2.0f), item.top, itemWidth, item.height);
         }];
     }
     else if (self.itemLayout == OPTabBarItemLayoutCenterGrouped)
