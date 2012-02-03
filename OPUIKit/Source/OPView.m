@@ -112,7 +112,7 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
         CGRect fullRect = CGRectMake(0.0f, 0.0f, r.size.width, r.size.height-1.0f);
         CGRect insetRect = CGRectInset(fullRect, 1.0f, 1.0f);
         
-        if (bevel) {
+        if (bevel && bevelOuterColor) {
             [bevelOuterColor set];
             [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0.0f, r.size.height-radius*2.0f, r.size.width, radius*2.0f) cornerRadius:radius] fill];
         }
@@ -129,11 +129,14 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
         if (bevel)
         {
             // and a light border
-            [bevelBorderColor setStroke];
-            [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) cornerRadius:radius-1.0f] stroke];
+            if (bevelBorderColor) {
+                [bevelBorderColor setStroke];
+                [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) cornerRadius:radius-1.0f] stroke];
+            }
             
-            CGContextSaveGState(c);
+            if (bevelInnerColor)
             {
+                CGContextSaveGState(c);
                 UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:insetRect cornerRadius:radius-1.0f];
                 CGContextSetFillColorWithColor(c, bevelInnerColor.CGColor);
                 CGContextClipToRect(c, CGRectMake(0.0f, 0.0f, r.size.width, radius));
@@ -141,8 +144,8 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
                 CGContextTranslateCTM(c, 0.0f, 1.0f);
                 CGContextAddPath(c, path.CGPath);
                 CGContextEOFillPath(c);
+                CGContextRestoreGState(c);
             }
-            CGContextRestoreGState(c);
         }
         
     } copy];
@@ -179,7 +182,7 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
         UIBezierPath *fullPath = [UIBezierPath bezierPathWithPointedRoundedRect:fullRect radius:radius pointerSize:pointerSize];
         UIBezierPath *insetPath = [UIBezierPath bezierPathWithPointedRoundedRect:insetRect radius:radius-1.0f pointerSize:pointerSize];
         
-        if (bevel) {
+        if (bevel && bevelOuterColor) {
             [bevelOuterColor set];
             CGContextSaveGState(c);
             CGContextTranslateCTM(c, 0.0f, 1.0f);
@@ -196,11 +199,14 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
         if (bevel)
         {
             // and a light border
-            [bevelBorderColor setStroke];
-            [[UIBezierPath bezierPathWithPointedRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) radius:radius-1.0f pointerSize:pointerSize] stroke];
+            if (bevelBorderColor) {
+                [bevelBorderColor setStroke];
+                [[UIBezierPath bezierPathWithPointedRoundedRect:CGRectInset(insetRect, 0.5f, 0.5f) radius:radius-1.0f pointerSize:pointerSize] stroke];
+            }
             
-            CGContextSaveGState(c);
+            if (bevelInnerColor)
             {
+                CGContextSaveGState(c);
                 UIBezierPath *path = [UIBezierPath bezierPathWithPointedRoundedRect:insetRect radius:radius-1.0f pointerSize:pointerSize];
                 CGContextSetFillColorWithColor(c, bevelInnerColor.CGColor);
                 CGContextClipToRect(c, CGRectMake(0.0f, 0.0f, r.size.width, radius));
@@ -208,8 +214,8 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
                 CGContextTranslateCTM(c, 0.0f, 1.0f);
                 CGContextAddPath(c, path.CGPath);
                 CGContextEOFillPath(c);
+                CGContextRestoreGState(c);
             }
-            CGContextRestoreGState(c);
         }
         
     } copy];
