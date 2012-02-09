@@ -307,6 +307,7 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
+    [self scrollingDidStop];
 }
 
 @end
