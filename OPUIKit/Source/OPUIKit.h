@@ -32,3 +32,5 @@
 #import "OPCustomTableViewCell.h"
 #import "NSManagedObjectContext+OPUIKit.h"
 #import "OPDataDetectorLabel.h"
+#import "OPPDFView.h"
+#import "OPImageView.h"
