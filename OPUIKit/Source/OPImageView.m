@@ -16,6 +16,7 @@
 
 @implementation OPImageView
 
+@synthesize animation = _animation;
 @synthesize imageURL = _imageURL;
 @synthesize cacheName = _cacheName;
 
@@ -40,13 +41,13 @@
         self.image = image;
         [self setNeedsLayout];
         
-//        if (! isCached && self.imageURLLoadingAnimation == OPTableViewCellImageURLLoadingAnimationFade)
-//        {
-//            self.imageView.alpha = 0.0f;
-//            [UIView animateWithDuration:0.3f animations:^{
-//                self.imageView.alpha = 1.0f;
-//            }];
-//        }
+        if (! isCached && self.animation == OPImageViewURLLoadedAnimationFade)
+        {
+            self.alpha = 0.0f;
+            [UIView animateWithDuration:0.3f animations:^{
+                self.alpha = 1.0f;
+            }];
+        }
     }];
 }
 

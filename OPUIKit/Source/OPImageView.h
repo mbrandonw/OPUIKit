@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    OPImageViewURLLoadedAnimationNone,
+    OPImageViewURLLoadedAnimationFade,
+} OPImageViewURLLoadedAnimation;
+
 @interface OPImageView : UIImageView
+
+@property (nonatomic, assign) OPImageViewURLLoadedAnimation animation;
 
 -(void) loadImageURL:(NSString*)url;
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder;
