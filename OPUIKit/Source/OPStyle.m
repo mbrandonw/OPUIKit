@@ -131,29 +131,12 @@
     
     // apply stylings that were stored in our key value dictionary
     [self.keyValuePairs enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        if ([target respondsToSelector:NSSelectorFromString(key)])
-        {
-            [target setValue:value forKey:key];
-        }
+        [target setValue:value forKey:key];
     }];
     
     // apply stylings that were stored in our key path value dictionary
     [self.keyPathValuePairs enumerateKeysAndObjectsUsingBlock:^(id keyPath, id value, BOOL *stop) {
-        
-        // iterate through the keypath to find the last object
-        NSArray *keyPathComponents = [keyPath componentsSeparatedByString:@"."];
-        id obj = target;
-        for (NSString *key in keyPathComponents)
-        {
-            if ([obj respondsToSelector:NSSelectorFromString(key)])
-            {
-                obj = [obj valueForKey:key];
-                if (key == [keyPathComponents lastObject])
-                    [target setValue:value forKeyPath:keyPath];
-            }
-            else
-                *stop = YES;
-        }
+        [target setValue:value forKeyPath:keyPath];
     }];
 }
 
