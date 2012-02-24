@@ -86,12 +86,13 @@
     {
         shouldCallSuper = NO;
         
-        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:
-                                         [self.backgroundColor lighten:self.gradientAmount], 
-                                         self.backgroundColor, 
-                                         [self.backgroundColor darken:self.gradientAmount],
-                                         nil]]
-         fillRectLinearly:rect];
+        if (self.gradientAmount > 0.0f) {
+            [[OPGradient gradientWithColors:[NSArray arrayWithObjects:
+                                             [self.backgroundColor lighten:self.gradientAmount], 
+                                             self.backgroundColor, 
+                                             [self.backgroundColor darken:self.gradientAmount],
+                                             nil]] fillRectLinearly:rect];
+        }
     }
     
     // apply gloss over everything
