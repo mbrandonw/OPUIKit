@@ -87,7 +87,7 @@
 +(id) buttonWithGlyphish:(NSString*)glyph target:(id)target action:(SEL)action {
     
     OPBarButtonItem *item = [[self class] buttonWithTitle:glyph target:target action:action];
-    item.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:34.0f];
+    item.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:32.0f];
     item.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
     
     CGFloat originalHeight = item.button.height;
@@ -126,6 +126,20 @@
 #pragma mark -
 
 -(void) orientationChanged:(NSNotification*)notification {
+    if ([self.button.titleLabel.font.fontName caseInsensitiveCompare:@"glyphish"] == NSOrderedSame)
+    {
+        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
+        {
+            self.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:32.0f];
+            self.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
+        }
+        else
+        {
+            self.button.titleLabel.font = [UIFont fontWithName:@"glyphish" size:28.0f];
+            self.button.titleEdgeInsets = UIEdgeInsetsMake(4.0f, 1.0f, 0.0f, 0.0f);
+        }
+    }
+    
     self.button.height = [[self class] heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self.button setNeedsDisplay];
 }
