@@ -7,6 +7,7 @@
 //
 
 #import "OPPDFView.h"
+#import "UIView+Opetopic.h"
 
 @interface OPPDFView (/**/)
 @property (nonatomic, strong) NSURL *url;
@@ -33,6 +34,7 @@
     self.pdf = CGPDFDocumentCreateWithURL((__bridge CFURLRef)self.url);
     self.page = CGPDFDocumentGetPage(self.pdf, 1);
     self.pageRect = CGPDFPageGetBoxRect(self.page, kCGPDFCropBox);
+    self.size = self.pageRect.size;
     _pageRect.origin.x = roundf(self.pageRect.origin.x);
     _pageRect.origin.y = roundf(self.pageRect.origin.y);
     _pageRect.size.width = roundf(self.pageRect.size.width);
