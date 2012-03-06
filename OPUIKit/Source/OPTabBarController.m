@@ -222,6 +222,17 @@
         [self.selectedViewController viewDidAppear:NO];
 }
 
+-(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated {
+    
+    CGFloat height = self.tabBar.height;
+    [UIView animateWithDuration:(0.3f*animated) animations:^{
+        
+        self.tabBar.top += height;
+        self.selectedViewController.view.height += height+1.0f;
+        
+    }];
+}
+
 #pragma mark -
 #pragma mark OPTabBarDelegate methods
 #pragma mark -

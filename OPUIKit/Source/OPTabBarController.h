@@ -25,12 +25,14 @@
 @property (nonatomic, assign) CGFloat tabBarPortraitHeight;
 @property (nonatomic, assign) CGFloat tabBarLandscapeHeight;
 @property (nonatomic, assign) BOOL hidesToolbarTitlesInLandscape;
+@property (nonatomic, assign) BOOL tabBarHidden;
 
 @property (nonatomic, readonly, strong) NSArray *viewControllers;
 @property (nonatomic, readonly, strong) UIViewController *selectedViewController;
 @property (nonatomic, readonly, assign) NSUInteger selectedIndex;
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems;
+-(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated;
 
 @end
 
