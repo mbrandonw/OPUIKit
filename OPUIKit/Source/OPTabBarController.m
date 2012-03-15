@@ -20,7 +20,6 @@
 @property (nonatomic, readwrite, strong) OPTabBar *tabBar;
 @property (nonatomic, readwrite, strong) NSArray *viewControllers;
 @property (nonatomic, readwrite, strong) UIViewController *selectedViewController;
-@property (nonatomic, readwrite, assign) NSUInteger selectedIndex;
 @end
 
 @implementation OPTabBarController
@@ -192,6 +191,10 @@
 }
 
 -(void) setSelectedIndex:(NSUInteger)selectedIndex {
+    
+    [[self.tabBar.items objectAtIndex:_selectedIndex] setSelected:NO];
+    [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
+    
     _selectedIndex = selectedIndex;
     
     UIViewController *controller = [self.viewControllers objectAtIndex:_selectedIndex];

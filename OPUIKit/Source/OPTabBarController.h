@@ -29,7 +29,7 @@
 
 @property (nonatomic, readonly, strong) NSArray *viewControllers;
 @property (nonatomic, readonly, strong) UIViewController *selectedViewController;
-@property (nonatomic, readonly, assign) NSUInteger selectedIndex;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems;
 -(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated;
