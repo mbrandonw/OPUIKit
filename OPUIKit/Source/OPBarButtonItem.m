@@ -27,7 +27,7 @@
 
 @implementation OPBarButtonItem
 
-@synthesize button;
+@synthesize button = _button;
 
 #pragma mark -
 #pragma mark Object lifecycle
