@@ -27,6 +27,9 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 @interface OPTableViewController (/*Private*/)
 @property (nonatomic, assign) BOOL touchIsDown;
 @property (nonatomic, assign) CGPoint beginDraggingContentOffset;
+@property (nonatomic, assign, readwrite) CGPoint contentOffsetVelocity;
+@property (nonatomic, assign) NSTimeInterval lastDragTimeInterval;
+@property (nonatomic, assign) CGPoint lastContentOffset;
 -(void) scrollingDidStop;
 @end
 #pragma mark -
@@ -38,6 +41,9 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
 @synthesize touchIsDown = _touchIsDown;
+@synthesize contentOffsetVelocity = _contentOffsetVelocity;
+@synthesize lastDragTimeInterval = _lastDragTimeInterval;
+@synthesize lastContentOffset = _lastContentOffset;
 
 // OPStyle storage
 @synthesize backgroundColor = _backgroundColor;
@@ -187,14 +193,33 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     
+    // computes the velocity of the content offset
+    if (CGPointEqualToPoint(self.lastContentOffset, CGPointMax))
+    {
+        self.lastContentOffset = scrollView.contentOffset;
+        self.lastDragTimeInterval = [NSDate timeIntervalSinceReferenceDate];
+    }
+    else
+    {
+        CGFloat timeDelta = (CGFloat)([NSDate timeIntervalSinceReferenceDate] - self.lastDragTimeInterval);
+        CGPoint contentOffsetDelta = CGPointMake(scrollView.contentOffset.x-self.lastContentOffset.x, scrollView.contentOffset.y-self.lastContentOffset.y);
+        
+        self.contentOffsetVelocity = CGPointMake(contentOffsetDelta.x/timeDelta, contentOffsetDelta.y/timeDelta);
+        
+        self.lastContentOffset = scrollView.contentOffset;
+        self.lastDragTimeInterval = [NSDate timeIntervalSinceReferenceDate];
+    }
+    
+    // check if we need to resign the keyboard
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
-    
     if (self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
         [self.view endEditing:YES];
 }
 
 -(void) scrollingDidStop {
+    
+    self.lastContentOffset = CGPointMax;
 	
 	// loop through the visibile table cells to notify them of scroll stopping
     

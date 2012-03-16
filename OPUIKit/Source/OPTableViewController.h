@@ -29,6 +29,11 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, readonly) UITableView *activeTableView;
 
 /**
+ Holds the velocity (pixels/sec) of the table view scrolling.
+ */
+@property (nonatomic, assign, readonly) CGPoint contentOffsetVelocity;
+
+/**
  Shortcut to creating a controller with style, title and subtitle.
  */
 -(id) initWithStyle:(UITableViewStyle)style title:(NSString*)title subtitle:(NSString*)subtitle;
