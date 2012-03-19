@@ -51,7 +51,6 @@
 @interface OPStyle (/**/)
 @property (nonatomic, assign) Class styledClass;
 @property (nonatomic, strong, readwrite) NSMutableSet *editedProperties;
-@property (nonatomic, strong) NSMutableDictionary *keyValuePairs;
 @property (nonatomic, strong) NSMutableDictionary *keyPathValuePairs;
 -(id) initForClass:(Class)styledClass;
 @end
@@ -64,7 +63,6 @@
 
 @synthesize styledClass = _styledClass;
 @synthesize editedProperties = _editedProperties;
-@synthesize keyValuePairs = _keyValuePairs;
 @synthesize keyPathValuePairs = _keyPathValuePairs;
 
 @synthesize backgroundColor = _backgroundColor;
@@ -98,7 +96,6 @@
     if (! (self = [super init]))
         return nil;
     _editedProperties = [NSMutableSet new];
-    _keyValuePairs = [NSMutableDictionary new];
     _keyPathValuePairs = [NSMutableDictionary new];
     return self;
 }
@@ -129,23 +126,21 @@
         }
     }
     
-    // apply stylings that were stored in our key value dictionary
-    [self.keyValuePairs enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        [target setValue:value forKey:key];
-    }];
-    
     // apply stylings that were stored in our key path value dictionary
     [self.keyPathValuePairs enumerateKeysAndObjectsUsingBlock:^(id keyPath, id value, BOOL *stop) {
         [target setValue:value forKeyPath:keyPath];
     }];
 }
 
--(void) setValue:(id)value forKey:(NSString *)key {
-    [self.keyValuePairs setObject:value forKey:key];
+-(void) setValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (!value)
+        [self.keyPathValuePairs removeObjectForKey:keyPath];
+    else
+        [self.keyPathValuePairs setObject:value forKey:keyPath];
 }
 
--(void) setValue:(id)value forKeyPath:(NSString *)keyPath {
-    [self.keyPathValuePairs setObject:value forKey:keyPath];
+-(id) valueForKeyPath:(NSString *)keyPath {
+    return [self.keyPathValuePairs objectForKey:keyPath];
 }
 
 -(NSString*) description {
@@ -182,6 +177,30 @@ static NSMutableDictionary *OPStyleByClass;
 
 -(OPStyle*) styling {
     return [[self class] styling];
+}
+
+-(id) styledValueForKeyPath:(NSString*)keyPath {
+    if (! [self isKindOfClass:[OPStyle class]])
+        return nil;
+    
+    Class c = [(OPStyle*)self styledClass];
+    while (c)
+    {
+        if ([[c styling] respondsToSelector:NSSelectorFromString(keyPath)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id retVal = [[c styling] performSelector:NSSelectorFromString(keyPath)];
+            if (retVal)
+                return retVal;
+#pragma clang diagnostic pop
+        }
+        
+        if ([[c styling] valueForKeyPath:keyPath])
+            return [[c styling] valueForKeyPath:keyPath];
+        
+        c = [c superclass];
+    }
+    return nil;
 }
 
 @end
