@@ -27,20 +27,20 @@
     
     // get defaults from OPStyle
     
-    UIColor *titleColor = [[[self class] styling] titleColor];
+    UIColor *titleColor = [[[self class] styling] styledValueForKeyPath:@"titleColor"];
     if (! titleColor)   titleColor = [UIColor whiteColor];
     
-    UIFont *titleFont = [[[self class] styling] titleFont];
+    UIFont *titleFont = [[[self class] styling] styledValueForKeyPath:@"titleFont"];
     if (! titleFont)    titleFont = [UIFont boldSystemFontOfSize:18.0f];
     
-    UIFont *subtitleFont = [[[self class] styling] subtitleFont];
+    UIFont *subtitleFont = [[[self class] styling] styledValueForKeyPath:@"subtitleFont"];
     if (! subtitleFont) subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
     
-    UIColor *titleShadowColor = [[[self class] styling] titleShadowColor];
+    UIColor *titleShadowColor = [[[self class] styling] styledValueForKeyPath:@"titleShadowColor"];
     if (! titleShadowColor) titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
     
-    CGSize titleShadowOffset = [[[self class] styling] titleShadowOffset];
-    
+    CGSize titleShadowOffset;
+    [[[[self class] styling] styledValueForKeyPath:@"titleShadowOffset"] getValue:&titleShadowOffset];
     
     if (title && subtitle)
         titleFont = [UIFont fontWithName:subtitleFont.fontName size:subtitleFont.pointSize+2.0f];
@@ -76,7 +76,7 @@
 	
 	CGFloat maxWidth = MAX(titleLabel.frame.size.width, subtitleLabel.frame.size.width);
 	wrapper.frame = CGRectMake(0.0, 0.0, maxWidth, 44.0);
-	titleLabel.frame = CGRectMake(0.0, (subtitle ? 3.0 : 11.0), maxWidth, 20.0);
+	titleLabel.frame = CGRectMake(0.0, (subtitle ? 3.0 : 12.0), maxWidth, 20.0);
 	[wrapper addSubview:titleLabel];
 	
 	if (subtitle)
