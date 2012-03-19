@@ -57,6 +57,7 @@
 	titleLabel.numberOfLines = 1;
 	titleLabel.backgroundColor = [UIColor clearColor];
 	titleLabel.opaque = NO;
+    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[titleLabel sizeToFit];
 	
 	UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -71,6 +72,7 @@
 		subtitleLabel.numberOfLines = 1;
 		subtitleLabel.backgroundColor = [UIColor clearColor];
 		subtitleLabel.opaque = NO;
+        subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[subtitleLabel sizeToFit];
 	}
 	
