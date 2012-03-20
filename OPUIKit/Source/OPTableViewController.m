@@ -132,9 +132,9 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
         self.view.backgroundColor = self.tableView.style == UITableViewStylePlain ? [UIColor whiteColor] : [UIColor groupTableViewBackgroundColor];
     
     // set up default navigation item title view
-    if (self.defaultTitleImage)
+    if (self.defaultTitleImage && !self.navigationItem.titleView)
         self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-    if (self.defaultTitle)
+    if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
     
 }
