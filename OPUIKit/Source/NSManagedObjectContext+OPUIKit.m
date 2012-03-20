@@ -50,7 +50,7 @@
     @try {
         saved = [self save:NULL];
     } @catch (NSException *exception) {
-		DLog(@"Problem saving: %@", (id)[exception userInfo] ?: (id)[exception reason]);
+		DLogMessage(nil, DLogLevelUrgent, @"Problem saving: %@", (id)[exception userInfo] ?: (id)[exception reason]);
     }
     return saved;
 }
