@@ -7,6 +7,8 @@
 //
 
 #import "UIViewController+OPUIKit.h"
+#import "OPTableViewController.h"
+#import "OPViewController.h"
 #import "OPStyle.h"
 #import "OPMacros.h"
 
@@ -25,22 +27,20 @@
     
     self.title = title;
     
-    // get defaults from OPStyle
-    
-    UIColor *titleColor = [[[self class] styling] styledValueForKeyPath:@"titleColor"];
-    if (! titleColor)   titleColor = [UIColor whiteColor];
-    
-    UIFont *titleFont = [[[self class] styling] styledValueForKeyPath:@"titleFont"];
-    if (! titleFont)    titleFont = [UIFont boldSystemFontOfSize:18.0f];
-    
-    UIFont *subtitleFont = [[[self class] styling] styledValueForKeyPath:@"subtitleFont"];
-    if (! subtitleFont) subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
-    
-    UIColor *titleShadowColor = [[[self class] styling] styledValueForKeyPath:@"titleShadowColor"];
-    if (! titleShadowColor) titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-    
+    UIColor *titleColor = [UIColor whiteColor];
+    UIFont *titleFont = [UIFont boldSystemFontOfSize:18.0f];
+    UIFont *subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
+    UIColor *titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
     CGSize titleShadowOffset;
-    [[[[self class] styling] styledValueForKeyPath:@"titleShadowOffset"] getValue:&titleShadowOffset];
+    
+    if ([self isKindOfClass:[OPTableViewController class]] || [self isKindOfClass:[OPViewController class]])
+    {
+        titleColor = [(id)self titleColor] ?: titleColor;
+        titleFont = [(id)self titleFont] ?: titleFont;
+        subtitleFont = [(id)self subtitleFont] ?: subtitleFont;
+        titleShadowColor = [(id)self titleShadowColor] ?: titleShadowColor;
+        titleShadowOffset = [(id)self titleShadowOffset];
+    }
     
     if (title && subtitle)
         titleFont = [UIFont fontWithName:subtitleFont.fontName size:subtitleFont.pointSize+2.0f];

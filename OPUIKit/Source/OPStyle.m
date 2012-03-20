@@ -25,9 +25,6 @@
 -(id) initWithStyle:(OPStyle*)style {
     _style = style;
     
-    // default stylings (defaults must be set this way so that they are recorded in the "touched" set)
-    [(OPStyle*)self setTitleShadowOffset:CGSizeMake(0.0f, -1.0f)];
-    
     return self;
 }
 
@@ -177,30 +174,6 @@ static NSMutableDictionary *OPStyleByClass;
 
 -(OPStyle*) styling {
     return [[self class] styling];
-}
-
--(id) styledValueForKeyPath:(NSString*)keyPath {
-    if (! [self isKindOfClass:[OPStyle class]])
-        return nil;
-    
-    Class c = [(OPStyle*)self styledClass];
-    while (c)
-    {
-        if ([[c styling] respondsToSelector:NSSelectorFromString(keyPath)]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            id retVal = [[c styling] performSelector:NSSelectorFromString(keyPath)];
-            if (retVal)
-                return retVal;
-#pragma clang diagnostic pop
-        }
-        
-        if ([[c styling] valueForKeyPath:keyPath])
-            return [[c styling] valueForKeyPath:keyPath];
-        
-        c = [c superclass];
-    }
-    return nil;
 }
 
 @end

@@ -32,9 +32,4 @@
  */
 -(OPStyle*) styling;
 
-/**
-  Finds the styled value for a key by traversing the class hierarchy.
- */
--(id) styledValueForKeyPath:(NSString*)keyPath;
-
 @end
