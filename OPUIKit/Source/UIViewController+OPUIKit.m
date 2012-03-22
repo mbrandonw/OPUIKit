@@ -31,7 +31,7 @@
     UIFont *titleFont = [UIFont boldSystemFontOfSize:18.0f];
     UIFont *subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
     UIColor *titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-    CGSize titleShadowOffset;
+    CGSize titleShadowOffset = CGSizeZero;
     
     if ([self isKindOfClass:[OPTableViewController class]] || [self isKindOfClass:[OPViewController class]])
     {
