@@ -19,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kOPBarButtonItemMinWidth    44.0f
+#define kOPBarButtonItemMaxWidth    100.0f
 #define kOPBarButtonItemMargin      10.0f
 
 @interface OPBarButtonItem (/**/)
@@ -62,7 +63,7 @@
     [item.button sizeToFit];
     item.button.height = originalHeight;
     item.button.width += kOPBarButtonItemMargin*2.0f + item.button.titleEdgeInsets.left + item.button.titleEdgeInsets.right;
-    item.button.width = MAX(kOPBarButtonItemMinWidth, item.button.width);
+    item.button.width = MIN(kOPBarButtonItemMaxWidth, MAX(kOPBarButtonItemMinWidth, item.button.width));
     
     [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     return item;
