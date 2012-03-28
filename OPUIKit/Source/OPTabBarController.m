@@ -47,6 +47,9 @@
     self.tabBarPortraitHeight = 49.0f;
     self.tabBarLandscapeHeight = 40.0f;
     
+    // apply stylings
+    [[[self class] styling] applyTo:self];
+    
     return self;
 }
 
