@@ -12,7 +12,8 @@
 @class OPTabBar;
 @class OPTabBarController;
 
-@protocol OPTabBarControllerDelegate
+@protocol OPTabBarControllerDelegate <NSObject>
+@optional
 -(BOOL) tabBarController:(OPTabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController;
 -(void) tabBarController:(OPTabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController;
 @end
@@ -27,11 +28,12 @@
 @property (nonatomic, assign) BOOL hidesToolbarTitlesInLandscape;
 @property (nonatomic, assign) BOOL tabBarHidden;
 
-@property (nonatomic, readonly, strong) NSArray *viewControllers;
-@property (nonatomic, readonly, strong) UIViewController *selectedViewController;
+@property (nonatomic, readonly) NSArray *viewControllers;
+@property (nonatomic, strong, readonly) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems;
+-(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated;
 -(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated;
 
 @end
@@ -43,5 +45,5 @@
  UIKit components
  */
 @interface UIViewController (OPTabBarControllerDelegate)
-@property (nonatomic, retain) OPTabBarController *tabController;
+@property (nonatomic, readonly) OPTabBarController *tabController;
 @end

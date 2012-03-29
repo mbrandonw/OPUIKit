@@ -25,6 +25,7 @@
 @interface OPTabBar (/**/)
 @property (nonatomic, strong) OPGradientView *shadowView;
 -(void) tabBarButtonPressed:(OPTabBarItem*)sender;
+-(void) layoutTabBarItems;
 @end
 
 @implementation OPTabBar
@@ -78,39 +79,76 @@
 
 -(void) setItems:(NSArray*)items animated:(BOOL)animated {
     
-    // remove previous items
-    for (UIControl *item in self.items) {
-        [item removeTarget:self action:@selector(tabBarItemPressed:) forControlEvents:UIControlEventTouchDown];
-        [item removeFromSuperview];
-    }
+    NSTimeInterval time = 0.3f*animated*([self.items count]>0);
     
-    _items = items;
+    void(^animationBlock)(void) = ^{
+        
+        for (OPTabBarItem *item in self.items)
+        {
+            if (! [items containsObject:item])
+                item.left = -item.width;
+        }
+    };
     
-    // add new items
-    for (UIControl *item in self.items)
-    {
-        if (! [item isKindOfClass:[OPTabBarItem class]]) {
-            DLog(@"---------------------------------------------------");
-            DLog(@"OPTabBar Error:");
-            DLog(@"Cannot add item that is not of type `OPTabBarItem`.");
-            DLog(@"---------------------------------------------------");
+    void(^completionBlock)(BOOL finished) = ^(BOOL finished){
+        
+        // remove previous items
+        for (OPTabBarItem *item in self.items)
+        {
+            if (! [items containsObject:item])
+            {
+                [item removeFromSuperview];
+            }
         }
         
-        item.height = self.height;
-        item.autoresizingMask |= (UIViewAutoresizingFlexibleHeight | 
-                                  UIViewAutoresizingFlexibleWidth |
-                                  UIViewAutoresizingFlexibleLeftMargin | 
-                                  UIViewAutoresizingFlexibleRightMargin);
-        [self addSubview:item];
-        [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
+        // add new items
+        for (OPTabBarItem *item in items) {
+            if (! [self.items containsObject:item])
+            {
+                item.height = self.height;
+                item.autoresizingMask |= (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth |
+                                          UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+                [self addSubview:item];
+                [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
+            }
+        }
+        
+        NSArray *_originalItems = [_items copy];
+        _items = [items copy];
+        
+        for (OPTabBarItem *item in self.items) {
+            if ([_originalItems containsObject:item])
+            {
+                [UIView animateWithDuration:time animations:^{
+                    [self layoutTabBarItem:item];
+                }];
+            }
+            else
+            {
+                [self layoutTabBarItem:item];
+                item.left = self.width;
+                [UIView animateWithDuration:time animations:^{
+                    [self layoutTabBarItem:item];
+                }];
+            }
+        }
+        
+        if (self.selectedItemIndex < [self.items count])
+            self.selectedItemIndex = self.selectedItemIndex;
+        else if ([self.items count] > 0)
+            self.selectedItemIndex = 0;
+        
+        [self setNeedsDisplayAndLayout];
+    };
+    
+    if (time > 0.0f)
+        [UIView animateWithDuration:time animations:animationBlock completion:completionBlock];
+    else {
+        animationBlock();
+        completionBlock(YES);
     }
     
-    if (self.selectedItemIndex < [self.items count])
-        self.selectedItemIndex = self.selectedItemIndex;
-    else if ([self.items count] > 0)
-        self.selectedItemIndex = 0;
-    
-    [self setNeedsDisplayAndLayout];
+    return ;
 }
 
 #pragma mark -
@@ -208,25 +246,33 @@
     self.shadowView.frame = CGRectMake(0.0f, -self.shadowHeight, self.width, self.shadowHeight);
     
     // layout the tab bar items
+    [self layoutTabBarItems];
+}
+
+-(void) layoutTabBarItems {
+    
+    for (OPTabBarItem *item in self.items)
+        [self layoutTabBarItem:item];
+}
+
+-(void) layoutTabBarItem:(OPTabBarItem*)item {
+    
+    NSUInteger index = [self.items indexOfObject:item];
+    
     if (self.itemLayout == OPTabBarItemLayoutEvenlySpaced)
     {
-        CGFloat itemWidth = self.width / [self.items count];
-        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-            item.frame = CGRectMake(roundf(itemWidth * (0.5f + idx) - itemWidth/2.0f), item.top, itemWidth, item.height);
-        }];
+        CGFloat itemWidth = roundf(self.width / [self.items count]);
+        item.frame = CGRectMake(roundf(itemWidth * (0.5f + index) - itemWidth/2.0f), item.top, itemWidth, item.height);
     }
     else if (self.itemLayout == OPTabBarItemLayoutCenterGrouped)
     {
         CGFloat neededSpace = 0.0f;
         for (OPTabBarItem *item in self.items)
             neededSpace += MIN(self.maxItemWidth, item.width);
-        CGFloat itemWidth = neededSpace / [self.items count];
-        __block CGFloat offset = 0.0f;
+        CGFloat itemWidth = roundf(neededSpace / [self.items count]);
+        __block CGFloat offset = index * MIN(self.maxItemWidth, itemWidth);
         
-        [self.items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
-            item.frame = CGRectMake(roundf(self.width/2.0f - neededSpace/2.0f + offset), item.top, MIN(self.maxItemWidth, itemWidth), item.height);
-            offset += item.width;
-        }];
+        item.frame = CGRectMake(roundf(self.width/2.0f - neededSpace/2.0f + offset), item.top, MIN(self.maxItemWidth, itemWidth), item.height);
     }
 }
 

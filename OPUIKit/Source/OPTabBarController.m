@@ -18,8 +18,7 @@
 
 @interface OPTabBarController (/**/) <OPTabBarDelegate, UINavigationControllerDelegate>
 @property (nonatomic, readwrite, strong) OPTabBar *tabBar;
-@property (nonatomic, readwrite, strong) NSArray *viewControllers;
-@property (nonatomic, readwrite, strong) UIViewController *selectedViewController;
+@property (nonatomic, strong, readwrite) UIViewController *selectedViewController;
 @end
 
 @implementation OPTabBarController
@@ -27,11 +26,11 @@
 @synthesize delegate = _delegate;
 
 @synthesize tabBar = _tabBar;
+@synthesize tabBarHidden = _tabBarHidden;
 @synthesize tabBarPortraitHeight = _tabBarPortraitHeight;
 @synthesize tabBarLandscapeHeight = _tabBarLandscapeHeight;
 @synthesize hidesToolbarTitlesInLandscape = _hidesToolbarTitlesInLandscape;
 
-@synthesize viewControllers = _viewControllers;
 @synthesize selectedViewController = _selectedViewController;
 @synthesize selectedIndex = _selectedIndex;
 
@@ -46,6 +45,7 @@
     // default ivars
     self.tabBarPortraitHeight = 49.0f;
     self.tabBarLandscapeHeight = 40.0f;
+    self.selectedViewController = nil;
     
     // apply stylings
     [[[self class] styling] applyTo:self];
@@ -92,24 +92,30 @@
 #pragma mark -
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems {
+    [self setViewControllers:viewControllers withTabBarItems:tabBarItems animated:NO];
+}
+
+-(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated {
     
-    self.viewControllers = viewControllers;
-    self.tabBar.items = tabBarItems;
-    
-    for (UIViewController *controller in self.viewControllers)
+    [self.tabBar setItems:tabBarItems animated:animated];
+    [self.childViewControllers makeObjectsPerformSelector:@selector(removeFromParentViewController)];
+    for (UIViewController *controller in viewControllers)
     {
+        [self addChildViewController:controller];
+        
         // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
         if ([controller isKindOfClass:[UINavigationController class]])
             [(UINavigationController*)controller setDelegate:self];
-        
-        // let the controller know who it's parent tab bar controller is
-        controller.tabController = self;
     }
     
-    if (self.selectedIndex < [self.viewControllers count])
+    if (self.selectedIndex < [self.childViewControllers count])
         self.selectedIndex = self.selectedIndex;
     else
-        self.selectedIndex = [self.viewControllers count] - 1;
+        self.selectedIndex = [self.childViewControllers count] - 1;
+}
+
+-(NSArray*) viewControllers {
+    return self.childViewControllers;
 }
 
 #pragma mark -
@@ -149,6 +155,8 @@
     // adjust the selected view controller's height to stop at the bottom tab bar
     self.selectedViewController.view.height -= self.tabBar.height * (!self.tabBar.hidden);
     
+    [self setTabBarHidden:self.tabBarHidden animated:NO];
+    
     // forward rotation events to the selected view controller
     [self.selectedViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -170,7 +178,6 @@
 #pragma mark -
 
 -(OPTabBar*) tabBar {
-    
     // lazily load the tab bar
     if (! _tabBar)
     {
@@ -197,10 +204,9 @@
     
     [[self.tabBar.items objectAtIndex:_selectedIndex] setSelected:NO];
     [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
-    
     _selectedIndex = selectedIndex;
     
-    UIViewController *controller = [self.viewControllers objectAtIndex:_selectedIndex];
+    UIViewController *controller = [self.childViewControllers objectAtIndex:_selectedIndex];
     UIViewController *previousController = self.selectedViewController;
     self.selectedViewController = controller;
     
@@ -226,16 +232,38 @@
     [self.selectedViewController.view setNeedsLayout];
     if (! [UIDevice isAtLeastiOS5])
         [self.selectedViewController viewDidAppear:NO];
+    
+    // send out delegate messages
+    if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
+        [self.delegate tabBarController:self didSelectViewController:self.selectedViewController];
+}
+
+-(void) setTabBarHidden:(BOOL)tabBarHidden {
+    [self setTabBarHidden:tabBarHidden animated:NO];
 }
 
 -(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated {
+    _tabBarHidden = tabBarHidden;
     
-    CGFloat height = self.tabBar.height;
+    CGFloat tabBarHeight = self.tabBar.height;
+    CGFloat selfHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.height : self.view.width;
+    
+    if (tabBarHidden) {
+        self.tabBar.bottom = selfHeight;
+        self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top - tabBarHeight;
+    } else {
+        self.tabBar.top = selfHeight;
+        self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top;
+    }
     [UIView animateWithDuration:(0.3f*animated) animations:^{
         
-        self.tabBar.top += height;
-        self.selectedViewController.view.height += height+1.0f;
-        
+        if (! tabBarHidden) {
+            self.tabBar.bottom = selfHeight;
+            self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top - tabBarHeight;
+        } else {
+            self.tabBar.top = selfHeight;
+            self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top;
+        }
     }];
 }
 
@@ -245,7 +273,7 @@
 
 -(void) tabBar:(OPTabBar*)tabBar didSelectItem:(OPTabBarItem*)item atIndex:(NSUInteger)index {
     
-    UIViewController *controller = [self.viewControllers objectAtIndex:index];
+    UIViewController *controller = [self.childViewControllers objectAtIndex:index];
     
     // tapping the tab bar item a 2nd time offers some additional functionality
     if (self.selectedViewController == controller)
@@ -319,20 +347,18 @@
 
 @end
 
-#define OPTabBarViewControllerKey     @"tabControllerProperty"
-
 @implementation UIViewController (OPTabBarController)
 
 -(OPTabBarController*) tabController {
-    id retVal = objc_getAssociatedObject(self, OPTabBarViewControllerKey);
-    if (retVal)
-        return retVal;
-    return [self.parentViewController tabController];
-}
-
--(void) setTabController:(OPTabBarController*)controller {
-    objc_setAssociatedObject(self, OPTabBarViewControllerKey, nil, OBJC_ASSOCIATION_ASSIGN);
-    objc_setAssociatedObject(self, OPTabBarViewControllerKey, controller, OBJC_ASSOCIATION_ASSIGN);
+    
+    // walk up the parent tree to find the first tab controller
+    UIViewController *c = self;
+    while (c) {
+        if ([c isKindOfClass:[OPTabBarController class]])
+            return (OPTabBarController*)c;
+        c = [c parentViewController];
+    }
+    return nil;
 }
 
 @end
