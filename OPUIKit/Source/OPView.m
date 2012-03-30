@@ -21,13 +21,6 @@
 
 @synthesize drawingBlocks = _drawingBlocks;
 
--(id) init {
-    if (! (self = [super init]))
-        return nil;
-    [self __init];
-    return self;
-}
-
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
