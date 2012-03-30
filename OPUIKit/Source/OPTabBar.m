@@ -78,6 +78,10 @@
 }
 
 -(void) setItems:(NSArray*)items animated:(BOOL)animated {
+    [self setItems:items animated:animated completion:nil];
+}
+
+-(void) setItems:(NSArray*)items animated:(BOOL)animated completion:(void(^)(void))completion {
     
     NSTimeInterval time = 0.3f*animated*([self.items count]>0);
     
@@ -139,6 +143,8 @@
             self.selectedItemIndex = 0;
         
         [self setNeedsDisplayAndLayout];
+        
+        if (completion) completion();
     };
     
     if (time > 0.0f)
@@ -147,8 +153,6 @@
         animationBlock();
         completionBlock(YES);
     }
-    
-    return ;
 }
 
 #pragma mark -

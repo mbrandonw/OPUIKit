@@ -96,8 +96,11 @@
 }
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated {
+    [self setViewControllers:viewControllers withTabBarItems:tabBarItems animated:animated completion:nil];
+}
+
+-(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated completion:(void(^)(void))completion {
     
-    [self.tabBar setItems:tabBarItems animated:animated];
     [self.childViewControllers makeObjectsPerformSelector:@selector(removeFromParentViewController)];
     for (UIViewController *controller in viewControllers)
     {
@@ -108,10 +111,7 @@
             [(UINavigationController*)controller setDelegate:self];
     }
     
-    if (self.selectedIndex < [self.childViewControllers count])
-        self.selectedIndex = self.selectedIndex;
-    else
-        self.selectedIndex = [self.childViewControllers count] - 1;
+    [self.tabBar setItems:tabBarItems animated:animated completion:completion];
 }
 
 -(NSArray*) viewControllers {
@@ -202,7 +202,8 @@
 
 -(void) setSelectedIndex:(NSUInteger)selectedIndex {
     
-    [[self.tabBar.items objectAtIndex:_selectedIndex] setSelected:NO];
+    for (OPTabBarItem *item in self.tabBar.items)
+        [item setSelected:NO];
     [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
     _selectedIndex = selectedIndex;
     

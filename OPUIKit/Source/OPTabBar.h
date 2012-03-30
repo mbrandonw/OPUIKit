@@ -37,5 +37,6 @@ typedef enum {
 @property (nonatomic, assign) CGFloat maxItemWidth; // application only when itemLayout == OPTabBarItemLayoutCenterGrouped
 
 -(void) setItems:(NSArray*)items animated:(BOOL)animated;
+-(void) setItems:(NSArray*)items animated:(BOOL)animated completion:(void(^)(void))completion;
 
 @end

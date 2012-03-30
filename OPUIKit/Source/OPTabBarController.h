@@ -34,6 +34,8 @@
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems;
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated;
+-(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated completion:(void(^)(void))completion;
+
 -(void) setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated;
 
 @end
