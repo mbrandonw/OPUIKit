@@ -35,5 +35,3 @@
 #import "OPPDFView.h"
 #import "OPImageView.h"
 #import "OPVectorView.h"
-#import "OPCoveredMenuNavigationController.h"
-#import "OPCoveredNavigationBar.h"
