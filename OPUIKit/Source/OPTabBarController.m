@@ -256,6 +256,9 @@
         self.tabBar.top = selfHeight;
         self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top;
     }
+    
+    if (! tabBarHidden)
+        self.tabBar.hidden = tabBarHidden;
     [UIView animateWithDuration:(0.3f*animated) animations:^{
         
         if (! tabBarHidden) {
@@ -265,6 +268,8 @@
             self.tabBar.top = selfHeight;
             self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top;
         }
+    } completion:^(BOOL finished) {
+        self.tabBar.hidden = tabBarHidden;
     }];
 }
 
@@ -284,10 +289,12 @@
             UINavigationController *navigationController = (UINavigationController*)self.selectedViewController;
             
             // if the selected controller is a navigation controller that is already at its root controller, then we try to scroll its child controller to the top
-            if ([navigationController.viewControllers count] == 1 &&
-                [[[navigationController.viewControllers lastObject] view] isKindOfClass:[UIScrollView class]])
+            if ([navigationController.viewControllers count] == 1)
             {
-                [(UIScrollView*)[[navigationController.viewControllers lastObject] view] setContentOffset:CGPointZero animated:YES];
+                if ([[[navigationController.viewControllers lastObject] view] isKindOfClass:[UIScrollView class]])
+                    [(UIScrollView*)[[navigationController.viewControllers lastObject] view] setContentOffset:CGPointZero animated:YES];
+                else if ([[navigationController.viewControllers lastObject] respondsToSelector:@selector(tableView)])
+                    [(UITableView*)[[navigationController.viewControllers lastObject] tableView] setContentOffset:CGPointZero animated:YES];
             }
             // otherwise we just pop the navigation controller to its root
             else
