@@ -30,20 +30,20 @@ OPDataDetector *OPDataDetectorLink;
 
 +(void) load {
     
-    OPDataDetectorEmailAddress = [[OPDataDetector alloc] initWithRegex:
-                                  [[NSRegularExpression alloc] initWithPattern:@"[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}"
-                                                                       options:NSRegularExpressionCaseInsensitive 
-                                                                         error:NULL] userInfo:nil];
-    
-    OPDataDetectorPhoneNumber = [[OPDataDetector alloc] initWithRegex:
-                                 [[NSRegularExpression alloc] initWithPattern:@"(\\+)?([0-9]{8,}+)"
-                                                                      options:NSRegularExpressionCaseInsensitive 
-                                                                        error:NULL] userInfo:nil];
-    
-    OPDataDetectorLink = [[OPDataDetector alloc] initWithRegex:
-                          [[NSRegularExpression alloc] initWithPattern:@"([hH][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])"
-                                                               options:NSRegularExpressionCaseInsensitive
-                                                                 error:NULL] userInfo:nil];
+//    OPDataDetectorEmailAddress = [[OPDataDetector alloc] initWithRegex:
+//                                  [[NSRegularExpression alloc] initWithPattern:@"[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}"
+//                                                                       options:NSRegularExpressionCaseInsensitive 
+//                                                                         error:NULL] userInfo:nil];
+//    
+//    OPDataDetectorPhoneNumber = [[OPDataDetector alloc] initWithRegex:
+//                                 [[NSRegularExpression alloc] initWithPattern:@"(\\+)?([0-9]{8,}+)"
+//                                                                      options:NSRegularExpressionCaseInsensitive 
+//                                                                        error:NULL] userInfo:nil];
+//    
+//    OPDataDetectorLink = [[OPDataDetector alloc] initWithRegex:
+//                          [[NSRegularExpression alloc] initWithPattern:@"([hH][tT][tT][pP][sS]?:\\/\\/[^ ,'\">\\]\\)]*[^\\. ,'\">\\]\\)])"
+//                                                               options:NSRegularExpressionCaseInsensitive
+//                                                                 error:NULL] userInfo:nil];
 }
 
 -(id) initWithRegex:(NSRegularExpression*)regex userInfo:(id)userInfo {
