@@ -23,7 +23,7 @@
 #define kOPBarButtonItemMargin      10.0f
 
 @interface OPBarButtonItem (/**/)
-@property (nonatomic, strong, readwrite) UIButton *button;
+@property (nonatomic, strong, readwrite) OPButton *button;
 @end
 
 @implementation OPBarButtonItem
