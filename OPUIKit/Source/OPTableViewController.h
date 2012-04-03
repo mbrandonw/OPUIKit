@@ -10,11 +10,26 @@
 #import <CoreData/CoreData.h>
 #import "OPStyle.h"
 
+typedef enum {
+    OPTableViewControllerShadowNone     = 0,
+    OPTableViewControllerShadowOrigin   = 1 << 0,
+    OPTableViewControllerShadowTop      = 1 << 1,
+    OPTableViewControllerShadowBottom   = 1 << 2,
+    OPTableViewControllerShadowAll = OPTableViewControllerShadowOrigin|OPTableViewControllerShadowTop|OPTableViewControllerShadowBottom,
+} OPTableViewControllerShadows;
+
 extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation);
 
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
+/**
+ */
+@property (nonatomic, assign) OPTableViewControllerShadows tableViewShadows;
+@property (nonatomic, strong, readonly) CAGradientLayer *originShadowLayer;
+@property (nonatomic, strong, readonly) CAGradientLayer *topShadowLayer;
+@property (nonatomic, strong, readonly) CAGradientLayer *bottomShadowLayer;
 
 /**
  Determines if we should automatically dismiss the keyboard while scrolling,

@@ -9,6 +9,7 @@
 #import "OPTableViewController.h"
 #import "OPActiveScrollViewManager.h"
 #import "UIView+Opetopic.h"
+#import "CALayer+Opetopic.h"
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
 #import "OPMacros.h"
@@ -30,13 +31,24 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 @property (nonatomic, assign, readwrite) CGPoint contentOffsetVelocity;
 @property (nonatomic, assign) NSTimeInterval lastDragTimeInterval;
 @property (nonatomic, assign) CGPoint lastContentOffset;
+
+@property (nonatomic, strong, readwrite) CAGradientLayer *originShadowLayer;
+@property (nonatomic, strong, readwrite) CAGradientLayer *topShadowLayer;
+@property (nonatomic, strong, readwrite) CAGradientLayer *bottomShadowLayer;
+
+-(void) __init;
 -(void) scrollingDidStop;
+-(void) layoutShadows;
 @end
 #pragma mark -
 
 @implementation OPTableViewController
 
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize tableViewShadows = _tableViewShadows;
+@synthesize originShadowLayer = _originShadowLayer;
+@synthesize topShadowLayer = _topShadowLayer;
+@synthesize bottomShadowLayer = _bottomShadowLayer;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -73,40 +85,54 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 -(id) initWithStyle:(UITableViewStyle)style {
 	if (! (self = [super initWithStyle:style]))
 		return nil;
-	
-    // apply stylings
-    [[self styling] applyTo:self];
-	
-    // default ivars
-    self.resignKeyboardScrollDelta = 40.0f;
-	
+    [self __init];
 	return self;
 }
 
 -(id) init {
 	if (! (self = [super init]))
 		return nil;
-    
-    // apply stylings
-    [[self styling] applyTo:self];
-	
-    // default ivars
-    self.resignKeyboardScrollDelta = 60.0f;
-	
+    [self __init];
 	return self;
 }
 
+-(void) __init {
+    
+    // default ivars
+    self.resignKeyboardScrollDelta = 40.0f;
+    
+    self.originShadowLayer = [CAGradientLayer new];
+    self.originShadowLayer.height = 10.0f;
+    self.originShadowLayer.colors = [NSArray arrayWithObjects:
+                                     (id)[UIColor colorWithWhite:0.0f alpha:0.2f].CGColor, 
+                                     (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
+    
+    self.topShadowLayer = [CAGradientLayer new];
+    self.topShadowLayer.height = 10.0f;
+    self.topShadowLayer.colors = [NSArray arrayWithObjects:
+                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, 
+                                  (id)[UIColor colorWithWhite:0.0f alpha:0.2f].CGColor, nil];
+    
+    self.bottomShadowLayer = [CAGradientLayer new];
+    self.bottomShadowLayer.height = 20.0f;
+    self.bottomShadowLayer.colors = [NSArray arrayWithObjects:
+                                  (id)[UIColor colorWithWhite:0.0f alpha:0.25f].CGColor, 
+                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
+    
+    // apply stylings
+    [[self styling] applyTo:self];
+}
+
 -(void) didReceiveMemoryWarning {
-	DLog(@"");
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
+    DLogClassAndMethod();
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
     for (NSManagedObject *obj in [self.fetchedResultsController fetchedObjects])
         if (! [obj isFault] && ! [obj hasChanges])
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
-//    self.fetchedResultsController = nil;
 }
 
 #pragma mark -
@@ -115,14 +141,15 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 
 -(void) viewDidLoad {
     [super viewDidLoad];
+    DLogClassAndMethod();
     
     // set up default background color
 	if (self.backgroundImage)
     {
         if (! CGSizeIsPowerOfTwo(self.backgroundImage.size)) {
-            DLog(@"==============================================================");
-            DLog(@"Pattern image drawing is most efficient with power of 2 images");
-            DLog(@"==============================================================");
+            DLogMessageCompat(@"==============================================================");
+            DLogMessageCompat(@"Pattern image drawing is most efficient with power of 2 images");
+            DLogMessageCompat(@"==============================================================");
         }
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
     }
@@ -139,9 +166,14 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     
 }
 
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
+    [self layoutShadows];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -192,6 +224,15 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    // layout the shadows if we are using any
+    if (self.tableViewShadows != OPTableViewControllerShadowNone)
+    {
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+        [self layoutShadows];
+        [CATransaction commit];
+    }
     
     // computes the velocity of the content offset
     if (CGPointEqualToPoint(self.lastContentOffset, CGPointMax))
@@ -333,6 +374,65 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
     [self scrollingDidStop];
+}
+
+#pragma mark -
+#pragma mark Custom getters/setters
+#pragma mark -
+
+-(void) setTableViewShadows:(OPTableViewControllerShadows)tableViewShadows {
+    _tableViewShadows = tableViewShadows;
+    
+    // check if we need to remove any of the shadow layers
+    if (! (_tableViewShadows & OPTableViewControllerShadowOrigin))
+        [self.originShadowLayer removeFromSuperlayer];
+    if (! (_tableViewShadows & OPTableViewControllerShadowTop))
+        [self.topShadowLayer removeFromSuperlayer];
+    if (! (_tableViewShadows & OPTableViewControllerShadowBottom))
+        [self.bottomShadowLayer removeFromSuperlayer];
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) layoutShadows {
+    
+    if (self.tableViewShadows & OPTableViewControllerShadowOrigin)
+    {
+        if (self.tableView.contentOffset.y >= 0.0f)
+            [self.originShadowLayer removeFromSuperlayer];
+        else
+        {
+            self.originShadowLayer.top = self.tableView.contentOffset.y;
+            self.originShadowLayer.width = self.tableView.width;
+            [self.tableView.layer insertSublayer:self.originShadowLayer atIndex:0];
+        }
+    }
+    
+    if (self.tableViewShadows & OPTableViewControllerShadowTop)
+    {
+        if (self.tableView.contentOffset.y >= 0.0f)
+            [self.topShadowLayer removeFromSuperlayer];
+        else
+        {
+            self.topShadowLayer.top = -self.topShadowLayer.height;
+            self.topShadowLayer.width = self.tableView.width;
+            [self.tableView.layer insertSublayer:self.topShadowLayer atIndex:0];
+        }
+    }
+    
+    if (self.tableViewShadows & OPTableViewControllerShadowBottom)
+    {
+        if (self.tableView.contentOffset.y + self.tableView.height <= self.tableView.contentSize.height)
+            [self.bottomShadowLayer removeFromSuperlayer];
+        else
+        {
+            self.bottomShadowLayer.top = self.tableView.contentSize.height;
+            self.bottomShadowLayer.width = self.tableView.width;
+            [self.tableView.layer insertSublayer:self.bottomShadowLayer atIndex:0];
+        }
+    }
 }
 
 @end
