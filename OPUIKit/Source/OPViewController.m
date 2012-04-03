@@ -43,7 +43,7 @@
 
 -(void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    DLogControllerAndMethod();
+    DLogClassAndMethod();
 }
 
 #pragma mark -
@@ -52,7 +52,7 @@
 
 -(void) viewDidLoad {
     [super viewDidLoad];
-    DLogControllerAndMethod();
+    DLogClassAndMethod();
     
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
