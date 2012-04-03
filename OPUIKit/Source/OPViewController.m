@@ -41,12 +41,18 @@
 	return self;
 }
 
+-(void) didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    DLogControllerAndMethod();
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 #pragma mark -
 
 -(void) viewDidLoad {
     [super viewDidLoad];
+    DLogControllerAndMethod();
     
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
