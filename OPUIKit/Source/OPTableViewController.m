@@ -104,19 +104,19 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     self.originShadowLayer = [CAGradientLayer new];
     self.originShadowLayer.height = 10.0f;
     self.originShadowLayer.colors = [NSArray arrayWithObjects:
-                                     (id)[UIColor colorWithWhite:0.0f alpha:0.2f].CGColor, 
+                                     (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
                                      (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
     
     self.topShadowLayer = [CAGradientLayer new];
     self.topShadowLayer.height = 10.0f;
     self.topShadowLayer.colors = [NSArray arrayWithObjects:
                                   (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, 
-                                  (id)[UIColor colorWithWhite:0.0f alpha:0.2f].CGColor, nil];
+                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, nil];
     
     self.bottomShadowLayer = [CAGradientLayer new];
     self.bottomShadowLayer.height = 20.0f;
     self.bottomShadowLayer.colors = [NSArray arrayWithObjects:
-                                  (id)[UIColor colorWithWhite:0.0f alpha:0.25f].CGColor, 
+                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
                                   (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
     
     // apply stylings

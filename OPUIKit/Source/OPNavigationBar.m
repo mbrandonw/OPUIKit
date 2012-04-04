@@ -123,13 +123,14 @@
 -(void) setShadowHeight:(CGFloat)shadowHeight {
     _shadowHeight = shadowHeight;
     self.shadowView.height = shadowHeight;
-    if (shadowHeight == 0.0f)
-        [self setShadowHidden:YES];
+    [self setShadowHidden:(shadowHeight == 0.0f)];
+    [self setNeedsLayout];
 }
 
 -(void) setShadowColors:(NSArray *)shadowColors {
     _shadowColors = shadowColors;
     self.shadowView.gradientLayer.colors = shadowColors;
+    [self setNeedsLayout];
 }
 
 -(void) setShadowHidden:(BOOL)hidden {
