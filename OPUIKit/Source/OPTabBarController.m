@@ -202,14 +202,19 @@
 
 -(void) setSelectedIndex:(NSUInteger)selectedIndex {
     
+    UIViewController *nextController = [self.childViewControllers objectAtIndex:selectedIndex];
+    UIViewController *previousController = self.selectedViewController;
+    
+    // send out delegate messages
+    if ([self.delegate respondsToSelector:@selector(tabBarController:willSelectViewController:)])
+        [self.delegate tabBarController:self willSelectViewController:nextController];
+    
     for (OPTabBarItem *item in self.tabBar.items)
         [item setSelected:NO];
     [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
     _selectedIndex = selectedIndex;
     
-    UIViewController *controller = [self.childViewControllers objectAtIndex:_selectedIndex];
-    UIViewController *previousController = self.selectedViewController;
-    self.selectedViewController = controller;
+    self.selectedViewController = nextController;
     
     // remove the previous view controller from our view hierarchy
     if (! [UIDevice isAtLeastiOS5])

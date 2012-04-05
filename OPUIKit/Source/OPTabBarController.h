@@ -16,6 +16,7 @@
 @optional
 -(BOOL) tabBarController:(OPTabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController;
 -(void) tabBarController:(OPTabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController;
+-(void) tabBarController:(OPTabBarController*)tabBarController willSelectViewController:(UIViewController*)viewController;
 @end
 
 @interface OPTabBarController : OPViewController
