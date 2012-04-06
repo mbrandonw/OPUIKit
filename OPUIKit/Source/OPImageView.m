@@ -36,12 +36,12 @@
     self.cacheName = cacheName;
     self.image = placeholder;
     
-    [[OPCache sharedCache] fetchImageForURL:url cacheName:cacheName processing:processing completion:^(UIImage *image, BOOL isCached) {
+    [[OPCache sharedCache] fetchImageForURL:url cacheName:cacheName processing:processing completion:^(UIImage *image, BOOL fromCache) {
         
         self.image = image;
         [self setNeedsLayout];
         
-        if (! isCached && self.animation == OPImageViewURLLoadedAnimationFade)
+        if (! fromCache && image && self.animation == OPImageViewURLLoadedAnimationFade)
         {
             self.alpha = 0.0f;
             [UIView animateWithDuration:0.3f animations:^{

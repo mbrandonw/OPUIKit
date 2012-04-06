@@ -81,12 +81,12 @@
     
     self.imageView.image = placeholder;
     
-    [[OPCache sharedCache] fetchImageForURL:url cacheName:cacheName processing:processing completion:^(UIImage *image, BOOL isCached) {
+    [[OPCache sharedCache] fetchImageForURL:url cacheName:cacheName processing:processing completion:^(UIImage *image, BOOL fromCache) {
         
         self.imageView.image = image;
         [self setNeedsLayout];
         
-        if (! isCached && self.imageURLLoadingAnimation == OPTableViewCellImageURLLoadingAnimationFade)
+        if (! fromCache && image && self.imageURLLoadingAnimation == OPTableViewCellImageURLLoadingAnimationFade)
         {
             self.imageView.alpha = 0.0f;
             [UIView animateWithDuration:0.3f animations:^{
