@@ -1,9 +1,9 @@
 //
 //  OPImageView.m
-//  Kickstarter
+//  OPUIKit
 //
 //  Created by Brandon Williams on 2/10/12.
-//  Copyright (c) 2012 Kickstarter. All rights reserved.
+//  Copyright (c) 2012 Opetopic. All rights reserved.
 //
 
 #import "OPImageView.h"

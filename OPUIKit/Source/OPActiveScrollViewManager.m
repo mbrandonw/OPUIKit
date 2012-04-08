@@ -1,9 +1,9 @@
 //
 //  OPActiveScrollViewManager.m
-//  Kickstarter
+//  OPUIKit
 //
 //  Created by Brandon Williams on 1/27/12.
-//  Copyright (c) 2012 Kickstarter. All rights reserved.
+//  Copyright (c) 2012 Opetopic. All rights reserved.
 //
 
 #import "OPActiveScrollViewManager.h"
