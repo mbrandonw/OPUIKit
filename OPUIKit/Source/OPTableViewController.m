@@ -398,6 +398,10 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 
 -(void) layoutShadows {
     
+    // don't ever use shadows on grouped table views
+    if (! [self isViewLoaded] || self.tableView.style == UITableViewStyleGrouped)
+        return ;
+    
     if (self.tableViewShadows & OPTableViewControllerShadowOrigin)
     {
         if (self.tableView.contentOffset.y >= 0.0f)
