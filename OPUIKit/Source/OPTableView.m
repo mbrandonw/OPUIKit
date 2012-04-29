@@ -11,11 +11,11 @@
 
 @interface OPTableView () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, weak) NSObject<UITableViewDataSource> *theDataSource;
-@property (nonatomic, weak) NSObject<UITableViewDelegate> *theDelegate;
+@property (nonatomic, weak) NSObject<OPTableViewDelegate> *theDelegate;
 @property (nonatomic, assign) BOOL dataSourceIsSelf;
 @property (nonatomic, assign) BOOL delegateIsSelf;
 
-@property (nonatomic, strong) NSIndexPath *beginDraggingIndexPath;
+@property (nonatomic, strong) NSIndexPath *snappedIndexPath;
 @property (nonatomic, assign) CGPoint contentOffsetDelta;
 @end
 
@@ -27,14 +27,14 @@
 @synthesize theDelegate = _theDelegate;
 @synthesize dataSourceIsSelf = _dataSourceIsSelf;
 @synthesize delegateIsSelf = _delegateIsSelf;
-@synthesize beginDraggingIndexPath = _beginDraggingIndexPath;
+@synthesize snappedIndexPath = _snappedIndexPath;
 @synthesize contentOffsetDelta = _contentOffsetDelta;
 
 -(id) initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     if (! (self = [super initWithFrame:frame style:style]))
         return nil;
     
-    self.beginDraggingIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    self.snappedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
     return self;
 }
@@ -100,18 +100,28 @@
             CGFloat bottom = top + firstCell.frame.size.height;
             
             if (self.contentOffsetDelta.y > 0 && top < -firstCell.frame.size.height/4.0f)
-                self.beginDraggingIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:1];
+                self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:1];
             else if (self.contentOffsetDelta.y < 0 && bottom > secondCell.frame.size.height/4.0f)
-                self.beginDraggingIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
+                self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
             
-            [self scrollToRowAtIndexPath:self.beginDraggingIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            if ([self.theDelegate respondsToSelector:@selector(tableView:willSnapToIndexPath:)])
+                [self.theDelegate tableView:self willSnapToIndexPath:self.snappedIndexPath];
+            
+            [self scrollToRowAtIndexPath:self.snappedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            
+            if ([self.theDelegate respondsToSelector:@selector(tableView:didSnapToIndexPath:)])
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+                    [self.theDelegate tableView:self didSnapToIndexPath:self.snappedIndexPath];
+                });
+            }
             
         });
     }
 }
 
 -(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    self.beginDraggingIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    self.snappedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
 #pragma mark -
@@ -165,9 +175,13 @@
 #pragma mark Delegate / data source methods
 #pragma mark -
 
--(void) setDelegate:(id<UITableViewDelegate>)delegate {
+-(id<OPTableViewDelegate>) delegate {
+    return self.theDelegate;
+}
+
+-(void) setDelegate:(id<OPTableViewDelegate>)delegate {
     self.theDelegate = delegate;
-    self.delegateIsSelf = delegate == self;
+    self.delegateIsSelf = (id)delegate == (id)self;
     [super setDelegate:self];
 }
 
