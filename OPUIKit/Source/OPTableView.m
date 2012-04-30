@@ -81,6 +81,10 @@
     static CGPoint previousOffset;
     self.contentOffsetDelta = CGPointMake(self.contentOffset.x - previousOffset.x, self.contentOffset.y - previousOffset.y);
     previousOffset = self.contentOffset;
+    
+    // pass message to the delegate
+    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
+        [self.theDelegate scrollViewDidScroll:scrollView];
 }
 
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -118,10 +122,27 @@
             
         });
     }
+    
+    // pass message to the delegate
+    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+        [self.theDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 -(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
     self.snappedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    // pass message to the delegate
+    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
+        [self.theDelegate scrollViewDidScrollToTop:scrollView];
+}
+
+#pragma mark -
+#pragma mark UITableView overridden methods
+#pragma mark -
+
+-(void) scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated {
+    [super scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+    self.snappedIndexPath = indexPath;
 }
 
 #pragma mark -

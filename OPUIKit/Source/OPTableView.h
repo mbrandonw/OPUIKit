@@ -13,6 +13,7 @@
 @optional
 -(void) tableView:(OPTableView*)tableView willSnapToIndexPath:(NSIndexPath*)indexPath;
 -(void) tableView:(OPTableView*)tableView didSnapToIndexPath:(NSIndexPath*)indexPath;
+-(NSIndexPath*) tableView:(UITableView *)tableView shouldSnapToIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface OPTableView : UITableView
