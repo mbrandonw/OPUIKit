@@ -99,13 +99,13 @@
                 return ;
             
             UITableViewCell *firstCell = [[self visibleCells] objectAtIndex:0];
-            UITableViewCell *secondCell = [[self visibleCells] objectAtIndex:0];
+            UITableViewCell *secondCell = [[self visibleCells] lastObject];
             CGFloat top = firstCell.frame.origin.y - self.contentOffset.y;
             CGFloat bottom = top + firstCell.frame.size.height;
             
-            if (self.contentOffsetDelta.y > 0 && top < -firstCell.frame.size.height/4.0f)
-                self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:1];
-            else if (self.contentOffsetDelta.y < 0 && bottom > secondCell.frame.size.height/4.0f)
+            if (self.contentOffsetDelta.y > 0 && ((top < -firstCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y >= 10.0f)))
+                self.snappedIndexPath = [[self indexPathsForVisibleRows] lastObject];
+            else if (self.contentOffsetDelta.y < 0 && ((bottom > secondCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y <= -10.0f)))
                 self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
             
             if ([self.theDelegate respondsToSelector:@selector(tableView:willSnapToIndexPath:)])
