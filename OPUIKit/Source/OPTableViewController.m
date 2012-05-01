@@ -133,6 +133,7 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     for (NSManagedObject *obj in [self.fetchedResultsController fetchedObjects])
         if (! [obj isFault] && ! [obj hasChanges])
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
+    self.fetchedResultsController = nil;
 }
 
 #pragma mark -
