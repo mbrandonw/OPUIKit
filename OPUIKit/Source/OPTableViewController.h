@@ -25,6 +25,7 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 /**
+ Customize shadows at the top and bottom of the table view.
  */
 @property (nonatomic, assign) OPTableViewControllerShadows tableViewShadows;
 @property (nonatomic, strong, readonly) CAGradientLayer *originShadowLayer;
@@ -32,16 +33,15 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, strong, readonly) CAGradientLayer *bottomShadowLayer;
 
 /**
+ */
+@property (nonatomic, assign) BOOL useOPTableView;
+
+/**
  Determines if we should automatically dismiss the keyboard while scrolling,
  as well as the threshold of scrolling for such behavior.
  */
 @property (nonatomic, assign) BOOL resignKeyboardWhileScrolling;
 @property (nonatomic, assign) CGFloat resignKeyboardScrollDelta;
-
-/**
- The controlled tableView if it is active, or the searchDisplayController's tableView if it is active.
- */
-@property (nonatomic, readonly) UITableView *activeTableView;
 
 /**
  Holds the velocity (pixels/sec) of the table view scrolling.
@@ -52,12 +52,6 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  Shortcut to creating a controller with style, title and subtitle.
  */
 -(id) initWithStyle:(UITableViewStyle)style title:(NSString*)title subtitle:(NSString*)subtitle;
-
-/**
- Reloads the controlled tableView if it is active, or the searchDisplayController's tableView if it is active.
- Also sends out the scrollDidStop message so that images can be lazily loaded.
- */
--(void) reloadData;
 
 /**
  The preferred place to do any table cell configuration. This method is used in the NSFetchedResultsControllerDelegate

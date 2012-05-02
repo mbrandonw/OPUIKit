@@ -9,6 +9,7 @@
 #import "OPTableViewController.h"
 #import "OPActiveScrollViewManager.h"
 #import "UIView+Opetopic.h"
+#import "OPTableView.h"
 #import "CALayer+Opetopic.h"
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
@@ -49,6 +50,7 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 @synthesize originShadowLayer = _originShadowLayer;
 @synthesize topShadowLayer = _topShadowLayer;
 @synthesize bottomShadowLayer = _bottomShadowLayer;
+@synthesize useOPTableView = _useOPTableView;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -140,6 +142,17 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 #pragma mark View lifecycle
 #pragma mark -
 
+-(void) loadView {
+    [super loadView];
+    
+    if (self.useOPTableView)
+    {
+        OPTableView *v = [[OPTableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+        v.autoresizingMask = self.tableView.autoresizingMask;
+        self.tableView = v;
+    }
+}
+
 -(void) viewDidLoad {
     [super viewDidLoad];
     DLogClassAndMethod();
@@ -187,10 +200,6 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 -(void) viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
-}
-
--(UITableView*) activeTableView {
-    return self.searchDisplayController.active ? self.searchDisplayController.searchResultsTableView : self.tableView;
 }
 
 #pragma mark -
@@ -293,20 +302,6 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 }
 
 #pragma mark -
-#pragma mark Data source methods
-#pragma mark -
-
--(void) reloadData {
-	
-	if (self.searchDisplayController.active)
-		[self.searchDisplayController.searchResultsTableView reloadData];
-	else if ([self isViewLoaded])
-		[self.tableView reloadData];
-	
-	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
-}
-
-#pragma mark -
 #pragma mark UITableView methods
 #pragma mark -
 
@@ -391,6 +386,29 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
         [self.topShadowLayer removeFromSuperlayer];
     if (! (_tableViewShadows & OPTableViewControllerShadowBottom))
         [self.bottomShadowLayer removeFromSuperlayer];
+}
+
+-(void) setUseOPTableView:(BOOL)useOPTableView {
+    _useOPTableView = useOPTableView;
+    
+    // if the view is loaded then check if we need to swap out the table views
+    if ([self isViewLoaded])
+    {
+        if (self.useOPTableView && ! [self.tableView isKindOfClass:[OPTableView class]])
+        {
+            self.tableView = nil;
+            OPTableView *v = [[OPTableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+            v.autoresizingMask = self.tableView.autoresizingMask;
+            self.tableView = v;
+        }
+        else if (! self.useOPTableView && [self.tableView isKindOfClass:[OPTableView class]])
+        {
+            self.tableView = nil;
+            UITableView *v = [[UITableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+            v.autoresizingMask = self.tableView.autoresizingMask;
+            self.tableView = v;
+        }
+    }
 }
 
 #pragma mark -
