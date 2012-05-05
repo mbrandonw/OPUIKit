@@ -26,7 +26,8 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 }
 
 #pragma mark Private methods
-@interface OPTableViewController (/*Private*/)
+@interface OPTableViewController (/*Private*/) <OPTableViewDelegate>
+
 @property (nonatomic, assign) BOOL touchIsDown;
 @property (nonatomic, assign) CGPoint beginDraggingContentOffset;
 @property (nonatomic, assign, readwrite) CGPoint contentOffsetVelocity;
@@ -149,6 +150,8 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     {
         OPTableView *v = [[OPTableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
         v.autoresizingMask = self.tableView.autoresizingMask;
+        v.delegate = self;
+        v.dataSource = self;
         self.tableView = v;
     }
 }
