@@ -11,6 +11,10 @@
 @class OPTableView;
 @protocol OPTableViewDelegate <UITableViewDelegate>
 @optional
+
+/**
+ Delegate methods called just before and right after the table view has snapped to an index path.
+ */
 -(void) tableView:(OPTableView*)tableView willSnapToIndexPath:(NSIndexPath*)indexPath;
 -(void) tableView:(OPTableView*)tableView didSnapToIndexPath:(NSIndexPath*)indexPath;
 

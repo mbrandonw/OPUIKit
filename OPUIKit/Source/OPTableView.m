@@ -197,13 +197,19 @@
     
     if (self.snapToRows)
     {
+        // A little trick here. This method is usually called from a UIScrollView delegate method, which is taking place
+        // on the UI event tracking run loop mode. This means any UI animation stuff we try to do here may get skipped. But, 
+        // if we dispatch async to the current queue we will pick up the NEXT run loop, which will be in default mode, and
+        // so these animations will go through fine.
         dispatch_async(dispatch_get_current_queue(), ^{
             
+            // allow for overflow elasticity in the scroll view
             if (self.contentOffset.y < 0.0f)
                 return ;
             else if (self.contentOffset.y > self.contentSize.height - self.frame.size.height)
                 return ;
             
+            // figure out which index path we should snap to next
             UITableViewCell *firstCell = [[self visibleCells] objectAtIndex:0];
             UITableViewCell *secondCell = [[self visibleCells] lastObject];
             CGFloat top = firstCell.frame.origin.y - self.contentOffset.y;
@@ -214,16 +220,19 @@
             else if (self.contentOffsetDelta.y < 0 && ((bottom > secondCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y <= -10.0f)))
                 self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
             
+            // allow the delegate to customize the snapped index path
             if ([self.realDelegate respondsToSelector:@selector(tableView:shouldSnapToIndexPath:)])
                 self.snappedIndexPath = [self.realDelegate tableView:self shouldSnapToIndexPath:self.snappedIndexPath];
             
+            // let our delegate know we are about to snap to the index path
             if ([self.realDelegate respondsToSelector:@selector(tableView:willSnapToIndexPath:)])
                 [self.realDelegate tableView:self willSnapToIndexPath:self.snappedIndexPath];
             
             [self scrollToRowAtIndexPath:self.snappedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             
-            if ([self.realDelegate respondsToSelector:@selector(tableView:didSnapToIndexPath:)])
-            {
+            // a little hackish, but by waiting 0.3 seconds we can assume the above scroll animation finished, 
+            // and so then we call the didSnap delegate method
+            if ([self.realDelegate respondsToSelector:@selector(tableView:didSnapToIndexPath:)]) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
                     [self.realDelegate tableView:self didSnapToIndexPath:self.snappedIndexPath];
                 });
