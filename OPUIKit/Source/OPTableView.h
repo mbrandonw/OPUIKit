@@ -13,6 +13,12 @@
 @optional
 -(void) tableView:(OPTableView*)tableView willSnapToIndexPath:(NSIndexPath*)indexPath;
 -(void) tableView:(OPTableView*)tableView didSnapToIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ This delegate methods passes you the index path it is about to snap to, and you return the index path
+ it should snap to. If you don't implement this method it will snap to the default index path. If you 
+ return nil then the table view will scroll freely.
+ */
 -(NSIndexPath*) tableView:(UITableView *)tableView shouldSnapToIndexPath:(NSIndexPath*)indexPath;
 @end
 

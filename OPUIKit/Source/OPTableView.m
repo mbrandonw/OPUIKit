@@ -10,21 +10,23 @@
 #import <objc/runtime.h>
 
 @interface OPTableView () <UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, weak) NSObject<UITableViewDataSource> *theDataSource;
-@property (nonatomic, weak) NSObject<OPTableViewDelegate> *theDelegate;
+@property (nonatomic, weak) NSObject<UITableViewDataSource> *realDataSource;
+@property (nonatomic, weak) NSObject<OPTableViewDelegate> *realDelegate;
 @property (nonatomic, assign) BOOL dataSourceIsSelf;
 @property (nonatomic, assign) BOOL delegateIsSelf;
 
 @property (nonatomic, strong) NSIndexPath *snappedIndexPath;
 @property (nonatomic, assign) CGPoint contentOffsetDelta;
+
+-(void) snapScrolling;
 @end
 
 @implementation OPTableView
 
 @synthesize horizontal = _horizontal;
 @synthesize snapToRows = _snapToRows;
-@synthesize theDataSource = _theDataSource;
-@synthesize theDelegate = _theDelegate;
+@synthesize realDataSource = _realDataSource;
+@synthesize realDelegate = _realDelegate;
 @synthesize dataSourceIsSelf = _dataSourceIsSelf;
 @synthesize delegateIsSelf = _delegateIsSelf;
 @synthesize snappedIndexPath = _snappedIndexPath;
@@ -61,11 +63,11 @@
 #pragma mark -
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.theDataSource tableView:tableView numberOfRowsInSection:section];
+    return [self.realDataSource tableView:tableView numberOfRowsInSection:section];
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self.theDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = [self.realDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     
     if (cell && self.horizontal)
         cell.transform = CGAffineTransformMakeRotation(M_PI / 2.0);
@@ -83,57 +85,32 @@
     previousOffset = self.contentOffset;
     
     // pass message to the delegate
-    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
-        [self.theDelegate scrollViewDidScroll:scrollView];
+    if ([self.realDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
+        [self.realDelegate scrollViewDidScroll:scrollView];
+}
+
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self snapScrolling];
+    
+    // pass message to the delegate
+    if ([self.realDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
+        [self.realDelegate scrollViewDidEndDecelerating:scrollView];
 }
 
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    
-    if (self.snapToRows)
-    {
-        dispatch_async(dispatch_get_current_queue(), ^{
-            
-            if (self.contentOffset.y < 0.0f)
-                return ;
-            else if (self.contentOffset.y > self.contentSize.height - self.frame.size.height)
-                return ;
-            
-            UITableViewCell *firstCell = [[self visibleCells] objectAtIndex:0];
-            UITableViewCell *secondCell = [[self visibleCells] lastObject];
-            CGFloat top = firstCell.frame.origin.y - self.contentOffset.y;
-            CGFloat bottom = top + firstCell.frame.size.height;
-            
-            if (self.contentOffsetDelta.y > 0 && ((top < -firstCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y >= 10.0f)))
-                self.snappedIndexPath = [[self indexPathsForVisibleRows] lastObject];
-            else if (self.contentOffsetDelta.y < 0 && ((bottom > secondCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y <= -10.0f)))
-                self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
-            
-            if ([self.theDelegate respondsToSelector:@selector(tableView:willSnapToIndexPath:)])
-                [self.theDelegate tableView:self willSnapToIndexPath:self.snappedIndexPath];
-            
-            [self scrollToRowAtIndexPath:self.snappedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            
-            if ([self.theDelegate respondsToSelector:@selector(tableView:didSnapToIndexPath:)])
-            {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-                    [self.theDelegate tableView:self didSnapToIndexPath:self.snappedIndexPath];
-                });
-            }
-            
-        });
-    }
+    [self snapScrolling];
     
     // pass message to the delegate
-    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
-        [self.theDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    if ([self.realDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+        [self.realDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 -(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
     self.snappedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
     // pass message to the delegate
-    if ([self.theDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
-        [self.theDelegate scrollViewDidScrollToTop:scrollView];
+    if ([self.realDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
+        [self.realDelegate scrollViewDidScrollToTop:scrollView];
 }
 
 #pragma mark -
@@ -154,11 +131,11 @@
         return [super respondsToSelector:aSelector];
     
     struct objc_method_description dataSourceMethod = protocol_getMethodDescription(@protocol(UITableViewDataSource), aSelector, NO, YES);
-    if (! _dataSourceIsSelf && dataSourceMethod.name != nil && [_theDataSource respondsToSelector:aSelector])
+    if (! _dataSourceIsSelf && dataSourceMethod.name != nil && [_realDataSource respondsToSelector:aSelector])
         return YES;
     
     struct objc_method_description delegateMethod = protocol_getMethodDescription(@protocol(UITableViewDelegate), aSelector, NO, YES);
-    if (! _delegateIsSelf && delegateMethod.name != nil && [_theDelegate respondsToSelector:aSelector])
+    if (! _delegateIsSelf && delegateMethod.name != nil && [_realDelegate respondsToSelector:aSelector])
         return YES;
     
     return NO;
@@ -169,12 +146,12 @@
         return [super methodSignatureForSelector:aSelector];
     
     struct objc_method_description dataSourceMethod = protocol_getMethodDescription(@protocol(UITableViewDataSource), aSelector, NO, YES);
-    if (dataSourceMethod.name != nil && [_theDataSource methodSignatureForSelector:aSelector])
-        return [_theDataSource methodSignatureForSelector:aSelector];
+    if (dataSourceMethod.name != nil && [_realDataSource methodSignatureForSelector:aSelector])
+        return [_realDataSource methodSignatureForSelector:aSelector];
     
     struct objc_method_description delegateMethod = protocol_getMethodDescription(@protocol(UITableViewDelegate), aSelector, NO, YES);
-    if (delegateMethod.name != nil && [_theDelegate methodSignatureForSelector:aSelector])
-        return [_theDelegate methodSignatureForSelector:aSelector];
+    if (delegateMethod.name != nil && [_realDelegate methodSignatureForSelector:aSelector])
+        return [_realDelegate methodSignatureForSelector:aSelector];
     
     return nil;
 }
@@ -184,10 +161,10 @@
     struct objc_method_description dataSourceMethod = protocol_getMethodDescription(@protocol(UITableViewDataSource), selector, NO, YES);
     struct objc_method_description delegateMethod = protocol_getMethodDescription(@protocol(UITableViewDelegate), selector, NO, YES);
     
-    if (dataSourceMethod.name != nil && [self.theDataSource respondsToSelector:selector])
-        [anInvocation invokeWithTarget:self.theDataSource];
-    else if (delegateMethod.name != nil && [self.theDelegate respondsToSelector:selector])
-        [anInvocation invokeWithTarget:self.theDelegate];
+    if (dataSourceMethod.name != nil && [self.realDataSource respondsToSelector:selector])
+        [anInvocation invokeWithTarget:self.realDataSource];
+    else if (delegateMethod.name != nil && [self.realDelegate respondsToSelector:selector])
+        [anInvocation invokeWithTarget:self.realDelegate];
     else
         [super forwardInvocation:anInvocation];
 }
@@ -197,19 +174,63 @@
 #pragma mark -
 
 -(id<OPTableViewDelegate>) delegate {
-    return self.theDelegate;
+    return self.realDelegate;
 }
 
 -(void) setDelegate:(id<OPTableViewDelegate>)delegate {
-    self.theDelegate = delegate;
+    self.realDelegate = delegate;
     self.delegateIsSelf = (id)delegate == (id)self;
     [super setDelegate:self];
 }
 
 -(void) setDataSource:(id<UITableViewDataSource>)dataSource {
-    self.theDataSource = dataSource;
+    self.realDataSource = dataSource;
     self.dataSourceIsSelf = dataSource == self;
     [super setDataSource:self];
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) snapScrolling {
+    
+    if (self.snapToRows)
+    {
+        dispatch_async(dispatch_get_current_queue(), ^{
+            
+            if (self.contentOffset.y < 0.0f)
+                return ;
+            else if (self.contentOffset.y > self.contentSize.height - self.frame.size.height)
+                return ;
+            
+            UITableViewCell *firstCell = [[self visibleCells] objectAtIndex:0];
+            UITableViewCell *secondCell = [[self visibleCells] lastObject];
+            CGFloat top = firstCell.frame.origin.y - self.contentOffset.y;
+            CGFloat bottom = top + firstCell.frame.size.height;
+            
+            if (self.contentOffsetDelta.y > 0 && ((top < -firstCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y >= 10.0f)))
+                self.snappedIndexPath = [[self indexPathsForVisibleRows] lastObject];
+            else if (self.contentOffsetDelta.y < 0 && ((bottom > secondCell.frame.size.height/5.0f) || (self.contentOffsetDelta.y <= -10.0f)))
+                self.snappedIndexPath = [[self indexPathsForVisibleRows] objectAtIndex:0];
+            
+            if ([self.realDelegate respondsToSelector:@selector(tableView:shouldSnapToIndexPath:)])
+                self.snappedIndexPath = [self.realDelegate tableView:self shouldSnapToIndexPath:self.snappedIndexPath];
+            
+            if ([self.realDelegate respondsToSelector:@selector(tableView:willSnapToIndexPath:)])
+                [self.realDelegate tableView:self willSnapToIndexPath:self.snappedIndexPath];
+            
+            [self scrollToRowAtIndexPath:self.snappedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            
+            if ([self.realDelegate respondsToSelector:@selector(tableView:didSnapToIndexPath:)])
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+                    [self.realDelegate tableView:self didSnapToIndexPath:self.snappedIndexPath];
+                });
+            }
+            
+        });
+    }
 }
 
 @end
