@@ -126,6 +126,10 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     [[self styling] applyTo:self];
 }
 
+-(void) dealloc {
+    _fetchedResultsController.delegate = nil;
+}
+
 -(void) didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -133,10 +137,10 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
-    for (NSManagedObject *obj in [self.fetchedResultsController fetchedObjects])
+    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects])
         if (! [obj isFault] && ! [obj hasChanges])
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
-    self.fetchedResultsController = nil;
+    _fetchedResultsController = nil;
 }
 
 #pragma mark -
