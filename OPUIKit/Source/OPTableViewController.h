@@ -37,6 +37,10 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, assign) BOOL useOPTableView;
 
 /**
+ */
+@property (nonatomic, assign) UITableViewRowAnimation fetchedResultsControllerAnimation;
+
+/**
  Determines if we should automatically dismiss the keyboard while scrolling,
  as well as the threshold of scrolling for such behavior.
  */

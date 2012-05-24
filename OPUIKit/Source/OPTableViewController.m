@@ -16,12 +16,14 @@
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
 #import "UIDevice+Opetopic.h"
+#import "UITableView+Opetopic.h"
 
 #define kScrollingDidStopDelay  0.3f
 
-UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation) {
-    if ([UIDevice isAtLeastiOS5])
-        return UITableViewRowAnimationAutomatic;
+UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
+UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
+    if (rowAnimation == NSIntegerMax)
+        return UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade);
     return rowAnimation;
 }
 
@@ -52,6 +54,7 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 @synthesize topShadowLayer = _topShadowLayer;
 @synthesize bottomShadowLayer = _bottomShadowLayer;
 @synthesize useOPTableView = _useOPTableView;
+@synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -81,6 +84,7 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
 		return nil;
 	
 	[self setTitle:title subtitle:subtitle];
+    self.fetchedResultsControllerAnimation = NSIntegerMax;
 	
 	return self;
 }
@@ -336,12 +340,12 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
-                          withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                          withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
-                          withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                          withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
     }
 }
@@ -353,12 +357,12 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
             
         case NSFetchedResultsChangeInsert:
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
-                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeDelete:
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
-                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeUpdate:
@@ -367,9 +371,9 @@ UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimati
             
         case NSFetchedResultsChangeMove:
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
-                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
-                             withRowAnimation:UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade)];
+                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
     }
 }
