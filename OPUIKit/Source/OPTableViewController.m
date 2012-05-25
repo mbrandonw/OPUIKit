@@ -49,7 +49,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 @implementation OPTableViewController
 
-@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize tableViewShadows = _tableViewShadows;
 @synthesize originShadowLayer = _originShadowLayer;
 @synthesize topShadowLayer = _topShadowLayer;
@@ -480,9 +479,15 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 }
 
 -(void) flushFetchedResultsController {
-    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects])
-        if (! [obj isFault] && ! [obj hasChanges])
+    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects]) {
+        if (! [obj isFault] && ! [obj hasChanges]) {
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
+        }
+    }
+}
+
+-(NSFetchedResultsController*) fetchedResultsController {
+    return _fetchedResultsController;
 }
 
 @end

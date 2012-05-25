@@ -20,7 +20,10 @@ typedef enum {
 
 extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation);
 
-@interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
+@interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol> {
+    @protected
+    NSFetchedResultsController *_fetchedResultsController;
+}
 
 /**
  Customize shadows at the top and bottom of the table view.
@@ -36,7 +39,7 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 
 /**
  */
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, readonly) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) UITableViewRowAnimation fetchedResultsControllerAnimation;
 @property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenViewDisappears;
 
