@@ -43,6 +43,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) __init;
 -(void) scrollingDidStop;
 -(void) layoutShadows;
+-(void) flushFetchedResultsController;
 @end
 #pragma mark -
 
@@ -55,6 +56,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize bottomShadowLayer = _bottomShadowLayer;
 @synthesize useOPTableView = _useOPTableView;
 @synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
+@synthesize shouldFlushFetchedResultsControllerWhenViewDisappears = _shouldFlushFetchedResultsControllerWhenViewDisappears;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -141,9 +143,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
-    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects])
-        if (! [obj isFault] && ! [obj hasChanges])
-            [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
+    [self flushFetchedResultsController];
     _fetchedResultsController = nil;
 }
 
@@ -206,6 +206,16 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     if (self.tableView.decelerating)
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
+}
+
+-(void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    if (self.shouldFlushFetchedResultsControllerWhenViewDisappears) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self flushFetchedResultsController];
+        });
+    }
 }
 
 -(void) viewDidUnload {
@@ -467,6 +477,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             [self.tableView.layer insertSublayer:self.bottomShadowLayer atIndex:0];
         }
     }
+}
+
+-(void) flushFetchedResultsController {
+    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects])
+        if (! [obj isFault] && ! [obj hasChanges])
+            [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
 }
 
 @end

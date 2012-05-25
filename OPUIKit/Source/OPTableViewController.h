@@ -22,8 +22,6 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-
 /**
  Customize shadows at the top and bottom of the table view.
  */
@@ -38,7 +36,9 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 
 /**
  */
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) UITableViewRowAnimation fetchedResultsControllerAnimation;
+@property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenViewDisappears;
 
 /**
  Determines if we should automatically dismiss the keyboard while scrolling,
