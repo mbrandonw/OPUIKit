@@ -211,9 +211,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [super viewDidDisappear:animated];
     
     if (self.shouldFlushFetchedResultsControllerWhenViewDisappears) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self flushFetchedResultsController];
-        });
+        [self flushFetchedResultsController];
     }
 }
 
