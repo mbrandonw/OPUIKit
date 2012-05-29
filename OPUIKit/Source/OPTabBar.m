@@ -8,6 +8,7 @@
 
 #import "OPTabBar.h"
 #import "OPTabBarItem.h"
+#import "OPTabBarItemBadge.h"
 
 #import "OPView.h"
 #import "OPGradientView.h"
@@ -208,6 +209,9 @@
     
     if (! self.selectedItem.selected)
         self.selectedItem.selected = YES;
+    
+    if (self.selectedItem.badge.hidden)
+        [self.selectedItem.superview sendSubviewToBack:self.selectedItem];
 }
 
 #pragma mark -
