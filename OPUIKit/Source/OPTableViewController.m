@@ -54,6 +54,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize topShadowLayer = _topShadowLayer;
 @synthesize bottomShadowLayer = _bottomShadowLayer;
 @synthesize useOPTableView = _useOPTableView;
+@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
 @synthesize shouldFlushFetchedResultsControllerWhenViewDisappears = _shouldFlushFetchedResultsControllerWhenViewDisappears;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
@@ -143,7 +144,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
     [self flushFetchedResultsController];
-    _fetchedResultsController = nil;
+    self.fetchedResultsController = nil;
 }
 
 #pragma mark -
@@ -482,10 +483,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
         }
     }
-}
-
--(NSFetchedResultsController*) fetchedResultsController {
-    return _fetchedResultsController;
 }
 
 @end
