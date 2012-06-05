@@ -17,6 +17,8 @@
 #import "Quartz+Opetopic.h"
 #import "UIDevice+Opetopic.h"
 #import "UITableView+Opetopic.h"
+#import "OPTabBarController.h"
+#import "OPTabBar.h"
 
 #define kScrollingDidStopDelay  0.3f
 
@@ -199,6 +201,15 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 	[super viewDidAppear:animated];
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
     [self layoutShadows];
+    
+    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller 
+    // that chooses to hide the bottom bar
+    if (self.tabController) {
+        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 
+                                                       self.tableView.contentInset.left,
+                                                       0.0f,
+                                                       self.tableView.contentInset.right);
+    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -206,6 +217,15 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     if (self.tableView.decelerating)
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
+    
+    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller 
+    // that chooses to hide the bottom bar
+    if (self.tabController) {
+        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 
+                                                       self.tableView.contentInset.left,
+                                                       self.tabController.tabBar.height,
+                                                       self.tableView.contentInset.right);
+    }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
