@@ -55,11 +55,6 @@
     if (self.backgroundColor)
         self.tintColor = self.backgroundColor;
     
-    if (self.shadowHeight == 0.0f)
-        [self setShadowHidden:YES];
-    else
-        [self setShadowHidden:NO];
-    
 	return self;
 }
 
