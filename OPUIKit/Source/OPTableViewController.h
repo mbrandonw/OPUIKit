@@ -63,4 +63,7 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
+-(NSUInteger) adjustedSection:(NSUInteger)section;
+-(NSIndexPath*) adjustedIndexPath:(NSIndexPath*)indexPath;
+
 @end

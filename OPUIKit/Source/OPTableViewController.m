@@ -355,6 +355,14 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
 }
 
+-(NSUInteger) adjustedSection:(NSUInteger)section {
+    return section;
+}
+
+-(NSIndexPath*) adjustedIndexPath:(NSIndexPath*)indexPath {
+    return indexPath;
+}
+
 #pragma mark -
 #pragma mark NSFetchedResultsControllerDelegate methods
 #pragma mark -
@@ -367,12 +375,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:[self adjustedSection:sectionIndex]] 
                           withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:[self adjustedSection:sectionIndex]] 
                           withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
     }
@@ -384,23 +392,25 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:newIndexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:indexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self tableView:tableView configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self tableView:tableView 
+              configureCell:[tableView cellForRowAtIndexPath:[self adjustedIndexPath:indexPath]] 
+                atIndexPath:[self adjustedIndexPath:indexPath]];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:indexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:newIndexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
     }
