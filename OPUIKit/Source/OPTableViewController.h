@@ -39,6 +39,7 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) UITableViewRowAnimation fetchedResultsControllerAnimation;
 @property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenViewDisappears;
+@property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenAppEntersBackground;
 
 /**
  Determines if we should automatically dismiss the keyboard while scrolling,

@@ -17,6 +17,8 @@
 #import "Quartz+Opetopic.h"
 #import "UIDevice+Opetopic.h"
 #import "UITableView+Opetopic.h"
+#import "UIApplication+Opetopic.h"
+#import "NSFetchedResultsController+Opetopic.h"
 #import "OPTabBarController.h"
 #import "OPTabBar.h"
 
@@ -45,7 +47,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) __init;
 -(void) scrollingDidStop;
 -(void) layoutShadows;
--(void) flushFetchedResultsController;
 @end
 #pragma mark -
 
@@ -59,6 +60,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
 @synthesize shouldFlushFetchedResultsControllerWhenViewDisappears = _shouldFlushFetchedResultsControllerWhenViewDisappears;
+@synthesize shouldFlushFetchedResultsControllerWhenAppEntersBackground = _shouldFlushFetchedResultsControllerWhenAppEntersBackground;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -145,7 +147,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
-    [self flushFetchedResultsController];
+    [self.fetchedResultsController faultUnfaultedFetchedObjects];
     self.fetchedResultsController = nil;
 }
 
@@ -163,6 +165,11 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
         v.delegate = self;
         v.dataSource = self;
         self.tableView = v;
+    }
+    
+    if (self.shouldFlushFetchedResultsControllerWhenAppEntersBackground) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
 }
 
@@ -231,9 +238,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    if (self.shouldFlushFetchedResultsControllerWhenViewDisappears) {
-        [self flushFetchedResultsController];
-    }
+    if (self.shouldFlushFetchedResultsControllerWhenViewDisappears)
+        [self.fetchedResultsController faultUnfaultedFetchedObjects];
 }
 
 -(void) viewDidUnload {
@@ -507,11 +513,18 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     }
 }
 
--(void) flushFetchedResultsController {
-    for (NSManagedObject *obj in [_fetchedResultsController fetchedObjects]) {
-        if (! [obj isFault] && ! [obj hasChanges]) {
-            [obj.managedObjectContext refreshObject:obj mergeChanges:NO];
-        }
+#pragma mark -
+#pragma mark Notification methods
+#pragma mark -
+
+-(void) appEnteredBackground {
+    
+    if (self.shouldFlushFetchedResultsControllerWhenAppEntersBackground)
+    {
+        [[UIApplication sharedApplication] performBackgroundTask:^{
+            [self.fetchedResultsController faultUnfaultedFetchedObjects];
+            self.fetchedResultsController = nil;
+        } completion:nil expiration:nil];
     }
 }
 
