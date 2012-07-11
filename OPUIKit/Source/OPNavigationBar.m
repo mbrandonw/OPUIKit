@@ -100,7 +100,10 @@
     
     // apply additional block based drawing
     if (self.navigationBarDrawingBlock)
+    {
+        shouldCallSuper = NO;
         self.navigationBarDrawingBlock(self, rect, c);
+    }
     
     if (shouldCallSuper)
         [super drawRect:rect];
