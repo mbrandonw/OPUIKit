@@ -24,6 +24,8 @@
 
 @implementation OPTabBarItem
 
+@synthesize index = _index;
+@synthesize tabBar = _tabBar;
 @synthesize iconView = _iconView;
 @synthesize iconViewInsets = _iconViewInsets;
 @synthesize titleLabel = _titleLabel;
@@ -76,6 +78,25 @@
     
     // observe changes in the badge value so that we can remember it
     [self.badge.valueLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    return self;
+}
+
+-(id) initWithImage:(UIImage*)image {
+    if (! (self = [self init]))
+        return nil;
+    
+    self.iconView.image = image;
+    [self.iconView sizeToFit];
+    
+    return self;
+}
+
+-(id) initWithImage:(UIImage*)image highlightedImage:(UIImage *)highlightedImage {
+    if (! (self = [self initWithImage:image]))
+        return nil;
+    
+    self.iconView.highlightedImage = highlightedImage;
     
     return self;
 }

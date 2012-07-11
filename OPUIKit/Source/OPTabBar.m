@@ -107,7 +107,10 @@
         }
         
         // add new items
-        for (OPTabBarItem *item in items) {
+        [items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
+            
+            item.index = idx;
+            item.tabBar = self;
             if (! [self.items containsObject:item])
             {
                 item.height = self.height;
@@ -116,7 +119,7 @@
                 [self addSubview:item];
                 [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
             }
-        }
+        }];
         
         NSArray *_originalItems = [_items copy];
         _items = [items copy];
