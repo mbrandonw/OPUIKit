@@ -43,7 +43,9 @@
 }
 
 -(void) dealloc {
-    CGPDFDocumentRelease(self.pdf);
+    if (_pdf)
+        CGPDFDocumentRelease(_pdf);
+    _pdf = NULL;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -78,6 +80,11 @@
 
 -(CGSize) originalSize {
     return self.pageRect.size;
+}
+
+-(void) setColor:(UIColor *)color {
+    _color = color;
+    [self setNeedsDisplay];
 }
 
 @end
