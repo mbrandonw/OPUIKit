@@ -521,7 +521,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     if (self.shouldFlushFetchedResultsControllerWhenAppEntersBackground)
     {
-        [[UIApplication sharedApplication] performBackgroundTask:^{
+        [[UIApplication sharedApplication] performBackgroundTaskOnMainThread:^{
             [self.fetchedResultsController faultUnfaultedFetchedObjects];
             self.fetchedResultsController = nil;
         } completion:nil expiration:nil];
