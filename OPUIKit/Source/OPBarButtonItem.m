@@ -50,6 +50,10 @@
     // apply styles
     [[[self class] styling] applyTo:self];
     
+    [self.button setTitleColor:self.button.titleLabel.textColor forState:UIControlStateNormal];
+    [self.button setTitleShadowColor:self.button.titleLabel.shadowColor forState:UIControlStateNormal];
+    [self.button setTitleColor:self.button.titleLabel.highlightedTextColor forState:UIControlStateHighlighted];
+    
     return self;
 }
 
