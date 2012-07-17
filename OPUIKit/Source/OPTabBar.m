@@ -14,6 +14,7 @@
 #import "OPGradientView.h"
 #import "OPGradient.h"
 
+#import "GCD+Opetopic.h"
 #import "UIImage+Opetopic.h"
 #import "NSArray+Opetopic.h"
 #import "UIColor+Opetopic.h"
@@ -84,39 +85,32 @@
 
 -(void) setItems:(NSArray*)items animated:(BOOL)animated completion:(void(^)(void))completion {
     
-    NSTimeInterval time = 0.3f*animated*([self.items count]>0);
+    NSTimeInterval time = 0.4f*animated*([self.items count]>0);
     
-    void(^animationBlock)(void) = ^{
+    [UIView animateWithDuration:time animations:^{
         
         for (OPTabBarItem *item in self.items)
-        {
             if (! [items containsObject:item])
                 item.left = -item.width;
-        }
-    };
-    
-    void(^completionBlock)(BOOL finished) = ^(BOOL finished){
+        
+    } asapCompletion:^(BOOL finished) {
         
         // remove previous items
         for (OPTabBarItem *item in self.items)
-        {
             if (! [items containsObject:item])
-            {
                 [item removeFromSuperview];
-            }
-        }
         
         // add new items
         [items enumerateObjectsUsingBlock:^(OPTabBarItem *item, NSUInteger idx, BOOL *stop) {
             
             item.index = idx;
             item.tabBar = self;
+            [self addSubview:item];
             if (! [self.items containsObject:item])
             {
                 item.height = self.height;
                 item.autoresizingMask |= (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth |
                                           UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-                [self addSubview:item];
                 [item addTarget:self action:@selector(tabBarButtonPressed:) forControlEvents:UIControlEventTouchDown];
             }
         }];
@@ -146,17 +140,11 @@
         else if ([self.items count] > 0)
             self.selectedItemIndex = 0;
         
-        [self setNeedsDisplayAndLayout];
-        
-        if (completion) completion();
-    };
-    
-    if (time > 0.0f)
-        [UIView animateWithDuration:time animations:animationBlock completion:completionBlock];
-    else {
-        animationBlock();
-        completionBlock(YES);
-    }
+        dispatch_after_delay(time, ^{
+            [self setNeedsDisplayAndLayout];
+            if (completion) completion();
+        });
+    }];
 }
 
 #pragma mark -
@@ -212,9 +200,6 @@
     
     if (! self.selectedItem.selected)
         self.selectedItem.selected = YES;
-    
-    if (self.selectedItem.badge.hidden)
-        [self.selectedItem.superview sendSubviewToBack:self.selectedItem];
 }
 
 #pragma mark -
