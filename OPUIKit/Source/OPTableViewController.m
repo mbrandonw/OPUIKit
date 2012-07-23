@@ -90,7 +90,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 		return nil;
 	
 	[self setTitle:title subtitle:subtitle];
-    self.fetchedResultsControllerAnimation = NSIntegerMax;
+    self.fetchedResultsControllerAnimation = UITableViewRowAnimationNone;
 	
 	return self;
 }
