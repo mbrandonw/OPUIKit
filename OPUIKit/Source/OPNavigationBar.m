@@ -82,11 +82,9 @@
         shouldCallSuper = NO;
         
         if (self.gradientAmount > 0.0f) {
-            [[OPGradient gradientWithColors:[NSArray arrayWithObjects:
-                                             [self.backgroundColor lighten:self.gradientAmount], 
+            [[OPGradient gradientWithColors:@[[self.backgroundColor lighten:self.gradientAmount], 
                                              self.backgroundColor, 
-                                             [self.backgroundColor darken:self.gradientAmount],
-                                             nil]] fillRectLinearly:rect];
+                                             [self.backgroundColor darken:self.gradientAmount]]] fillRectLinearly:rect];
         }
     }
     

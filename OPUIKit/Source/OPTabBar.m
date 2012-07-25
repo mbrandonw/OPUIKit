@@ -219,7 +219,7 @@
     }
     if (self.backgroundColor)
     {
-        [[OPGradient gradientWithColors:$array([self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount])]
+        [[OPGradient gradientWithColors:@[[self.backgroundColor lighten:self.gradientAmount], self.backgroundColor, [self.backgroundColor darken:self.gradientAmount]]]
          fillRectLinearly:rect];
         
     }

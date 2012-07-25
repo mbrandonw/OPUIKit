@@ -21,7 +21,7 @@
 @implementation NSManagedObjectContext (OPUIKit)
 
 -(void) setHasDeferredSave:(BOOL)hasDeferredSave {
-    objc_setAssociatedObject(self, kHasDeferredSaveKey, [NSNumber numberWithBool:hasDeferredSave], OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, kHasDeferredSaveKey, @(hasDeferredSave), OBJC_ASSOCIATION_RETAIN);
 }
 
 -(BOOL) hasDeferredSave {

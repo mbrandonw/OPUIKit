@@ -75,7 +75,7 @@
     [super drawRect:rect];
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:[NSNumber numberWithInt:UIControlStateNormal]])
+    for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)])
         block(self, rect, c);
     
     for (NSNumber *drawState in self.drawingBlocksByControlState)

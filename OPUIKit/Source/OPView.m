@@ -95,9 +95,9 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
     
     // create a baseGradient from the baseColor if no gradient is provided
     if (! baseGradient && ! inverted)
-        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
+        baseGradient = [OPGradient gradientWithColors:@[[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount]]];
     else if (! baseGradient)
-        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
+        baseGradient = [OPGradient gradientWithColors:@[[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount]]];
     
     // create the drawing block
     return [^(UIView *v, CGRect r, CGContextRef c){
@@ -160,9 +160,9 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
     
     // create a baseGradient from the baseColor if no gradient is provided
     if (! baseGradient && ! inverted)
-        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount], nil]];
+        baseGradient = [OPGradient gradientWithColors:@[[baseColor lighten:gradientAmount], [baseColor darken:gradientAmount]]];
     else if (! baseGradient)
-        baseGradient = [OPGradient gradientWithColors:[NSArray arrayWithObjects:[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount], nil]];
+        baseGradient = [OPGradient gradientWithColors:@[[baseColor darken:gradientAmount], [baseColor lighten:gradientAmount]]];
     
     // create the drawing block
     return [^(UIView *v, CGRect r, CGContextRef c){

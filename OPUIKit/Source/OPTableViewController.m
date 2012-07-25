@@ -116,21 +116,18 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     self.originShadowLayer = [CAGradientLayer new];
     self.originShadowLayer.height = 10.0f;
-    self.originShadowLayer.colors = [NSArray arrayWithObjects:
-                                     (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
-                                     (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
+    self.originShadowLayer.colors = @[(id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
+                                     (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor];
     
     self.topShadowLayer = [CAGradientLayer new];
     self.topShadowLayer.height = 10.0f;
-    self.topShadowLayer.colors = [NSArray arrayWithObjects:
-                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, 
-                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, nil];
+    self.topShadowLayer.colors = @[(id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, 
+                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor];
     
     self.bottomShadowLayer = [CAGradientLayer new];
     self.bottomShadowLayer.height = 20.0f;
-    self.bottomShadowLayer.colors = [NSArray arrayWithObjects:
-                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
-                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, nil];
+    self.bottomShadowLayer.colors = @[(id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
+                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor];
     
     // apply stylings
     [[self styling] applyTo:self];
@@ -398,12 +395,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:newIndexPath]] 
+            [tableView insertRowsAtIndexPaths:@[[self adjustedIndexPath:newIndexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:indexPath]] 
+            [tableView deleteRowsAtIndexPaths:@[[self adjustedIndexPath:indexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
             
@@ -414,9 +411,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:indexPath]] 
+            [tableView deleteRowsAtIndexPaths:@[[self adjustedIndexPath:indexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[self adjustedIndexPath:newIndexPath]] 
+            [tableView insertRowsAtIndexPaths:@[[self adjustedIndexPath:newIndexPath]] 
                              withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
             break;
     }

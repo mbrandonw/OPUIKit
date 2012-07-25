@@ -117,10 +117,9 @@
     {
         // we need to use CA animations in order to avoid weird UIView layout problems.
         CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-        animation.values = [NSArray arrayWithObjects:
-                            [NSValue valueWithCATransform3D:self.valueLabel.text ? kBadgeSmallTransform : CATransform3DIdentity],
+        animation.values = @[[NSValue valueWithCATransform3D:self.valueLabel.text ? kBadgeSmallTransform : CATransform3DIdentity],
                             [NSValue valueWithCATransform3D:self.valueLabel.text ? kBadgeLargeTransform : kBadgeLargeTransform],
-                            [NSValue valueWithCATransform3D:self.valueLabel.text ? CATransform3DIdentity : kBadgeSmallTransform], nil];
+                            [NSValue valueWithCATransform3D:self.valueLabel.text ? CATransform3DIdentity : kBadgeSmallTransform]];
         animation.delegate = self;
         [self.layer addAnimation:animation forKey:@"animation"];
     }
@@ -154,9 +153,9 @@
         
         // fill the background color and gloss
         [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(r, 1.5f, 1.5f) cornerRadius:r.size.height-2.0f] addClip];
-        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:[color lighten:0.08f], [color darken:0.08f], nil]]
+        [[OPGradient gradientWithColors:@[[color lighten:0.08f], [color darken:0.08f]]]
          fillRectLinearly:r];
-        [[OPGradient gradientWithColors:[NSArray arrayWithObjects:$WAf(1.0f,0.85f),$WAf(1.0f,0.2f), nil]]
+        [[OPGradient gradientWithColors:@[$WAf(1.0f,0.85f),$WAf(1.0f,0.2f)]]
          fillRectLinearly:CGRectMake(0.0f, 0.0f, r.size.width, ceilf(r.size.height/2.0f))];
         
     } copy];

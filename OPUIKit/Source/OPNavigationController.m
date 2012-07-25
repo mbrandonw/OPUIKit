@@ -40,7 +40,7 @@
 	OPNavigationController *controller = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] lastObject];
     
     if (rootViewController)
-        controller.viewControllers = [NSArray arrayWithObject:rootViewController];
+        controller.viewControllers = @[rootViewController];
 	controller.delegate = controller;
     
 	return controller;

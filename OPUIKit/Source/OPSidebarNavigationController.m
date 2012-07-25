@@ -69,11 +69,9 @@
     // add the nice little shadow on the left side of this controller ... helps create some separation between the navigation controller and sidebar controller
     CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
     gradientLayer.frame = CGRectMake(-HBSidebarShadowWidth, 0.0f, HBSidebarShadowWidth, self.view.height);
-    gradientLayer.colors = [NSArray arrayWithObjects:
-                            (id)[UIColor colorWithWhite:0.0f alpha:0.4f].CGColor, 
+    gradientLayer.colors = @[(id)[UIColor colorWithWhite:0.0f alpha:0.4f].CGColor, 
                             (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
-                            (id)[UIColor colorWithWhite:0.0f alpha:0.0f].CGColor, 
-                            nil];
+                            (id)[UIColor colorWithWhite:0.0f alpha:0.0f].CGColor];
     gradientLayer.startPoint = CGPointMake(1.0f, 0.0f);
     gradientLayer.endPoint = CGPointZero;
     [self.view.layer addSublayer:gradientLayer];
