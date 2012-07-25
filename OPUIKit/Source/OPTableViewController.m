@@ -90,7 +90,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 		return nil;
 	
 	[self setTitle:title subtitle:subtitle];
-    self.fetchedResultsControllerAnimation = UITableViewRowAnimationNone;
 	
 	return self;
 }
@@ -113,6 +112,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // default ivars
     self.resignKeyboardScrollDelta = 40.0f;
+    self.fetchedResultsControllerAnimation = UITableViewRowAnimationNone;
     
     self.originShadowLayer = [CAGradientLayer new];
     self.originShadowLayer.height = 10.0f;
