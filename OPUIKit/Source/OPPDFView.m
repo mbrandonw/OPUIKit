@@ -18,11 +18,6 @@
 
 @implementation OPPDFView
 
-@synthesize url = _url;
-@synthesize pdf = _pdf;
-@synthesize page = _page;
-@synthesize pageRect = _pageRect;
-
 -(void) dealloc {
     CGPDFDocumentRelease(self.pdf);
 }

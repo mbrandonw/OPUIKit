@@ -24,10 +24,10 @@
         return nil;
     
     self.drawingBlocksByControlState = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        [NSMutableArray new], $int(UIControlStateNormal), 
-                                        [NSMutableArray new], $int(UIControlStateHighlighted), 
-                                        [NSMutableArray new], $int(UIControlStateDisabled), 
-                                        [NSMutableArray new], $int(UIControlStateSelected), nil];
+                                        [NSMutableArray new], @(UIControlStateNormal), 
+                                        [NSMutableArray new], @(UIControlStateHighlighted), 
+                                        [NSMutableArray new], @(UIControlStateDisabled), 
+                                        [NSMutableArray new], @(UIControlStateSelected), nil];
     
     // observe states so we can redraw the button when it changes
     [self addObserver:self forKeyPath:@"enabled" options:0 context:NULL];
@@ -53,16 +53,16 @@
 -(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state {
     
     if (state == UIControlStateNormal)
-        [[self.drawingBlocksByControlState objectForKey:$int(UIControlStateNormal)] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)] addObject:[block copy]];
     
     if (state & UIControlStateHighlighted)
-        [[self.drawingBlocksByControlState objectForKey:$int(UIControlStateHighlighted)] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:@(UIControlStateHighlighted)] addObject:[block copy]];
     
     if (state & UIControlStateDisabled)
-        [[self.drawingBlocksByControlState objectForKey:$int(UIControlStateDisabled)] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:@(UIControlStateDisabled)] addObject:[block copy]];
     
     if (state & UIControlStateSelected)
-        [[self.drawingBlocksByControlState objectForKey:$int(UIControlStateSelected)] addObject:[block copy]];
+        [[self.drawingBlocksByControlState objectForKey:@(UIControlStateSelected)] addObject:[block copy]];
     
     [self setNeedsDisplay];
 }
@@ -96,14 +96,14 @@
     _drawingBlocksByControlState = [drawingBlocksByControlState mutableCopy];
     
     // make sure there is an array of drawing blocks for each state
-    if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateNormal)])
-        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateNormal)];
-    if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateHighlighted)])
-        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateHighlighted)];
-    if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateSelected)])
-        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateSelected)];
-    if (! [self.drawingBlocksByControlState objectForKey:$int(UIControlStateDisabled)])
-        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:$int(UIControlStateDisabled)];
+    if (! [self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)])
+        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:@(UIControlStateNormal)];
+    if (! [self.drawingBlocksByControlState objectForKey:@(UIControlStateHighlighted)])
+        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:@(UIControlStateHighlighted)];
+    if (! [self.drawingBlocksByControlState objectForKey:@(UIControlStateSelected)])
+        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:@(UIControlStateSelected)];
+    if (! [self.drawingBlocksByControlState objectForKey:@(UIControlStateDisabled)])
+        [self.drawingBlocksByControlState setObject:[NSMutableArray new] forKey:@(UIControlStateDisabled)];
     
     [self setNeedsDisplay];
 }

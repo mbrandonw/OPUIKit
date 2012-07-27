@@ -77,7 +77,7 @@
         [self.badge setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsBadgeKey(title)]];
     
     // observe changes in the badge value so that we can remember it
-    [self.badge.valueLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:NULL];
+//    [self.badge.valueLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:NULL];
     
     return self;
 }
@@ -102,7 +102,7 @@
 }
 
 -(void) dealloc {
-    [self.badge.valueLabel removeObserver:self forKeyPath:@"text"];
+//    [self.badge.valueLabel removeObserver:self forKeyPath:@"text"];
 }
 
 -(void) layoutSubviews {

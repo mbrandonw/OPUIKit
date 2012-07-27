@@ -123,6 +123,20 @@
 }
 
 #pragma mark -
+#pragma mark Overridden UINavigationController methods
+#pragma mark -
+
+-(UIViewController*) popViewControllerAnimated:(BOOL)animated {
+    
+    UIViewController *retVal = [super popViewControllerAnimated:animated];
+    
+    if ([retVal respondsToSelector:@selector(navigationController:isPoppingSelf:)])
+        [(id)retVal navigationController:self isPoppingSelf:animated];
+    
+    return retVal;
+}
+
+#pragma mark -
 #pragma mark UINavigationControllerDelegate methods
 #pragma mark -
 

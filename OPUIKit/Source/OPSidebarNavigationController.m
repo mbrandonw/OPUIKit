@@ -29,24 +29,14 @@
     CGPoint previousDraggingPoint;
 }
 
-@synthesize sidebarViewController;
-@synthesize draggableArea;
-@synthesize minimumSidebarWidth;
-@synthesize maximumSidebarWidth;
-@synthesize sidebarWindow;
-@synthesize sidebarVisible;
-@synthesize visible;
-@synthesize cancelTapRecognizer;
-@synthesize draggingRecognizer;
-
 #pragma mark Object lifecycle methods
 -(void) awakeFromNib {
     [super awakeFromNib];
     
     // default ivars
-    visible = YES;
-    sidebarVisible = NO;
-    draggableArea = OPSidebarNavigationDraggableAreaNavBar;
+    _visible = YES;
+    _sidebarVisible = NO;
+    _draggableArea = OPSidebarNavigationDraggableAreaNavBar;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,7 +115,7 @@
 
 #pragma mark Custom getter/setter
 -(void) setSidebarVisible:(BOOL)v animated:(BOOL)animated {
-    sidebarVisible = v;
+    _sidebarVisible = v;
     
     [self setupSidebarWindow];
     [self.view removeGestureRecognizer:self.cancelTapRecognizer];
@@ -214,7 +204,7 @@
 }
 
 -(void) setVisible:(BOOL)v animated:(BOOL)animated {
-    visible = v;
+    _visible = v;
     if (! self.visible && ! self.sidebarVisible)
         self.sidebarVisible = YES;
     
@@ -257,13 +247,13 @@
 }
 
 -(UITapGestureRecognizer*) cancelTapRecognizer {
-    if (! cancelTapRecognizer)
+    if (! _cancelTapRecognizer)
     {
         self.cancelTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancellingTap:)];
-        cancelTapRecognizer.numberOfTapsRequired = 1;
-        cancelTapRecognizer.cancelsTouchesInView = YES;
+        _cancelTapRecognizer.numberOfTapsRequired = 1;
+        _cancelTapRecognizer.cancelsTouchesInView = YES;
     }
-    return cancelTapRecognizer;
+    return _cancelTapRecognizer;
 }
 
 -(void) cancellingTap:(UITapGestureRecognizer*)sender {
@@ -276,11 +266,11 @@
 }
 
 -(UIPanGestureRecognizer*) draggingRecognizer {
-    if (! draggingRecognizer)
+    if (! _draggingRecognizer)
     {
         self.draggingRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panning:)];
     }
-    return draggingRecognizer;
+    return _draggingRecognizer;
 }
 
 -(void) panning:(UIPanGestureRecognizer*)sender {
@@ -318,7 +308,7 @@
 }
 
 -(void) setDraggableArea:(OPSidebarNavigationDraggableArea)d {
-    draggableArea = d;
+    _draggableArea = d;
     
     [self.navigationBar removeGestureRecognizer:self.draggingRecognizer];
     [self.view removeGestureRecognizer:self.draggingRecognizer];

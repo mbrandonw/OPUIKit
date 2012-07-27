@@ -19,9 +19,6 @@
 
 @implementation OPNavigationBar
 
-@synthesize shadowHidden = _shadowHidden;
-@synthesize shadowView = _shadowView;
-
 // Supported OPStyle storage
 @synthesize backgroundImage = _backgroundImage;
 @synthesize shadowHeight = _shadowHeight;

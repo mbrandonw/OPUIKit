@@ -20,8 +20,6 @@
 
 @implementation OPStyleProxy
 
-@synthesize style = _style;
-
 -(id) initWithStyle:(OPStyle*)style {
     _style = style;
     
