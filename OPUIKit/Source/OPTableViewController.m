@@ -236,7 +236,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [super viewDidDisappear:animated];
     
     if (self.shouldFlushFetchedResultsControllerWhenViewDisappears)
+    {
         [self.fetchedResultsController faultUnfaultedFetchedObjects];
+        self.fetchedResultsController = nil;
+    }
 }
 
 -(void) viewDidUnload {
