@@ -18,6 +18,12 @@ typedef enum {
     OPTableViewControllerShadowAll = OPTableViewControllerShadowOrigin|OPTableViewControllerShadowTop|OPTableViewControllerShadowBottom,
 } OPTableViewControllerShadows;
 
+typedef enum {
+    OPTableViewFetchControllerActionNone         = 1 << 0,
+    OPTableViewFetchControllerActionFlushObjects = 1 << 1,
+    OPTableViewFetchControllerActionRelease      = 1 << 2,
+} OPTableViewFetchControllerActions;
+
 extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation);
 
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
@@ -38,8 +44,8 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) UITableViewRowAnimation fetchedResultsControllerAnimation;
-@property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenViewDisappears;
-@property (nonatomic, assign) BOOL shouldFlushFetchedResultsControllerWhenAppEntersBackground;
+@property (nonatomic, assign) OPTableViewFetchControllerActions fetchControllerViewDisappearActions;
+@property (nonatomic, assign) OPTableViewFetchControllerActions fetchControllerEnterBackgroundActions;
 
 /**
  Determines if we should automatically dismiss the keyboard while scrolling,

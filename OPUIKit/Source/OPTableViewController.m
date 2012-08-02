@@ -59,8 +59,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize useOPTableView = _useOPTableView;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
-@synthesize shouldFlushFetchedResultsControllerWhenViewDisappears = _shouldFlushFetchedResultsControllerWhenViewDisappears;
-@synthesize shouldFlushFetchedResultsControllerWhenAppEntersBackground = _shouldFlushFetchedResultsControllerWhenAppEntersBackground;
 @synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
 @synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
 @synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
@@ -164,7 +162,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
         self.tableView = v;
     }
     
-    if (self.shouldFlushFetchedResultsControllerWhenAppEntersBackground) {
+    if (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
@@ -199,6 +197,16 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
+    // situation. You drill down from a table view controller, something triggers that table view to release it's fetch controller,
+    // and then you go back. Now the fetch controller gets recomputed and the fetched objects could have changed, yet the table
+    // view didn't recompute it's rows and sections. So, bad things can happen. This fixes that situation.
+    
+    if (! _fetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionRelease))
+    {
+        [self.tableView reloadData];
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -235,11 +243,11 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    if (self.shouldFlushFetchedResultsControllerWhenViewDisappears)
-    {
+    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionFlushObjects)
         [self.fetchedResultsController faultUnfaultedFetchedObjects];
+    
+    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionRelease)
         self.fetchedResultsController = nil;
-    }
 }
 
 -(void) viewDidUnload {
@@ -519,11 +527,16 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) appEnteredBackground {
     
-    if (self.shouldFlushFetchedResultsControllerWhenAppEntersBackground)
+    if (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone)
     {
         [[UIApplication sharedApplication] performBackgroundTaskOnMainThread:^{
-            [self.fetchedResultsController faultUnfaultedFetchedObjects];
-            self.fetchedResultsController = nil;
+            
+            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionFlushObjects)
+                [self.fetchedResultsController faultUnfaultedFetchedObjects];
+            
+            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionRelease)
+                self.fetchedResultsController = nil;
+            
         } completion:nil expiration:nil];
     }
 }
