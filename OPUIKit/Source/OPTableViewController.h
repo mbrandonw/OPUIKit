@@ -70,6 +70,12 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ The default implementation of -tableView:cellForRowAtIndexPath: will use this method to automatically create
+ a cell with a common reusable identifier among the same cell view class.
+ */
+-(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
+
 -(NSUInteger) adjustedSection:(NSUInteger)section;
 -(NSIndexPath*) adjustedIndexPath:(NSIndexPath*)indexPath;
 

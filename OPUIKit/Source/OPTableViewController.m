@@ -366,7 +366,21 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
+-(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *reuseIdentifier = NSStringFromClass([self tableView:tableView classForRowAtIndexPath:indexPath]);
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    if (! cell)
+        cell = [[[self tableView:tableView classForRowAtIndexPath:indexPath] alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:reuseIdentifier];
+    
+    return cell;
+}
+
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
+}
+
+-(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath {
+    return [UITableViewCell class];
 }
 
 -(NSUInteger) adjustedSection:(NSUInteger)section {
