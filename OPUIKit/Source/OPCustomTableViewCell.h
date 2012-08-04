@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPStyle.h"
 
-@interface OPCustomTableViewCell : UITableViewCell
+@interface OPCustomTableViewCell : UITableViewCell <OPStyleProtocol>
 
 /**
  Subclasses should override this.

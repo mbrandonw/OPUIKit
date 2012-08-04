@@ -20,6 +20,7 @@
     if (! (self = [super initWithFrame:frame]))
         return nil;
     self.contentMode = UIViewContentModeRedraw;
+    
     return self;
 }
 
@@ -55,6 +56,9 @@
     
     self.selectedBackgroundView.opaque = YES;
     self.selectedBackgroundView = [[OPTableViewSelectedCellView alloc] initWithFrame:CGRectZero];
+    
+    // apply stylings
+    [[self styling] applyTo:self];
     
     return self;
 }
