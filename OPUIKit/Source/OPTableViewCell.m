@@ -49,7 +49,7 @@
 }
 
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder {
-    [self loadImageURL:url placeholder:placeholder processing:nil cacheName:@""];
+    [self loadImageURL:url placeholder:placeholder processing:nil cacheName:nil];
 }
 
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName {
