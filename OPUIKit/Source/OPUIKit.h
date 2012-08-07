@@ -34,3 +34,4 @@
 #import "OPDataDetectorLabel.h"
 #import "OPPDFView.h"
 #import "OPVectorView.h"
+#import "OPRevealableViewController.h"
