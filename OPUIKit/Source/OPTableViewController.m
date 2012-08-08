@@ -66,6 +66,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize contentOffsetVelocity = _contentOffsetVelocity;
 @synthesize lastDragTimeInterval = _lastDragTimeInterval;
 @synthesize lastContentOffset = _lastContentOffset;
+@synthesize toolbarView = _toolbarView;
 
 // OPStyle storage
 @synthesize backgroundColor = _backgroundColor;
@@ -197,6 +198,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.toolbarView bringToFront];
     
     // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
     // situation. You drill down from a table view controller, something triggers that table view to release it's fetch controller,
@@ -213,6 +215,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 	[super viewDidAppear:animated];
 	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
     [self layoutShadows];
+    [self.toolbarView bringToFront];
     
     // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller 
     // that chooses to hide the bottom bar
@@ -319,6 +322,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     CGPoint p2 = self.beginDraggingContentOffset;
     if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
         [self.view endEditing:YES];
+    
+    // snap the toolbar to the bottom
+    self.toolbarView.bottom = self.view.height + scrollView.contentOffset.y;
+    [self.toolbarView bringToFront];
 }
 
 -(void) scrollingDidStop {
@@ -486,6 +493,19 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             self.tableView = v;
         }
     }
+}
+
+-(void) setToolbarView:(UIView *)toolbarView {
+    [_toolbarView removeFromSuperview];
+    _toolbarView = toolbarView;
+    [self.view addSubview:_toolbarView];
+    
+    _toolbarView.width = self.view.width;
+    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
+                                                   self.tableView.contentInset.left,
+                                                   self.tableView.contentInset.bottom + _toolbarView.height,
+                                                   self.tableView.contentInset.right);
 }
 
 #pragma mark -
