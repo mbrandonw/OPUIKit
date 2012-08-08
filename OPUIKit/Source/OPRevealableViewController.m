@@ -8,6 +8,7 @@
 
 #import "OPRevealableViewController.h"
 #import "UIView+Opetopic.h"
+#import "GCD+Opetopic.h"
 
 @interface OPRevealableViewController ()
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -40,33 +41,37 @@
 
 -(void) setDetailHidden:(BOOL)detailHidden animated:(BOOL)animated {
     _detailHidden = detailHidden;
-    
-    if (! detailHidden && ! self.detailViewController.view.superview)
-    {
-        [self.view insertSubview:self.detailViewController.view belowSubview:self.masterViewController.view];
-        self.detailViewController.view.frame = self.view.bounds;
-        self.detailViewController.view.width = self.detailWidth;
-        self.detailViewController.view.right = self.view.width;
-    }
-    if (detailHidden)
-    {
-        [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
-        self.tapGestureRecognizer = nil;
-    }
-    
-    [UIView animateWithDuration:0.3f * animated animations:^{
-        self.masterViewController.view.right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth);
-    } completion:^(BOOL finished) {
+    dispatch_next_runloop(^{
         
-        if (! _detailHidden)
+        if (! detailHidden && ! self.detailViewController.view.superview)
         {
-            self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
-            [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
+            [self.view insertSubview:self.detailViewController.view belowSubview:self.masterViewController.view];
+            self.detailViewController.view.frame = self.view.bounds;
+            self.detailViewController.view.width = self.detailWidth;
+            self.detailViewController.view.right = self.view.width;
         }
-    }];
+        if (detailHidden)
+        {
+            [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
+            self.tapGestureRecognizer = nil;
+        }
+        
+        [UIView animateWithDuration:0.3f * animated animations:^{
+            self.masterViewController.view.right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth);
+        } completion:^(BOOL finished) {
+            
+            if (! _detailHidden)
+            {
+                self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
+                [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
+            }
+        }];
+        
+    });
 }
 
 -(void) setMasterViewController:(UIViewController *)masterViewController {
+    CGRect frame = _masterViewController.view.frame;
     [_masterViewController removeFromParentViewController];
     [_masterViewController.view removeFromSuperview];
     
@@ -74,7 +79,7 @@
     
     [self addChildViewController:_masterViewController];
     [self.view addSubview:_masterViewController.view];
-    _masterViewController.view.frame = self.view.bounds;
+    _masterViewController.view.frame = CGRectIsEmpty(frame) ? self.view.bounds : frame;
 }
 
 -(void) setDetailViewController:(UIViewController *)detailViewController {
@@ -101,8 +106,8 @@
 @implementation UIViewController (OPRevealableViewController)
 
 -(OPRevealableViewController*) revealableViewController {
-    UIViewController *parent = self.parentViewController;
-    while (! [parent isKindOfClass:[OPRevealableViewController class]])
+    UIViewController *parent = self;
+    while (parent && ! [parent isKindOfClass:[OPRevealableViewController class]])
         parent = parent.parentViewController;
     return (OPRevealableViewController*)parent;
 }
