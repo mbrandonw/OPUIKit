@@ -10,7 +10,7 @@
 #import "UIView+Opetopic.h"
 
 @interface OPRevealableViewController ()
-
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation OPRevealableViewController
@@ -45,6 +45,13 @@
     {
         [self.view insertSubview:self.detailViewController.view belowSubview:self.masterViewController.view];
         self.detailViewController.view.frame = self.view.bounds;
+        self.detailViewController.view.width = self.detailWidth;
+        self.detailViewController.view.right = self.view.width;
+    }
+    if (detailHidden)
+    {
+        [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
+        self.tapGestureRecognizer = nil;
     }
     
     [UIView animateWithDuration:0.3f * animated animations:^{
@@ -53,7 +60,8 @@
         
         if (! _detailHidden)
         {
-            [self.masterViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)]];
+            self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
+            [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
         }
     }];
 }
@@ -83,7 +91,8 @@
 #pragma mark -
 
 -(void) masterTapped:(UITapGestureRecognizer*)recognizer {
-    [self.masterViewController.view removeGestureRecognizer:recognizer];
+    [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
+    self.tapGestureRecognizer = nil;
     [self setDetailHidden:YES animated:YES];
 }
 

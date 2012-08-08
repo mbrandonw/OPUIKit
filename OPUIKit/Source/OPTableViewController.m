@@ -371,7 +371,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     NSString *reuseIdentifier = NSStringFromClass([self tableView:tableView classForRowAtIndexPath:indexPath]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (! cell)
-        cell = [[[self tableView:tableView classForRowAtIndexPath:indexPath] alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:reuseIdentifier];
+        cell = [[[self tableView:tableView classForRowAtIndexPath:indexPath] alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     
     return cell;
 }

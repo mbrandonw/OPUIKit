@@ -21,6 +21,13 @@
 
 @synthesize drawingBlocks = _drawingBlocks;
 
+-(id) initWithDrawingBlock:(UIViewDrawingBlock)drawingBlock {
+    if (! (self = [self initWithFrame:CGRectZero]))
+        return nil;
+    [self.drawingBlocks addObject:drawingBlock];
+    return self;
+}
+
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;

@@ -8,5 +8,5 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^UIViewDrawingBlock)(UIView* v, CGRect r, CGContextRef c);
-typedef void(^UIControlDrawingBlock)(UIControl* v, CGRect r, CGContextRef c);
+typedef void(^UIViewDrawingBlock)(UIView* view, CGRect rect, CGContextRef c);
+typedef void(^UIControlDrawingBlock)(UIControl* view, CGRect rect, CGContextRef c);
