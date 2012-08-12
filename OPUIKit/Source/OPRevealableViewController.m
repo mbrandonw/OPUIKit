@@ -12,6 +12,11 @@
 
 @interface OPRevealableViewController ()
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+
+// Private method for closing/opening the detail a little faster. Velocity should be
+// how fast the user's finger was moving when they were dragging the master panel.
+-(void) setDetailHidden:(BOOL)detailHidden animated:(BOOL)animated velocity:(CGFloat)velocity;
 @end
 
 @implementation OPRevealableViewController
@@ -40,6 +45,10 @@
 }
 
 -(void) setDetailHidden:(BOOL)detailHidden animated:(BOOL)animated {
+    [self setDetailHidden:detailHidden animated:animated velocity:0.0f];
+}
+
+-(void) setDetailHidden:(BOOL)detailHidden animated:(BOOL)animated velocity:(CGFloat)velocity {
     _detailHidden = detailHidden;
     dispatch_next_runloop(^{
         
@@ -54,16 +63,28 @@
         {
             [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
             self.tapGestureRecognizer = nil;
+            [self.masterViewController.view removeGestureRecognizer:self.panGestureRecognizer];
+            self.panGestureRecognizer = nil;
         }
         
-        [UIView animateWithDuration:0.3f * animated animations:^{
-            self.masterViewController.view.right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth);
+        self.dividerView.alpha = detailHidden ? 1.0f : 0.0f;
+        self.dividerView.origin = CGPointMake(roundf(self.masterViewController.view.right - self.dividerView.width/2.0f), 0.0f);
+        self.dividerView.height = self.masterViewController.view.height;
+        [self.view addSubview:self.dividerView];
+        [_dividerView setNeedsDisplay];
+        
+        [UIView animateWithDuration:MAX(0.0f, 0.3f - velocity/10000.0f) * animated animations:^{
+            self.masterViewController.view.right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth + self.dividerWidth);
+            self.dividerView.alpha = detailHidden ? 0.0f : 1.0f;
+            self.dividerView.origin = CGPointMake(roundf(self.masterViewController.view.right - self.dividerView.width/2.0f), 0.0f);
         } completion:^(BOOL finished) {
             
-            if (! _detailHidden)
+            if (! _detailHidden && ! _tapGestureRecognizer && ! _panGestureRecognizer)
             {
                 self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
                 [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
+                self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(masterPanned:)];
+                [self.masterViewController.view addGestureRecognizer:self.panGestureRecognizer];
             }
         }];
         
@@ -91,6 +112,13 @@
     [self addChildViewController:_detailViewController];
 }
 
+-(void) setDividerView:(UIView *)dividerView {
+    [_dividerView removeFromSuperview];
+    _dividerView = dividerView;
+    if ([self isViewLoaded])
+        [self.view addSubview:_dividerView];
+}
+
 #pragma mark -
 #pragma mark Interface actions
 #pragma mark -
@@ -99,6 +127,24 @@
     [self.masterViewController.view removeGestureRecognizer:self.tapGestureRecognizer];
     self.tapGestureRecognizer = nil;
     [self setDetailHidden:YES animated:YES];
+}
+
+-(void) masterPanned:(UIPanGestureRecognizer*)recognizer {
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        CGFloat velocity = [recognizer velocityInView:self.view].x;
+        if (velocity >= 0.0f)
+            [self setDetailHidden:YES animated:YES velocity:velocity];
+        else
+            [self setDetailHidden:NO animated:YES velocity:velocity];
+    }
+    
+    CGPoint offset = [recognizer translationInView:self.view];
+    self.masterViewController.view.left += offset.x;
+    self.masterViewController.view.right = MAX(self.view.width - self.detailWidth, self.masterViewController.view.right);
+    self.dividerView.left = floorf(self.masterViewController.view.right - self.dividerView.width/2.0f);
+    [recognizer setTranslation:CGPointZero inView:self.view];
 }
 
 @end

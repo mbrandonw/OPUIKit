@@ -17,6 +17,9 @@
 @property (nonatomic, assign) CGFloat detailWidth;
 @property (nonatomic, assign, getter = isDetailHidden) BOOL detailHidden;
 
+@property (nonatomic, strong) UIView *dividerView;
+@property (nonatomic, assign) CGFloat dividerWidth;
+
 -(void) setDetailHidden:(BOOL)detailHidden animated:(BOOL)animated;
 
 @end
