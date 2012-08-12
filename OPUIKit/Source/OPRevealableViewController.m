@@ -65,6 +65,14 @@
             self.tapGestureRecognizer = nil;
             [self.masterViewController.view removeGestureRecognizer:self.panGestureRecognizer];
             self.panGestureRecognizer = nil;
+            
+            [self.masterViewController viewWillAppear:animated];
+            [self.detailViewController viewWillDisappear:animated];
+        }
+        else
+        {
+            [self.masterViewController viewWillDisappear:animated];
+            [self.detailViewController viewWillAppear:animated];
         }
         
         self.dividerView.alpha = detailHidden ? 1.0f : 0.0f;
@@ -85,6 +93,17 @@
                 [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
                 self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(masterPanned:)];
                 [self.masterViewController.view addGestureRecognizer:self.panGestureRecognizer];
+            }
+            
+            if (detailHidden)
+            {
+                [self.masterViewController viewDidAppear:animated];
+                [self.detailViewController viewDidDisappear:animated];
+            }
+            else
+            {
+                [self.masterViewController viewDidDisappear:animated];
+                [self.detailViewController viewDidAppear:animated];
             }
         }];
         
