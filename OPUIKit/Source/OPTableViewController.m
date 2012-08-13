@@ -40,6 +40,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @property (nonatomic, assign, readwrite) CGPoint contentOffsetVelocity;
 @property (nonatomic, assign) NSTimeInterval lastDragTimeInterval;
 @property (nonatomic, assign) CGPoint lastContentOffset;
+@property (nonatomic, assign) BOOL hasUsedFetchedResultsController;
 
 @property (nonatomic, strong, readwrite) CAGradientLayer *originShadowLayer;
 @property (nonatomic, strong, readwrite) CAGradientLayer *topShadowLayer;
@@ -199,14 +200,18 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.toolbarView bringToFront];
+    
+    if (self.toolbarView) {
+        [self.toolbarView bringToFront];
+        [self scrollViewDidScroll:self.tableView];
+    }
     
     // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
     // situation. You drill down from a table view controller, something triggers that table view to release it's fetch controller,
     // and then you go back. Now the fetch controller gets recomputed and the fetched objects could have changed, yet the table
     // view didn't recompute it's rows and sections. So, bad things can happen. This fixes that situation.
     
-    if (! _fetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
+    if (self.hasUsedFetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
     {
         [self.tableView reloadData];
     }
@@ -360,6 +365,11 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     self.touchIsDown = NO;
+}
+
+-(void) setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController {
+    _fetchedResultsController = fetchedResultsController;
+    self.hasUsedFetchedResultsController = YES;
 }
 
 #pragma mark -
