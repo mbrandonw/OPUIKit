@@ -206,7 +206,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     // and then you go back. Now the fetch controller gets recomputed and the fetched objects could have changed, yet the table
     // view didn't recompute it's rows and sections. So, bad things can happen. This fixes that situation.
     
-    if (! _fetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionRelease))
+    if (! _fetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
     {
         [self.tableView reloadData];
     }
