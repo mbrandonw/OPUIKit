@@ -21,6 +21,7 @@
 #import "NSFetchedResultsController+Opetopic.h"
 #import "OPTabBarController.h"
 #import "OPTabBar.h"
+#import "OPCustomTableViewCell.h"
 
 #define kScrollingDidStopDelay  0.3f
 
@@ -371,6 +372,16 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+}
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+    if ([class isSubclassOfClass:[OPCustomTableViewCell class]])
+    {
+        id object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width];
+    }
+    return 0.0f;
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

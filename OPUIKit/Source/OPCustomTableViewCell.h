@@ -17,8 +17,15 @@
 -(void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted;
 
 /**
- Do remote image loading here if you want. Called only on visible cells when scrolling stops.
+ Do remote image loading or other heavy stuff here if you want. Called 
+ only on visible cells when scrolling stops.
  */
 -(void) scrollingDidStop;
+
+/**
+ OPTableViewController instances will use this method to automatically layout 
+ cell heights.
+ */
++(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width;
 
 @end

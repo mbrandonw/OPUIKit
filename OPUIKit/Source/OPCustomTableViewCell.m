@@ -141,4 +141,8 @@
 -(void) scrollingDidStop {
 }
 
++(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width {
+    return 44.0f;
+}
+
 @end

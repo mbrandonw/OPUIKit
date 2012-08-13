@@ -81,10 +81,11 @@
         [self.view addSubview:self.dividerView];
         [_dividerView setNeedsDisplay];
         
-        [UIView animateWithDuration:MAX(0.0f, 0.3f - velocity/10000.0f) * animated animations:^{
-            self.masterViewController.view.right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth + self.dividerWidth);
+        [UIView animateWithDuration:MAX(0.0f, 0.3f - ABS(velocity)/10000.0f) * animated animations:^{
+            CGFloat right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth + self.dividerWidth);
+            self.masterViewController.view.right = right;
             self.dividerView.alpha = detailHidden ? 0.0f : 1.0f;
-            self.dividerView.origin = CGPointMake(roundf(self.masterViewController.view.right - self.dividerView.width/2.0f), 0.0f);
+            self.dividerView.origin = CGPointMake(roundf(right - self.dividerView.width/2.0f), 0.0f);
         } completion:^(BOOL finished) {
             
             if (! _detailHidden && ! _tapGestureRecognizer && ! _panGestureRecognizer)
