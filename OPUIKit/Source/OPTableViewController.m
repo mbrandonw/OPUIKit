@@ -381,7 +381,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
         id object = [self.fetchedResultsController objectAtIndexPath:indexPath];
         return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width];
     }
-    return 0.0f;
+    return 44.0f;
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
