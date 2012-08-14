@@ -81,7 +81,9 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
 
--(NSUInteger) adjustedSection:(NSUInteger)section;
--(NSIndexPath*) adjustedIndexPath:(NSIndexPath*)indexPath;
+-(NSInteger) tableViewSectionToFetchedResultsSection:(NSUInteger)section;
+-(NSInteger) fetchedResultsSectionToTableViewSection:(NSUInteger)section;
+-(NSIndexPath*) tableViewIndexPathToFetchedResultsIndexPath:(NSIndexPath*)indexPath;
+-(NSIndexPath*) fetchedResultsIndexPathToTableViewIndexPath:(NSIndexPath*)indexPath;
 
 @end
