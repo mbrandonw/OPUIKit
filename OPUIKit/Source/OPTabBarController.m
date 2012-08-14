@@ -79,14 +79,6 @@
     [super viewDidLoad];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    
-    self.tabBar = nil;
-}
-
 #pragma mark -
 #pragma mark View controller management
 #pragma mark -
