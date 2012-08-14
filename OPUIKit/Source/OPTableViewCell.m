@@ -36,14 +36,6 @@
     return self;
 }
 
--(void) scrollingDidStop {
-    
-    if (self.imageURL && self.imageURLLoadingType == OPTableViewCellImageURLLoadingTypeScrollStops)
-    {
-        [self immediateLoadImageURL:self.imageURL placeholder:self.placeholder processing:self.processing cacheName:self.cacheName];
-    }
-}
-
 -(void) loadImageURL:(NSString*)url {
     [self loadImageURL:url placeholder:nil];
 }

@@ -23,11 +23,6 @@ typedef enum {
 @property (nonatomic, assign) OPTableViewCellImageURLLoadingType imageURLLoadingType;
 @property (nonatomic, assign) OPTableViewCellImageURLLoadingAnimation imageURLLoadingAnimation;
 
-/**
- Do remote image loading here if you want. Called only on visible cells when scrolling stops.
- */
--(void) scrollingDidStop;
-
 -(void) loadImageURL:(NSString*)url;
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder;
 -(void) loadImageURL:(NSString*)url placeholder:(UIImage*)placeholder processing:(UIImage*(^)(UIImage *image))processing cacheName:(NSString*)cacheName;

@@ -23,8 +23,6 @@
 #import "OPTabBar.h"
 #import "OPCustomTableViewCell.h"
 
-#define kScrollingDidStopDelay  0.3f
-
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
     if (rowAnimation == NSIntegerMax)
@@ -47,7 +45,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @property (nonatomic, strong, readwrite) CAGradientLayer *bottomShadowLayer;
 
 -(void) __init;
--(void) scrollingDidStop;
 -(void) layoutShadows;
 @end
 #pragma mark -
@@ -219,18 +216,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:0.3f];
     [self layoutShadows];
     [self.toolbarView bringToFront];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller 
-    // that chooses to hide the bottom bar
-    if (self.tabController) {
-        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 
-                                                       self.tableView.contentInset.left,
-                                                       0.0f,
-                                                       self.tableView.contentInset.right);
-    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -238,15 +225,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     if (self.tableView.decelerating)
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller 
-    // that chooses to hide the bottom bar
-    if (self.tabController) {
-        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 
-                                                       self.tableView.contentInset.left,
-                                                       self.tabController.tabBar.height,
-                                                       self.tableView.contentInset.right);
-    }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
@@ -269,9 +247,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 #pragma mark -
 
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	if (! decelerate) {
-		[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
-	}
     
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
@@ -280,13 +255,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 }
 
 -(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
-    
     [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
-}
-
--(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-	[self performSelector:@selector(scrollingDidStop) withObject:nil afterDelay:kScrollingDidStopDelay];
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -332,25 +301,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     // snap the toolbar to the bottom
     self.toolbarView.bottom = self.view.height + scrollView.contentOffset.y;
     [self.toolbarView bringToFront];
-}
-
--(void) scrollingDidStop {
-    
-    self.lastContentOffset = CGPointMax;
-	
-	// loop through the visibile table cells to notify them of scroll stopping
-    
-	UITableView *tableView = nil;
-    if (self.searchDisplayController.active)
-        tableView = self.searchDisplayController.searchResultsTableView;
-    else if ([self isViewLoaded])
-        tableView = self.tableView;
-    
-	for (UITableViewCell *cell in [tableView visibleCells])
-	{
-		if ([cell respondsToSelector:@selector(scrollingDidStop)])
-			[cell performSelector:@selector(scrollingDidStop)];
-	}
 }
 
 #pragma mark -
@@ -482,7 +432,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
-    [self scrollingDidStop];
 }
 
 #pragma mark -
