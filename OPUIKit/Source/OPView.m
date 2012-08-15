@@ -21,7 +21,7 @@
 
 @synthesize drawingBlocks = _drawingBlocks;
 
--(id) initWithDrawingBlock:(UIViewDrawingBlock)drawingBlock {
+-(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock {
     if (! (self = [self initWithFrame:CGRectZero]))
         return nil;
     [self.drawingBlocks addObject:drawingBlock];
@@ -57,7 +57,7 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (UIViewDrawingBlock block in self.drawingBlocks)
+    for (OPViewDrawingBlock block in self.drawingBlocks)
         block(self, rect, c);
 }
 
@@ -66,7 +66,7 @@
     [self setNeedsDisplay];
 }
 
--(void) insertObject:(UIViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
+-(void) insertObject:(OPViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
     [_drawingBlocks insertObject:block atIndex:index];
     [self setNeedsDisplay];
 }
@@ -86,7 +86,7 @@ NSString * const OPViewDrawingBevelInnerColorKey = @"OPViewDrawingBevelInnerColo
 NSString * const OPViewDrawingBevelOuterColorKey = @"OPViewDrawingBevelOuterColorKey";
 NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderColorKey";
 
-+(UIViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options {
++(OPViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options {
     
     // grab values from the options dictionary
     UIColor *baseColor          = [options objectForKey:OPViewDrawingBaseColorKey];
@@ -151,7 +151,7 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
     } copy];
 }
 
-+(UIViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options {
++(OPViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options {
     
     // grab values from the options dictionary
     UIColor *baseColor          = [options objectForKey:OPViewDrawingBaseColorKey];

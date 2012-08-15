@@ -32,9 +32,6 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  Customize shadows at the top and bottom of the table view.
  */
 @property (nonatomic, assign) OPTableViewControllerShadows tableViewShadows;
-@property (nonatomic, strong, readonly) CAGradientLayer *originShadowLayer;
-@property (nonatomic, strong, readonly) CAGradientLayer *topShadowLayer;
-@property (nonatomic, strong, readonly) CAGradientLayer *bottomShadowLayer;
 
 /**
  */
@@ -81,6 +78,11 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Sometimes we want to use a fetched results controller for part of the content of our table view, but then 
+ the indices of the fetch controller may not match the indices of the table view. Override all of these 
+ methods to translate between the two types of indices and everything will work magically.
+ */
 -(NSInteger) tableViewSectionToFetchedResultsSection:(NSUInteger)section;
 -(NSInteger) fetchedResultsSectionToTableViewSection:(NSUInteger)section;
 -(NSIndexPath*) tableViewIndexPathToFetchedResultsIndexPath:(NSIndexPath*)indexPath;

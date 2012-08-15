@@ -139,11 +139,11 @@
 #pragma mark Some default drawing blocks
 #pragma mark -
 
-+(UIViewDrawingBlock) defaultBadgeDrawingBlock {
++(OPViewDrawingBlock) defaultBadgeDrawingBlock {
     return [[self class] defaultBadgeDrawingBlockWithColor:$RGBi(235,0,0)];
 }
 
-+(UIViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color {
++(OPViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color {
     
     return [^(UIView* v, CGRect r, CGContextRef c){
         

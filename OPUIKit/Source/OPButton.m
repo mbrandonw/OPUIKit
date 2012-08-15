@@ -50,7 +50,7 @@
 #pragma mark Helper methods
 #pragma mark -
 
--(void) addDrawingBlock:(UIControlDrawingBlock)block forState:(UIControlState)state {
+-(void) addDrawingBlock:(OPControlDrawingBlock)block forState:(UIControlState)state {
     
     if (state == UIControlStateNormal)
         [[self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)] addObject:[block copy]];
@@ -75,14 +75,14 @@
     [super drawRect:rect];
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)])
+    for (OPControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:@(UIControlStateNormal)])
         block(self, rect, c);
     
     for (NSNumber *drawState in self.drawingBlocksByControlState)
     {
         if ([drawState intValue] & self.state)
         {
-            for (UIControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:drawState])
+            for (OPControlDrawingBlock block in [self.drawingBlocksByControlState objectForKey:drawState])
                 block(self, rect, c);
         }
     }

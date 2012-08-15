@@ -23,7 +23,7 @@
 -(void) setValue:(NSString*)value animated:(BOOL)animated;
 
 // some default drawing blocks
-+(UIViewDrawingBlock) defaultBadgeDrawingBlock;
-+(UIViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color;
++(OPViewDrawingBlock) defaultBadgeDrawingBlock;
++(OPViewDrawingBlock) defaultBadgeDrawingBlockWithColor:(UIColor*)color;
 
 @end

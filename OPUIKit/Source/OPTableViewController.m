@@ -44,9 +44,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, assign) BOOL hasUsedFetchedResultsController;
 
-@property (nonatomic, strong, readwrite) CAGradientLayer *originShadowLayer;
-@property (nonatomic, strong, readwrite) CAGradientLayer *topShadowLayer;
-@property (nonatomic, strong, readwrite) CAGradientLayer *bottomShadowLayer;
+@property (nonatomic, strong) CAGradientLayer *originShadowLayer;
+@property (nonatomic, strong) CAGradientLayer *topShadowLayer;
+@property (nonatomic, strong) CAGradientLayer *bottomShadowLayer;
 
 -(void) __init;
 -(void) layoutShadows;

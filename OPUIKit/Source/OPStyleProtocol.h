@@ -47,7 +47,7 @@
 /**
  Styles specific to navigation bars.
  */
-@property (nonatomic, copy) UIViewDrawingBlock navigationBarDrawingBlock;
+@property (nonatomic, copy) OPViewDrawingBlock navigationBarDrawingBlock;
 
 /**
  Styles specific to OPView instances.
