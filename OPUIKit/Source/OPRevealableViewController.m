@@ -9,6 +9,7 @@
 #import "OPRevealableViewController.h"
 #import "UIView+Opetopic.h"
 #import "GCD+Opetopic.h"
+#import "UIDevice+Opetopic.h"
 
 @interface OPRevealableViewController ()
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -52,8 +53,12 @@
     _detailHidden = detailHidden;
     dispatch_next_runloop(^{
         
+        BOOL shouldCallAppearMethodsOnDetail = YES;
+        
         if (! detailHidden && ! self.detailViewController.view.superview)
         {
+            shouldCallAppearMethodsOnDetail = ! [UIDevice isAtLeastiOS5];
+            
             [self.view insertSubview:self.detailViewController.view belowSubview:self.masterViewController.view];
             self.detailViewController.view.frame = self.view.bounds;
             self.detailViewController.view.width = self.detailWidth;
@@ -72,7 +77,8 @@
         else
         {
             [self.masterViewController viewWillDisappear:animated];
-            [self.detailViewController viewWillAppear:animated];
+            if (shouldCallAppearMethodsOnDetail)
+                [self.detailViewController viewWillAppear:animated];
         }
         
         self.dividerView.alpha = detailHidden ? 1.0f : 0.0f;
@@ -104,7 +110,8 @@
             else
             {
                 [self.masterViewController viewDidDisappear:animated];
-                [self.detailViewController viewDidAppear:animated];
+                if (shouldCallAppearMethodsOnDetail)
+                    [self.detailViewController viewDidAppear:animated];
             }
         }];
         

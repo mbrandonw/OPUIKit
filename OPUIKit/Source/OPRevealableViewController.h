@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "OPStyle.h"
+#import "OPViewController.h"
 
-@interface OPRevealableViewController : UIViewController <OPStyleProtocol>
+@interface OPRevealableViewController : OPViewController <OPStyleProtocol>
 
 @property (nonatomic, strong) UIViewController *masterViewController;
 @property (nonatomic, strong) UIViewController *detailViewController;
