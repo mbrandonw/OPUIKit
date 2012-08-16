@@ -22,6 +22,7 @@
 #import "OPTabBarController.h"
 #import "OPTabBar.h"
 #import "OPCustomTableViewCell.h"
+#import "OPViewController.h"
 
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
@@ -176,6 +177,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [super viewDidLoad];
     DLogClassAndMethod();
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidLoad object:self];
+    
     // set up default background color
 	if (self.backgroundImage)
     {
@@ -202,6 +205,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
+    
     if (self.toolbarView) {
         [self.toolbarView bringToFront];
         [self scrollViewDidScroll:self.tableView];
@@ -223,6 +228,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [self layoutShadows];
     [self.toolbarView bringToFront];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
+    
     // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
     // that chooses to hide the bottom bar
     if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
@@ -235,6 +242,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
     
     if (self.tableView.decelerating)
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
@@ -251,6 +260,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
     
     if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionFlushObjects)
         [self.fetchedResultsController faultUnfaultedFetchedObjects];

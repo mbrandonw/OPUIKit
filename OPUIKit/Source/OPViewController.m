@@ -13,6 +13,14 @@
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
 
+const struct OPViewControllerNotifications OPViewControllerNotifications = {
+	.viewDidLoad = @"viewDidLoad",
+	.viewWillAppear = @"viewWillAppear",
+	.viewDidAppear = @"viewDidAppear",
+	.viewWillDisappear = @"viewWillDisappear",
+	.viewDidDisappear = @"viewDidDisappear",
+};
+
 @implementation OPViewController
 
 // OPStyle storage
@@ -54,6 +62,8 @@
     [super viewDidLoad];
     DLogClassAndMethod();
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidLoad object:self];
+    
     // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
     {
@@ -74,6 +84,26 @@
         self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
     if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
+}
+
+-(void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
 }
 
 @end

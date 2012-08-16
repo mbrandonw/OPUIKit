@@ -9,9 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "OPStyle.h"
 
-#if !defined(OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS)
-#define OP_VIEW_CONTROLLER_SIMULATE_MEMORY_WARNINGS NO
-#endif
+extern const struct OPViewControllerNotifications {
+	__unsafe_unretained NSString *viewDidLoad;
+	__unsafe_unretained NSString *viewWillAppear;
+	__unsafe_unretained NSString *viewDidAppear;
+	__unsafe_unretained NSString *viewWillDisappear;
+	__unsafe_unretained NSString *viewDidDisappear;
+} OPViewControllerNotifications;
 
 @interface OPViewController : UIViewController <OPStyleProtocol>
 
