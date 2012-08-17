@@ -40,7 +40,7 @@
     
     // init button custom view
     self.button = [OPButton buttonWithType:UIButtonTypeCustom];
-    self.button.size = CGSizeMake(0.0f, [[self class] heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]]);
+    self.button.size = CGSizeMake(0.0f, [self heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]]);
     self.button.layer.contentsScale = [UIScreen mainScreen].scale;
     self.customView = self.button;
     
@@ -104,8 +104,32 @@
     return item;
 }
 
++(id) buttonWithSymbolSet:(NSString*)symbol target:(id)target action:(SEL)action {
+    
+    OPBarButtonItem *item = [[self class] buttonWithTitle:symbol target:target action:action];
+    item.button.titleLabel.font = [UIFont fontWithName:@"SS Standard" size:18.0f];
+    item.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
+    
+    CGFloat originalHeight = item.button.height;
+    [item.button sizeToFit];
+    item.button.height = originalHeight;
+    item.button.width = kOPBarButtonItemMinWidth;
+    
+    [item addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return item;
+}
+
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+#pragma mark -
+#pragma mark Custom getters/setters
+#pragma mark -
+
+-(void) setFlush:(BOOL)flush {
+    _flush = flush;
+    self.button.height = [self heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 #pragma mark -
@@ -120,9 +144,11 @@
 #pragma mark Button geometry methods
 #pragma mark -
 
-+(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation {
+-(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation {
     
-    // only landscape on non-ipad devices get the smaller buttons
+    if (self.flush)
+        return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 32.0f : 44.0f;
+    
     return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 24.0f : 30.0f;
 }
 
@@ -145,7 +171,7 @@
         }
     }
     
-    self.button.height = [[self class] heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    self.button.height = [self heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self.button setNeedsDisplay];
 }
 

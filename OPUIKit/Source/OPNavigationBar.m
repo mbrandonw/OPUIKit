@@ -12,6 +12,7 @@
 #import "OPGradient.h"
 #import "OPGradientView.h"
 #import "UIView+Opetopic.h"
+#import "OPBarButtonItem.h"
 
 @interface OPNavigationBar (/**/)
 @property (nonatomic, strong) OPGradientView *shadowView;
@@ -107,6 +108,17 @@
 -(void) layoutSubviews {
     [super layoutSubviews];
     self.shadowView.frame = CGRectMake(0.0f, self.height, self.width, self.shadowView.height);
+    
+    if ([self.topItem.rightBarButtonItem isKindOfClass:[OPBarButtonItem class]] && [(OPBarButtonItem*)self.topItem.rightBarButtonItem isFlush])
+    {
+        self.topItem.rightBarButtonItem.customView.right = self.width;
+        self.topItem.rightBarButtonItem.customView.height = self.height;
+    }
+    if ([self.topItem.leftBarButtonItem isKindOfClass:[OPBarButtonItem class]] && [(OPBarButtonItem*)self.topItem.leftBarButtonItem isFlush])
+    {
+        self.topItem.leftBarButtonItem.customView.left = 0.0f;
+        self.topItem.leftBarButtonItem.customView.height = self.height;
+    }
 }
 
 #pragma mark -
