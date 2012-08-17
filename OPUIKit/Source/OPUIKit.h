@@ -23,6 +23,7 @@
 #import "OPGradient.h"
 #import "OPGradientView.h"
 #import "OPNavigationBar.h"
+#import "OPNavigationController.h"
 #import "OPTextView.h"
 #import "OPView.h"
 #import "OPControl.h"
