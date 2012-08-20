@@ -34,6 +34,11 @@
     return self;
 }
 
+-(void) dealloc {
+    _masterViewController = nil;
+    _detailViewController = nil;
+}
+
 -(void) viewDidLoad {
     [super viewDidLoad];
     
