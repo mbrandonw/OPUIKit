@@ -193,47 +193,55 @@
 }
 
 -(void) setSelectedIndex:(NSUInteger)selectedIndex {
-    
     UIViewController *nextController = [self.childViewControllers objectAtIndex:selectedIndex];
-    UIViewController *previousController = self.selectedViewController;
     
-    // send out delegate messages
-    if ([self.delegate respondsToSelector:@selector(tabBarController:willSelectViewController:)])
-        [self.delegate tabBarController:self willSelectViewController:nextController];
-    
-    for (OPTabBarItem *item in self.tabBar.items)
-        [item setSelected:NO];
-    [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
-    _selectedIndex = selectedIndex;
-    
-    self.selectedViewController = nextController;
-    
-    // remove the previous view controller from our view hierarchy
-    if (! [UIDevice isAtLeastiOS5])
-        [previousController viewWillDisappear:NO];
-    [previousController.view removeFromSuperview];
-    if (! [UIDevice isAtLeastiOS5])
-        [previousController viewDidDisappear:NO];
-    
-    // configure the next view controller
-    self.selectedViewController.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | 
-                                                         UIViewAutoresizingFlexibleHeight | 
-                                                         UIViewAutoresizingFlexibleBottomMargin);
-    self.selectedViewController.view.frame = CGRectMake(0.0f, 0.0f,
-                                                        self.view.bounds.size.width, 
-                                                        self.view.bounds.size.height - self.tabBar.height);
-    
-    // add the next view controller to our view hiearchy
-    if (! [UIDevice isAtLeastiOS5])
-        [self.selectedViewController viewWillAppear:NO];
-    [self.view addSubviewToBack:self.selectedViewController.view];
-    [self.selectedViewController.view setNeedsLayout];
-    if (! [UIDevice isAtLeastiOS5])
-        [self.selectedViewController viewDidAppear:NO];
-    
-    // send out delegate messages
-    if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
-        [self.delegate tabBarController:self didSelectViewController:self.selectedViewController];
+    if (! [self.delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)] ||
+        [self.delegate tabBarController:self shouldSelectViewController:nextController])
+    {
+        UIViewController *previousController = self.selectedViewController;
+        
+        // send out delegate messages
+        if ([self.delegate respondsToSelector:@selector(tabBarController:willSelectViewController:)])
+            [self.delegate tabBarController:self willSelectViewController:nextController];
+        
+        for (OPTabBarItem *item in self.tabBar.items)
+            [item setSelected:NO];
+        [[self.tabBar.items objectAtIndex:selectedIndex] setSelected:YES];
+        _selectedIndex = selectedIndex;
+        
+        self.selectedViewController = nextController;
+        
+        // remove the previous view controller from our view hierarchy
+        if (! [UIDevice isAtLeastiOS5])
+            [previousController viewWillDisappear:NO];
+        [previousController.view removeFromSuperview];
+        if (! [UIDevice isAtLeastiOS5])
+            [previousController viewDidDisappear:NO];
+        
+        // configure the next view controller
+        self.selectedViewController.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | 
+                                                             UIViewAutoresizingFlexibleHeight | 
+                                                             UIViewAutoresizingFlexibleBottomMargin);
+        self.selectedViewController.view.frame = CGRectMake(0.0f, 0.0f,
+                                                            self.view.bounds.size.width, 
+                                                            self.view.bounds.size.height - self.tabBar.height);
+        
+        // add the next view controller to our view hiearchy
+        if (! [UIDevice isAtLeastiOS5])
+            [self.selectedViewController viewWillAppear:NO];
+        [self.view addSubviewToBack:self.selectedViewController.view];
+        [self.selectedViewController.view setNeedsLayout];
+        if (! [UIDevice isAtLeastiOS5])
+            [self.selectedViewController viewDidAppear:NO];
+        
+        // send out delegate messages
+        if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
+            [self.delegate tabBarController:self didSelectViewController:self.selectedViewController];
+    }
+    else
+    {
+        [self.tabBar setSelectedItemIndex:self.selectedIndex];
+    }
 }
 
 -(void) setTabBarHidden:(BOOL)tabBarHidden {
