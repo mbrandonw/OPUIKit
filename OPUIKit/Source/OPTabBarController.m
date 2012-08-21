@@ -29,7 +29,7 @@
 @synthesize tabBarHidden = _tabBarHidden;
 @synthesize tabBarPortraitHeight = _tabBarPortraitHeight;
 @synthesize tabBarLandscapeHeight = _tabBarLandscapeHeight;
-@synthesize hidesToolbarTitlesInLandscape = _hidesToolbarTitlesInLandscape;
+@synthesize hidesTabBarTitlesInLandscape = _hidesTabBarTitlesInLandscape;
 
 @synthesize selectedViewController = _selectedViewController;
 @synthesize selectedIndex = _selectedIndex;
@@ -130,7 +130,7 @@
     
     // hide tab bar item titles if necessary
     for (OPTabBarItem *item in self.tabBar.items)
-        item.titleLabel.hidden = self.hidesToolbarTitlesInLandscape && UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+        item.titleLabel.hidden = self.hidesTabBarTitlesInLandscape && UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
     
     // re-layout the tab bar
     [self.tabBar setNeedsDisplayAndLayout];
