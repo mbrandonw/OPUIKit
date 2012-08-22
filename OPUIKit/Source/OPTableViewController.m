@@ -23,6 +23,7 @@
 #import "OPTabBar.h"
 #import "OPCustomTableViewCell.h"
 #import "OPViewController.h"
+#import "UIScrollView+Opetopic.h"
 
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
@@ -508,10 +509,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     _toolbarView.width = self.view.width;
     _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-                                                   self.tableView.contentInset.left,
-                                                   self.tableView.contentInset.bottom + _toolbarView.height,
-                                                   self.tableView.contentInset.right);
+    self.tableView.contentInsetBottom += _toolbarView.height;
+    self.tableView.scrollIndicatorInsetBottom = _toolbarView.height;
 }
 
 #pragma mark -
