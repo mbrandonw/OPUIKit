@@ -142,4 +142,22 @@
     return 44.0f;
 }
 
+-(void) setFirstInSection:(BOOL)firstInSection {
+    _firstInSection = firstInSection;
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
+-(void) setLastInSection:(BOOL)lastInSection {
+    _lastInSection = lastInSection;
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
+-(void) setObject:(id)object {
+    _object = object;
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
 @end

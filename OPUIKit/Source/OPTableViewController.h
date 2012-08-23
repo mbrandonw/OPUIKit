@@ -79,6 +79,12 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
+ The default implementation of -tableView:cellForRowAtIndexPath: will use this method to get the object
+ representing the row and pass it off to the dequeued cell.
+ */
+-(id) tableView:(UITableView*)tableView objectForRowAtIndexPath:(NSIndexPath*)indexPath;
+
+/**
  Sometimes we want to use a fetched results controller for part of the content of our table view, but then 
  the indices of the fetch controller may not match the indices of the table view. Override all of these 
  methods to translate between the two types of indices and everything will work magically.

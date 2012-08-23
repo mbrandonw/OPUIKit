@@ -348,7 +348,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController {
     _fetchedResultsController = fetchedResultsController;
-    self.hasUsedFetchedResultsController = YES;
+    self.hasUsedFetchedResultsController = fetchedResultsController != nil;
 }
 
 #pragma mark -
@@ -367,7 +367,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
     if ([class isSubclassOfClass:[OPCustomTableViewCell class]])
     {
-        id object = [self.fetchedResultsController objectAtIndexPath:[self tableViewIndexPathToFetchedResultsIndexPath:indexPath]];
+        id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
         return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width];
     }
     return 44.0f;
@@ -380,6 +380,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if (! cell)
         cell = [[[self tableView:tableView classForRowAtIndexPath:indexPath] alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     
+    if ([cell isKindOfClass:[OPCustomTableViewCell class]]) {
+        [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
+        [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
+        [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
+    }
+    
     return cell;
 }
 
@@ -388,6 +394,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath {
     return [UITableViewCell class];
+}
+
+-(id) tableView:(UITableView*)tableView objectForRowAtIndexPath:(NSIndexPath*)indexPath {
+    return [self.fetchedResultsController objectAtIndexPath:[self tableViewIndexPathToFetchedResultsIndexPath:indexPath]];
 }
 
 -(NSInteger) tableViewSectionToFetchedResultsSection:(NSUInteger)section {
