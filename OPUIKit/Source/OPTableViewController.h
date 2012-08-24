@@ -79,6 +79,12 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
+ The default implementation of -tableView:viewForHeaderInSection: will use this method to automatically create
+ headers for the table view.
+ */
+-(Class) tableView:(UITableView *)tableView classForHeaderInSection:(NSInteger)section;
+
+/**
  The default implementation of -tableView:cellForRowAtIndexPath: will use this method to get the object
  representing the row and pass it off to the dequeued cell.
  */

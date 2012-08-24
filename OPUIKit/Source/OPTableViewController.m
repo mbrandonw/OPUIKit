@@ -24,6 +24,7 @@
 #import "OPCustomTableViewCell.h"
 #import "OPViewController.h"
 #import "UIScrollView+Opetopic.h"
+#import "OPTableSectionView.h"
 
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
 UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
@@ -363,6 +364,20 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     return [[[self.fetchedResultsController sections] objectAtIndex:[self tableViewSectionToFetchedResultsSection:section]] numberOfObjects];
 }
 
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    Class class = [self tableView:tableView classForHeaderInSection:section];
+    if ([class isSubclassOfClass:[OPTableSectionView class]])
+        return (CGFloat)[(id)class heightForWidth:self.view.width];
+    return 0.0f;
+}
+
+-(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    Class class = [self tableView:tableView classForHeaderInSection:section];
+    return [class new];
+}
+
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
     if ([class isSubclassOfClass:[OPCustomTableViewCell class]])
@@ -394,6 +409,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath {
     return [UITableViewCell class];
+}
+
+-(Class) tableView:(UITableView *)tableView classForHeaderInSection:(NSInteger)section {
+    return nil;
 }
 
 -(id) tableView:(UITableView*)tableView objectForRowAtIndexPath:(NSIndexPath*)indexPath {
