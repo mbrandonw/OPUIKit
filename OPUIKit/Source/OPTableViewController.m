@@ -395,16 +395,19 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if (! cell)
         cell = [[[self tableView:tableView classForRowAtIndexPath:indexPath] alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     
-    if ([cell isKindOfClass:[OPCustomTableViewCell class]]) {
-        [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
-        [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
-        [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
-    }
+    [self tableView:tableView configureCell:cell atIndexPath:indexPath];
     
     return cell;
 }
 
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
+    
+    if ([cell isKindOfClass:[OPCustomTableViewCell class]])
+    {
+        [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
+        [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
+        [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
+    }
 }
 
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath {
