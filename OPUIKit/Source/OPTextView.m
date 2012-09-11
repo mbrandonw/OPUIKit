@@ -52,6 +52,11 @@
     return _placeholderLabel;
 }
 
+-(void) setText:(NSString *)text {
+    [super setText:text];
+    [self updatePlaceholderLabel];
+}
+
 -(void) textDidChange:(NSNotification*)notification {
     [self updatePlaceholderLabel];
 }
