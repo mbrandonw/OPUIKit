@@ -255,13 +255,20 @@
     
     NSUInteger index = [self.items indexOfObject:item];
     
+    CGFloat flexibleWidth = self.width;
+    NSUInteger flexibleCount = 0;
+    for (OPTabBarItem *item in self.items) {
+        if (item.fixedWidth)
+            flexibleWidth -= item.width;
+        else
+            flexibleCount++;
+    }
+    
     if (self.itemLayout == OPTabBarItemLayoutEvenlySpaced)
     {
-        CGFloat itemWidth = roundf(self.width / [self.items count]);
-        item.frame = CGRectMake(roundf(itemWidth * (0.5f + index) - itemWidth/2.0f), item.top, itemWidth, item.height);
-        
-        if (index == [self.items count]-1)
-            item.width = self.width - (itemWidth * ([self.items count]-1));
+        CGFloat itemWidth = roundf(flexibleWidth / flexibleCount);
+        item.width = item.fixedWidth ? item.width : itemWidth;
+        item.left = index == 0 ? 0.0f : [[self.items objectAtIndex:index-1] right];
     }
     else if (self.itemLayout == OPTabBarItemLayoutCenterGrouped)
     {

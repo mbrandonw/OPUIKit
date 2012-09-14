@@ -24,6 +24,8 @@
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 @property (nonatomic, assign) UIEdgeInsets titleLabelInsets;
 
+@property (nonatomic, assign, getter = isFixedWidth) BOOL fixedWidth;
+
 @property (nonatomic, strong, readonly) OPTabBarItemBadge *badge;
 @property (nonatomic, assign) BOOL rememberBadgeValue;
 
