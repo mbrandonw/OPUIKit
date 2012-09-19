@@ -234,12 +234,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
     // that chooses to hide the bottom bar
-    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-                                                       self.tableView.contentInset.left,
-                                                       MAX(0.0f, self.tableView.contentInset.bottom - self.tabController.tabBar.height),
-                                                       self.tableView.contentInset.right);
-    }
+//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
+//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
+//                                                       self.tableView.contentInset.left,
+//                                                       MAX(0.0f, self.tableView.contentInset.bottom - self.tabController.tabBar.height),
+//                                                       self.tableView.contentInset.right);
+//    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -252,12 +252,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
     // that chooses to hide the bottom bar
-    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-                                                       self.tableView.contentInset.left,
-                                                       self.tableView.contentInset.bottom + self.tabController.tabBar.height,
-                                                       self.tableView.contentInset.right);
-    }
+//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
+//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
+//                                                       self.tableView.contentInset.left,
+//                                                       self.tableView.contentInset.bottom + self.tabController.tabBar.height,
+//                                                       self.tableView.contentInset.right);
+//    }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
