@@ -23,6 +23,7 @@
     if (! (self = [super init]))
         return nil;
     self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
     return self;
 }
 
@@ -30,6 +31,7 @@
     if (! (self = [super initWithFrame:frame]))
         return nil;
     self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
     return self;
 }
 
@@ -37,6 +39,7 @@
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
     self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
     return self;
 }
 
