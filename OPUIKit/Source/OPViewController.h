@@ -19,4 +19,9 @@ extern const struct OPViewControllerNotifications {
 
 @interface OPViewController : UIViewController <OPStyleProtocol>
 
+/**
+ A view to pin at the bottom of the view.
+ */
+@property (nonatomic, strong) UIView *toolbarView;
+
 @end

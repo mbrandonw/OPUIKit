@@ -8,6 +8,7 @@
 //
 
 #import "OPViewController.h"
+#import "UIView+Opetopic.h"
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
 #import "OPMacros.h"
@@ -89,11 +90,13 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
+    [self.toolbarView bringToFront];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
+    [self.toolbarView bringToFront];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -104,6 +107,21 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
+}
+
+-(void) viewDidLayoutSubviews {
+    
+    [self.toolbarView bringToFront];
+    self.toolbarView.bottom = self.view.height;
+}
+
+-(void) setToolbarView:(UIView *)toolbarView {
+    [_toolbarView removeFromSuperview];
+    _toolbarView = toolbarView;
+    [self.view addSubview:_toolbarView];
+    
+    _toolbarView.width = self.view.width;
+    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 }
 
 @end
