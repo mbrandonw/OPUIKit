@@ -14,6 +14,7 @@
 @interface OPRevealableViewController ()
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, strong) UIView *gripView;
 
 // Private method for closing/opening the detail a little faster. Velocity should be
 // how fast the user's finger was moving when they were dragging the master panel.
@@ -30,6 +31,12 @@
     
     _detailHidden = YES;
     [[[self class] styling] applyTo:self];
+    
+    self.gripView = [UIView new];
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
+    [self.gripView addGestureRecognizer:self.tapGestureRecognizer];
+    self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(masterPanned:)];
+    [self.gripView addGestureRecognizer:self.panGestureRecognizer];
     
     return self;
 }
@@ -92,25 +99,22 @@
         [self.view addSubview:self.dividerView];
         [_dividerView setNeedsDisplay];
         
+        [self.view addSubview:self.gripView];
+        self.gripView.frame = self.masterViewController.view.frame;
+        
         [UIView animateWithDuration:MAX(0.0f, 0.3f - ABS(velocity)/10000.0f) * animated animations:^{
             CGFloat right = self.view.width - (_detailHidden ? 0.0f : self.detailWidth + self.dividerWidth);
             self.masterViewController.view.right = right;
             self.dividerView.alpha = detailHidden ? 0.0f : 1.0f;
             self.dividerView.origin = CGPointMake(roundf(right - self.dividerView.width/2.0f), 0.0f);
+            self.gripView.frame = self.masterViewController.view.frame;
         } completion:^(BOOL finished) {
-            
-            if (! _detailHidden && ! _tapGestureRecognizer && ! _panGestureRecognizer)
-            {
-                self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(masterTapped:)];
-                [self.masterViewController.view addGestureRecognizer:self.tapGestureRecognizer];
-                self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(masterPanned:)];
-                [self.masterViewController.view addGestureRecognizer:self.panGestureRecognizer];
-            }
             
             if (detailHidden)
             {
                 [self.masterViewController viewDidAppear:animated];
                 [self.detailViewController viewDidDisappear:animated];
+                [self.gripView removeFromSuperview];
             }
             else
             {
