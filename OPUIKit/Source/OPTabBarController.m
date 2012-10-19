@@ -329,7 +329,7 @@
     if (viewController.hidesBottomBarWhenPushed && ! self.tabBar.hidden)
     {
         self.selectedViewController.view.height += self.tabBar.height;
-        [UIView animateWithDuration:0.35f animations:^{
+        [UIView animateWithDuration:(0.35f * animated) animations:^{
             self.tabBar.right = 0.0f;
         } completion:^(BOOL finished) {
             self.tabBar.hidden = YES;
@@ -338,7 +338,7 @@
     else if (! viewController.hidesBottomBarWhenPushed && self.tabBar.hidden)
     {
         self.tabBar.hidden = NO;
-        [UIView animateWithDuration:0.35f animations:^{
+        [UIView animateWithDuration:(0.35f * animated) animations:^{
             self.tabBar.left = 0.0f;
         } completion:^(BOOL finished) {
             self.selectedViewController.view.height -= self.tabBar.height;
