@@ -10,6 +10,8 @@
 
 @interface OPTableSectionView : UIView
 
+@property (nonatomic, strong) id object;
+
 +(CGFloat) heightForWidth:(CGFloat)width;
 
 @end

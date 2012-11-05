@@ -14,4 +14,10 @@
     return 22.0f;
 }
 
+-(void) setObject:(id)object {
+    _object = object;
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
 @end

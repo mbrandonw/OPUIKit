@@ -375,7 +375,13 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     Class class = [self tableView:tableView classForHeaderInSection:section];
-    return [class new];
+    UIView *header = [class new];
+    
+    if ([header respondsToSelector:@selector(setObject:)]) {
+        [(id)header setObject:[self tableView:tableView objectForHeaderAtSection:section]];
+    }
+    
+    return header;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -420,6 +426,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(id) tableView:(UITableView*)tableView objectForRowAtIndexPath:(NSIndexPath*)indexPath {
     return [self.fetchedResultsController objectAtIndexPath:[self tableViewIndexPathToFetchedResultsIndexPath:indexPath]];
+}
+
+-(id) tableView:(UITableView *)tableView objectForHeaderAtSection:(NSInteger)section {
+    return nil;
 }
 
 -(NSInteger) tableViewSectionToFetchedResultsSection:(NSUInteger)section {
