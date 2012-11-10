@@ -14,9 +14,9 @@
 
 @protocol OPTabBarControllerDelegate <NSObject>
 @optional
--(BOOL) tabBarController:(OPTabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController;
--(void) tabBarController:(OPTabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController;
--(void) tabBarController:(OPTabBarController*)tabBarController willSelectViewController:(UIViewController*)viewController;
+-(BOOL) tabController:(OPTabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController;
+-(void) tabController:(OPTabBarController*)tabBarController didSelectViewController:(UIViewController*)viewController;
+-(void) tabController:(OPTabBarController*)tabBarController willSelectViewController:(UIViewController*)viewController;
 @end
 
 @interface OPTabBarController : OPViewController

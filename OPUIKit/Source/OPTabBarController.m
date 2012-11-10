@@ -195,14 +195,14 @@
 -(void) setSelectedIndex:(NSUInteger)selectedIndex {
     UIViewController *nextController = [self.childViewControllers objectAtIndex:selectedIndex];
     
-    if (! [self.delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)] ||
-        [self.delegate tabBarController:self shouldSelectViewController:nextController])
+    if (! [self.delegate respondsToSelector:@selector(tabController:shouldSelectViewController:)] ||
+        [self.delegate tabController:self shouldSelectViewController:nextController])
     {
         UIViewController *previousController = self.selectedViewController;
         
         // send out delegate messages
-        if ([self.delegate respondsToSelector:@selector(tabBarController:willSelectViewController:)])
-            [self.delegate tabBarController:self willSelectViewController:nextController];
+        if ([self.delegate respondsToSelector:@selector(tabController:willSelectViewController:)])
+            [self.delegate tabController:self willSelectViewController:nextController];
         
         for (OPTabBarItem *item in self.tabBar.items)
             [item setSelected:NO];
@@ -235,8 +235,8 @@
             [self.selectedViewController viewDidAppear:NO];
         
         // send out delegate messages
-        if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
-            [self.delegate tabBarController:self didSelectViewController:self.selectedViewController];
+        if ([self.delegate respondsToSelector:@selector(tabController:didSelectViewController:)])
+            [self.delegate tabController:self didSelectViewController:self.selectedViewController];
     }
     else
     {
