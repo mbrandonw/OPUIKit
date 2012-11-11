@@ -224,7 +224,7 @@
                                                              UIViewAutoresizingFlexibleBottomMargin);
         self.selectedViewController.view.frame = CGRectMake(0.0f, 0.0f,
                                                             self.view.bounds.size.width, 
-                                                            self.view.bounds.size.height - self.tabBar.height);
+                                                            self.view.bounds.size.height - self.tabBar.height*(!self.tabBar.hidden));
         
         // add the next view controller to our view hiearchy
         if (! [UIDevice isAtLeastiOS5])
@@ -273,7 +273,7 @@
             self.tabBar.top = selfHeight;
             self.selectedViewController.view.height = selfHeight - self.selectedViewController.view.top;
         }
-    } completion:^(BOOL finished) {
+    } asapCompletion:^(BOOL finished) {
         self.tabBar.hidden = tabBarHidden;
     }];
 }
@@ -331,7 +331,7 @@
         self.selectedViewController.view.height += self.tabBar.height;
         [UIView animateWithDuration:(0.35f * animated) animations:^{
             self.tabBar.right = 0.0f;
-        } completion:^(BOOL finished) {
+        } asapCompletion:^(BOOL finished) {
             self.tabBar.hidden = YES;
         }];
     }
@@ -340,7 +340,7 @@
         self.tabBar.hidden = NO;
         [UIView animateWithDuration:(0.35f * animated) animations:^{
             self.tabBar.left = 0.0f;
-        } completion:^(BOOL finished) {
+        } asapCompletion:^(BOOL finished) {
             self.selectedViewController.view.height -= self.tabBar.height;
         }];
     }
