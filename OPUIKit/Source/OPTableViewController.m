@@ -349,7 +349,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController {
     _fetchedResultsController = fetchedResultsController;
-    self.hasUsedFetchedResultsController = fetchedResultsController != nil;
+    self.hasUsedFetchedResultsController |= (fetchedResultsController != nil);
 }
 
 #pragma mark -
