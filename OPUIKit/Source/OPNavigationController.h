@@ -19,4 +19,9 @@
 +(id) controller;
 +(id) controllerWithRootViewController:(UIViewController*)rootViewController;
 
+/**
+ A view to pin at the bottom of the navigation view.
+ */
+@property (nonatomic, strong) UIView *toolbarView;
+
 @end

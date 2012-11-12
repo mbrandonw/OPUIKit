@@ -116,6 +116,15 @@
         [self popViewControllerAnimated:YES];
 }
 
+-(void) setToolbarView:(UIView *)toolbarView {
+    [_toolbarView removeFromSuperview];
+    _toolbarView = toolbarView;
+    [self.view addSubview:_toolbarView];
+    
+    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    [self viewDidLayoutSubviews];
+}
+
 #pragma mark -
 #pragma mark Overridden UINavigationController methods
 #pragma mark -
@@ -128,6 +137,13 @@
         [(id)retVal navigationController:self isPoppingSelf:animated];
     
     return retVal;
+}
+
+-(void) viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.toolbarView bringToFront];
+    self.toolbarView.bottom = self.view.bounds.size.height;
+    self.toolbarView.width = self.view.bounds.size.width;
 }
 
 #pragma mark -
