@@ -8,6 +8,7 @@
 
 #import "OPTabBarController.h"
 #import <objc/runtime.h>
+#import "UIScrollView+Opetopic.h"
 #import "OPTabBarItem.h"
 #import "OPTabBar.h"
 #import "OPMacros.h"
@@ -296,10 +297,10 @@
             // if the selected controller is a navigation controller that is already at its root controller, then we try to scroll its child controller to the top
             if ([navigationController.viewControllers count] == 1)
             {
-                if ([[[navigationController.viewControllers lastObject] view] isKindOfClass:[UIScrollView class]])
-                    [(UIScrollView*)[[navigationController.viewControllers lastObject] view] setContentOffset:CGPointZero animated:YES];
-                else if ([[navigationController.viewControllers lastObject] respondsToSelector:@selector(tableView)])
-                    [(UITableView*)[[navigationController.viewControllers lastObject] tableView] setContentOffset:CGPointZero animated:YES];
+                if ([[[navigationController.viewControllers lastObject] view] isKindOfClass:[UIScrollView class]]) {
+                    UIScrollView *scrollView = (UIScrollView*)[[navigationController.viewControllers lastObject] view];
+                    [scrollView setContentOffsetY:-scrollView.contentInsetTop animated:YES];
+                }
             }
             // otherwise we just pop the navigation controller to its root
             else
@@ -310,7 +311,8 @@
         // if we can then we will scroll the selected controller to the top
         else if ([self.selectedViewController.view isKindOfClass:[UIScrollView class]])
         {
-            [(UIScrollView*)self.selectedViewController.view setContentOffset:CGPointZero animated:YES];
+            UIScrollView *scrollView = (UIScrollView*)self.selectedViewController.view;
+            [scrollView setContentOffsetY:scrollView.contentInsetTop animated:YES];
         }
     }
     else
