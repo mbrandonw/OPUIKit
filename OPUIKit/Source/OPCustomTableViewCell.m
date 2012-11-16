@@ -142,6 +142,10 @@
     return 44.0f;
 }
 
++(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast {
+    return [[self class] heightForObject:object cellWidth:width];
+}
+
 -(void) setFirstInSection:(BOOL)firstInSection {
     _firstInSection = firstInSection;
     [self setNeedsDisplay];

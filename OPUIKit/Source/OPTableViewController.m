@@ -389,7 +389,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if ([class isSubclassOfClass:[OPCustomTableViewCell class]])
     {
         id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
-        return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width];
+        NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+        return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
     }
     return 44.0f;
 }

@@ -27,6 +27,7 @@
  cell heights.
  */
 +(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width;
++(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast;
 
 /**
  OPTableViewController instances will assign this object from what it pulls
