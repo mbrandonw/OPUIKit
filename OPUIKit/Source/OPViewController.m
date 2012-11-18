@@ -8,9 +8,11 @@
 //
 
 #import "OPViewController.h"
+#import "OPExtensionKit.h"
 #import "UIView+Opetopic.h"
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
+#import "OPNavigationController.h"
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
 
@@ -85,6 +87,18 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
         self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
     if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+    
+    if ([self.view isKindOfClass:[UIScrollView class]] && [self.navigationController isKindOfClass:[OPNavigationController class]])
+    {
+        [(UIScrollView*)self.view setContentInsetBottom:[[(OPNavigationController*)self.navigationController toolbarView] height]];
+        [(UIScrollView*)self.view setScrollIndicatorInsetBottom:[(UIScrollView*)self.view contentInsetBottom]];
+    }
+    else if ([self.view isKindOfClass:[UIWebView class]] && [self.navigationController isKindOfClass:[OPNavigationController class]])
+    {
+        
+        [[(UIWebView*)self.view scrollView] setContentInsetBottom:[[(OPNavigationController*)self.navigationController toolbarView] height]];
+        [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:[[(UIWebView*)self.view scrollView] contentInsetBottom]];
+    }
 }
 
 -(void) viewWillAppear:(BOOL)animated {

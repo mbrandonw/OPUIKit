@@ -9,6 +9,7 @@
 #import "OPTableViewController.h"
 #import "OPActiveScrollViewManager.h"
 #import "UIView+Opetopic.h"
+#import "OPNavigationController.h"
 #import "OPTableView.h"
 #import "CALayer+Opetopic.h"
 #import "UIViewController+Opetopic.h"
@@ -202,6 +203,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
     
+    if ([self.navigationController isKindOfClass:[OPNavigationController class]]) {
+        self.tableView.contentInsetBottom = [[(OPNavigationController*)self.navigationController toolbarView] height];
+        self.tableView.scrollIndicatorInsetBottom = self.tableView.contentInsetBottom;
+    }
 }
 
 -(void) viewWillAppear:(BOOL)animated {
