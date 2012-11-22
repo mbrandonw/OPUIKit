@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+OPUIKit.h"
-#import "UIView+Opetopic.h"
+#import "OPExtensionKit.h"
 #import "OPTableViewController.h"
 #import "OPViewController.h"
 #import "OPStyle.h"
@@ -123,13 +123,29 @@ static char toolbarViewKey;
 
 -(void) setToolbarViewHidden:(BOOL)hidden animated:(BOOL)animated {
     
-    [self layoutToolbarView];
-    [UIView animateWithDuration:0.3f*animated animations:^{
-        [self layoutToolbarView:hidden];
-    } completion:^(BOOL finished) {
-        self.toolbarView.hidden = hidden;
-        [self layoutToolbarView];
-    }];
+    if ([self isToolbarViewHidden] == hidden)
+        return ;
+    
+    if (self.toolbarView)
+    {
+        dispatch_after_delay(0.1f, ^{
+            
+            self.toolbarView.hidden = NO;
+            [self layoutToolbarView:!hidden];
+            
+            [UIView animateWithDuration:0.3f*animated animations:^{
+                [self layoutToolbarView:hidden];
+            } completion:^(BOOL finished) {
+                self.toolbarView.hidden = hidden;
+                [self layoutToolbarView];
+            }];
+            
+        });
+    }
+    else
+    {
+        [self.parentViewController setToolbarViewHidden:hidden animated:YES];
+    }
 }
 
 -(void) layoutToolbarView {
@@ -137,16 +153,17 @@ static char toolbarViewKey;
 }
 
 -(void) layoutToolbarView:(BOOL)hidden {
+    DLog(@"%@", self);
     
     [self.toolbarView bringToFront];
     self.toolbarView.bottomLeft = (CGPoint){
         self.viewOffset.x,
-        self.view.bounds.size.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f)
+        self.toolbarView.superview.bounds.size.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f)
     };
 }
 
 -(CGPoint) viewOffset {
-    return [self.view isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.view contentOffset] : CGPointZero;
+    return [self.toolbarView.superview isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.toolbarView.superview contentOffset] : CGPointZero;
 }
 
 @end
