@@ -104,6 +104,8 @@ static char toolbarViewKey;
     objc_setAssociatedObject(self, &toolbarViewKey, toolbarView, OBJC_ASSOCIATION_RETAIN);
     [self.view addSubview:self.toolbarView];
     [self layoutToolbarView];
+    
+    [self.parentViewController setToolbarViewHidden:YES animated:YES];
 }
 
 -(UIView*) toolbarView {
@@ -153,12 +155,13 @@ static char toolbarViewKey;
 }
 
 -(void) layoutToolbarView:(BOOL)hidden {
-    DLog(@"%@", self);
     
     [self.toolbarView bringToFront];
-    self.toolbarView.bottomLeft = (CGPoint){
+    self.toolbarView.frame = (CGRect){
         self.viewOffset.x,
-        self.toolbarView.superview.bounds.size.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f)
+        self.toolbarView.superview.bounds.size.height - self.toolbarView.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f),
+        self.toolbarView.superview.bounds.size.width,
+        self.toolbarView.height
     };
 }
 
