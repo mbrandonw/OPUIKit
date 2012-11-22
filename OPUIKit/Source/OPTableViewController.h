@@ -57,11 +57,6 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 @property (nonatomic, assign, readonly) CGPoint contentOffsetVelocity;
 
 /**
- A view to pin at the bottom of the table view.
- */
-@property (nonatomic, strong) UIView *toolbarView;
-
-/**
  Shortcut to creating a controller with style, title and subtitle.
  */
 -(id) initWithStyle:(UITableViewStyle)style title:(NSString*)title subtitle:(NSString*)subtitle;

@@ -73,7 +73,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 @synthesize contentOffsetVelocity = _contentOffsetVelocity;
 @synthesize lastDragTimeInterval = _lastDragTimeInterval;
 @synthesize lastContentOffset = _lastContentOffset;
-@synthesize toolbarView = _toolbarView;
 
 // OPStyle storage
 @synthesize backgroundColor = _backgroundColor;
@@ -203,9 +202,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
     
-    if ([self.navigationController isKindOfClass:[OPNavigationController class]]) {
-        self.tableView.contentInsetBottom = [[(OPNavigationController*)self.navigationController toolbarView] height];
-        self.tableView.scrollIndicatorInsetBottom = self.tableView.contentInsetBottom;
+    if (self.toolbarView) {
+        self.tableView.contentInsetBottom += self.toolbarView.height;
+        self.tableView.scrollIndicatorInsetBottom += self.toolbarView.height;
     }
 }
 
@@ -213,11 +212,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
-    
-    if (self.toolbarView) {
-        [self.toolbarView bringToFront];
-        [self scrollViewDidScroll:self.tableView];
-    }
     
     // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
     // situation. You drill down from a table view controller, something triggers that table view to release it's fetch controller,
@@ -232,8 +226,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-    [self layoutShadows];
-    [self.toolbarView bringToFront];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
     
@@ -332,14 +324,10 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     CGPoint p2 = self.beginDraggingContentOffset;
     if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
         [self.view endEditing:YES];
-    
-    // snap the toolbar to the bottom
-    self.toolbarView.bottom = self.view.height + scrollView.contentOffset.y;
-    [self.toolbarView bringToFront];
 }
 
 #pragma mark -
-#pragma mark Overridden touch methods
+#pragma mark Overridden methods
 #pragma mark -
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -355,6 +343,11 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController {
     _fetchedResultsController = fetchedResultsController;
     self.hasUsedFetchedResultsController |= (fetchedResultsController != nil);
+}
+
+-(void) viewDidLayoutSubviews {
+    [self layoutShadows];
+    [self layoutToolbarView];
 }
 
 #pragma mark -
@@ -548,17 +541,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             self.tableView = v;
         }
     }
-}
-
--(void) setToolbarView:(UIView *)toolbarView {
-    [_toolbarView removeFromSuperview];
-    _toolbarView = toolbarView;
-    [self.view addSubview:_toolbarView];
-    
-    _toolbarView.width = self.view.width;
-    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    self.tableView.contentInsetBottom += _toolbarView.height;
-    self.tableView.scrollIndicatorInsetBottom = _toolbarView.height;
 }
 
 #pragma mark -

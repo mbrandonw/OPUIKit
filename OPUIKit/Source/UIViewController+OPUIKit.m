@@ -7,10 +7,19 @@
 //
 
 #import "UIViewController+OPUIKit.h"
+#import "UIView+Opetopic.h"
 #import "OPTableViewController.h"
 #import "OPViewController.h"
 #import "OPStyle.h"
 #import "OPMacros.h"
+#import <objc/runtime.h>
+
+static char toolbarViewKey;
+
+@interface UIViewController (OPUIKit_Private)
+-(void) layoutToolbarView:(BOOL)hidden;
+-(CGPoint) viewOffset;
+@end
 
 @implementation UIViewController (OPUIKit)
 
@@ -88,6 +97,56 @@
 	}
 	
 	self.navigationItem.titleView = wrapper;
+}
+
+-(void) setToolbarView:(UIView*)toolbarView {
+    objc_setAssociatedObject(self, &toolbarViewKey, nil, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &toolbarViewKey, toolbarView, OBJC_ASSOCIATION_RETAIN);
+    [self.view addSubview:self.toolbarView];
+    [self layoutToolbarView];
+}
+
+-(UIView*) toolbarView {
+    UIView *retVal = objc_getAssociatedObject(self, &toolbarViewKey);
+    if (! retVal)
+        return [self.parentViewController toolbarView];
+    return retVal;
+}
+
+-(BOOL) isToolbarViewHidden {
+    return self.toolbarView.hidden;
+}
+
+-(void) setToolbarViewHidden:(BOOL)hidden {
+    [self setToolbarViewHidden:hidden animated:NO];
+}
+
+-(void) setToolbarViewHidden:(BOOL)hidden animated:(BOOL)animated {
+    
+    [self layoutToolbarView];
+    [UIView animateWithDuration:0.3f*animated animations:^{
+        [self layoutToolbarView:hidden];
+    } completion:^(BOOL finished) {
+        self.toolbarView.hidden = hidden;
+        [self layoutToolbarView];
+    }];
+}
+
+-(void) layoutToolbarView {
+    [self layoutToolbarView:[self isToolbarViewHidden]];
+}
+
+-(void) layoutToolbarView:(BOOL)hidden {
+    
+    [self.toolbarView bringToFront];
+    self.toolbarView.bottomLeft = (CGPoint){
+        self.viewOffset.x,
+        self.view.bounds.size.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f)
+    };
+}
+
+-(CGPoint) viewOffset {
+    return [self.view isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.view contentOffset] : CGPointZero;
 }
 
 @end

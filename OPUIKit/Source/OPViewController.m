@@ -88,29 +88,27 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
     if (self.defaultTitle && !self.title)
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
     
-    if ([self.view isKindOfClass:[UIScrollView class]] && [self.navigationController isKindOfClass:[OPNavigationController class]])
+    if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]])
     {
-        [(UIScrollView*)self.view setContentInsetBottom:[[(OPNavigationController*)self.navigationController toolbarView] height]];
-        [(UIScrollView*)self.view setScrollIndicatorInsetBottom:[(UIScrollView*)self.view contentInsetBottom]];
+        [(UIScrollView*)self.view setContentInsetBottom:self.toolbarView.height];
+        [(UIScrollView*)self.view setScrollIndicatorInsetBottom:self.toolbarView.height];
     }
-    else if ([self.view isKindOfClass:[UIWebView class]] && [self.navigationController isKindOfClass:[OPNavigationController class]])
+    else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]])
     {
         
-        [[(UIWebView*)self.view scrollView] setContentInsetBottom:[[(OPNavigationController*)self.navigationController toolbarView] height]];
-        [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:[[(UIWebView*)self.view scrollView] contentInsetBottom]];
+        [[(UIWebView*)self.view scrollView] setContentInsetBottom:self.toolbarView.height];
+        [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:self.toolbarView.height];
     }
 }
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
-    [self.toolbarView bringToFront];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
-    [self.toolbarView bringToFront];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -124,18 +122,7 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 }
 
 -(void) viewDidLayoutSubviews {
-    
-    [self.toolbarView bringToFront];
-    self.toolbarView.bottom = self.view.height;
-}
-
--(void) setToolbarView:(UIView *)toolbarView {
-    [_toolbarView removeFromSuperview];
-    _toolbarView = toolbarView;
-    [self.view addSubview:_toolbarView];
-    
-    _toolbarView.width = self.view.width;
-    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    [self layoutToolbarView];
 }
 
 @end

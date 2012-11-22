@@ -9,6 +9,7 @@
 #import "OPNavigationController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIViewController+Opetopic.h"
+#import "UIViewController+OPUIKit.h"
 #import "OPGradientView.h"
 #import "UIView+Opetopic.h"
 #import "OPBarButtonItem.h"
@@ -116,15 +117,6 @@
         [self popViewControllerAnimated:YES];
 }
 
--(void) setToolbarView:(UIView *)toolbarView {
-    [_toolbarView removeFromSuperview];
-    _toolbarView = toolbarView;
-    [self.view addSubview:_toolbarView];
-    
-    _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    [self viewDidLayoutSubviews];
-}
-
 #pragma mark -
 #pragma mark Overridden UINavigationController methods
 #pragma mark -
@@ -141,9 +133,7 @@
 
 -(void) viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self.toolbarView bringToFront];
-    self.toolbarView.bottom = self.view.bounds.size.height;
-    self.toolbarView.width = self.view.bounds.size.width;
+    [self layoutToolbarView];
 }
 
 #pragma mark -
