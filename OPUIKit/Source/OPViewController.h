@@ -10,6 +10,7 @@
 #import "OPStyle.h"
 
 extern const struct OPViewControllerNotifications {
+	__unsafe_unretained NSString *loadView;
 	__unsafe_unretained NSString *viewDidLoad;
 	__unsafe_unretained NSString *viewWillAppear;
 	__unsafe_unretained NSString *viewDidAppear;

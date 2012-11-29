@@ -61,6 +61,11 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark View lifecycle
 #pragma mark -
 
+-(void) loadView {
+    [super loadView];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.loadView object:self];
+}
+
 -(void) viewDidLoad {
     [super viewDidLoad];
     DLogClassAndMethod();
