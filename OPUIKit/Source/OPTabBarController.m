@@ -371,7 +371,7 @@
     while (c) {
         if ([c isKindOfClass:[OPTabBarController class]])
             return (OPTabBarController*)c;
-        c = [c parentViewController];
+        c = [c parentViewController] ?: [c presentingViewController];
     }
     return nil;
 }
