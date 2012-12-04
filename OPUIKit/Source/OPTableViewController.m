@@ -159,6 +159,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) loadView {
     [super loadView];
+    DLogClassAndMethod();
     
     if (self.useOPTableView)
     {
@@ -210,6 +211,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    DLogClassAndMethod();
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
     
@@ -226,6 +228,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+    DLogClassAndMethod();
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
     
@@ -241,6 +244,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    DLogClassAndMethod();
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
     
@@ -259,6 +263,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    DLogClassAndMethod();
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
     

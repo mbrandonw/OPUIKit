@@ -63,6 +63,7 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 
 -(void) loadView {
     [super loadView];
+    DLogClassAndMethod();
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.loadView object:self];
 }
 
@@ -108,21 +109,25 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    DLogClassAndMethod();
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    DLogClassAndMethod();
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    DLogClassAndMethod();
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    DLogClassAndMethod();
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
 }
 
