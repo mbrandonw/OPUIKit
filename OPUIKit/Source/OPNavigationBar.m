@@ -172,7 +172,10 @@
     if (self.visibleStatusView)
     {
         [self hideStatusView:^{
-            [self showStatusView:statusView hideAfter:hideAfter completion:completion];
+            // need a small delay before piggy backing onto the hide animation
+            dispatch_after_delay(0.1f, ^{
+                [self showStatusView:statusView hideAfter:hideAfter completion:completion];
+            });
         }];
     }
     else
@@ -208,15 +211,17 @@
 -(void) hideStatusView:(void(^)(void))completion {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-
-    [UIView animateWithDuration:0.3f animations:^{
-        self.visibleStatusView.bottom = 0.0f;
-    } completion:^(BOOL finished) {
-        [self.visibleStatusView removeFromSuperview];
-        self.visibleStatusView = nil;
-        if (completion)
-            completion();
-    }];
+    if (self.visibleStatusView)
+    {
+        [UIView animateWithDuration:0.3f animations:^{
+            self.visibleStatusView.bottom = 0.0f;
+        } completion:^(BOOL finished) {
+            [self.visibleStatusView removeFromSuperview];
+            self.visibleStatusView = nil;
+            if (completion)
+                completion();
+        }];
+    }
 }
 
 @end
