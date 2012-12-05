@@ -101,7 +101,6 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
     }
     else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]])
     {
-        
         [[(UIWebView*)self.view scrollView] setContentInsetBottom:self.toolbarView.height];
         [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:self.toolbarView.height];
     }
