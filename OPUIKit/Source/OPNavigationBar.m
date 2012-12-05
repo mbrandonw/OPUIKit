@@ -7,6 +7,7 @@
 //
 
 #import "OPNavigationBar.h"
+#import "OPExtensionKit.h"
 #import "UIImage+Opetopic.h"
 #import "UIColor+Opetopic.h"
 #import "OPGradient.h"
@@ -16,6 +17,8 @@
 
 @interface OPNavigationBar (/**/)
 @property (nonatomic, strong) OPGradientView *shadowView;
+@property (nonatomic, strong, readwrite) UIView *visibleStatusView;
+@property (nonatomic, strong) UIView *statusViewContainer;
 @end
 
 @implementation OPNavigationBar
@@ -149,6 +152,70 @@
         self.shadowView.alpha = hidden ? 0.0f : 1.0f;
     } completion:^(BOOL finished) {
         self.shadowView.hidden = hidden;
+    }];
+}
+
+#pragma mark -
+#pragma mark Status view methods
+#pragma mark -
+
+-(void) showStatusView:(UIView*)statusView {
+    [self showStatusView:statusView hideAfter:4.0f];
+}
+
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter {
+    [self showStatusView:statusView hideAfter:hideAfter completion:nil];
+}
+
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter completion:(void(^)(void))completion {
+    
+    if (self.visibleStatusView)
+    {
+        [self hideStatusView:^{
+            [self showStatusView:statusView hideAfter:hideAfter completion:completion];
+        }];
+    }
+    else
+    {
+        self.visibleStatusView = statusView;
+        statusView.width = self.width;
+        
+        self.statusViewContainer = self.statusViewContainer ?: [UIView new];
+        [self addSubview:self.statusViewContainer];
+        self.statusViewContainer.top = self.height;
+        self.statusViewContainer.width = self.width;
+        self.statusViewContainer.height = self.visibleStatusView.height;
+        self.statusViewContainer.clipsToBounds = YES;
+        
+        statusView.left = 0.0f;
+        statusView.bottom = 0.0f;
+        [self.statusViewContainer addSubview:statusView];
+        
+        [UIView animateWithDuration:0.3f animations:^{
+            statusView.top = 0.0f;
+        } completion:^(BOOL finished) {
+            [self performSelector:@selector(hideStatusView) withObject:nil afterDelay:hideAfter];
+            if (completion)
+                completion();
+        }];
+    }
+}
+
+-(void) hideStatusView {
+    [self hideStatusView:nil];
+}
+
+-(void) hideStatusView:(void(^)(void))completion {
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+    [UIView animateWithDuration:0.3f animations:^{
+        self.visibleStatusView.bottom = 0.0f;
+    } completion:^(BOOL finished) {
+        [self.visibleStatusView removeFromSuperview];
+        self.visibleStatusView = nil;
+        if (completion)
+            completion();
     }];
 }
 
