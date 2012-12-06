@@ -169,7 +169,11 @@
 
 -(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter completion:(void(^)(void))completion {
     
-    if (self.visibleStatusView)
+    if (statusView == self.visibleStatusView)
+    {
+        // do nothing
+    }
+    else if (self.visibleStatusView)
     {
         [self hideStatusView:^{
             // need a small delay before piggy backing onto the hide animation
