@@ -130,6 +130,10 @@
 -(void) setFlush:(BOOL)flush {
     _flush = flush;
     self.button.height = [self heightForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    
+    if (flush) {
+        self.button.autoresizingMask |= UIViewAutoresizingFlexibleHeight;
+    }
 }
 
 #pragma mark -
