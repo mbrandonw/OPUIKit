@@ -14,7 +14,9 @@
 @property (nonatomic, assign) BOOL shadowHidden;
 -(void) setShadowHidden:(BOOL)hidden animated:(BOOL)animated;
 
-@property (nonatomic, strong, readonly) UIView *visibleStatusView;
+@end
+
+@interface UIViewController (OPNavigationBar)
 
 -(void) showStatusView:(UIView*)statusView;
 -(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter;

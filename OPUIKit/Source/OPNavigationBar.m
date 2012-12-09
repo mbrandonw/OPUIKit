@@ -17,8 +17,15 @@
 
 @interface OPNavigationBar (/**/)
 @property (nonatomic, strong) OPGradientView *shadowView;
-@property (nonatomic, strong, readwrite) UIView *visibleStatusView;
+@property (nonatomic, strong) UIView *visibleStatusView;
 @property (nonatomic, strong) UIView *statusViewContainer;
+
+-(void) showStatusView:(UIView*)statusView;
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter;
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter completion:(void(^)(void))completion;
+-(void) hideStatusView;
+-(void) hideStatusView:(void(^)(void))completion;
+
 @end
 
 @implementation OPNavigationBar
@@ -217,7 +224,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     if (self.visibleStatusView)
     {
-        [UIView animateWithDuration:0.3f animations:^{
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.visibleStatusView.bottom = 0.0f;
         } completion:^(BOOL finished) {
             [self.visibleStatusView removeFromSuperview];
@@ -225,6 +232,52 @@
             if (completion)
                 completion();
         }];
+    }
+}
+
+@end
+
+@implementation UIViewController (OPNavigationBar)
+
+-(void) showStatusView:(UIView*)statusView {
+    [self showStatusView:statusView hideAfter:4.0f];
+}
+
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter {
+    [self showStatusView:statusView hideAfter:hideAfter completion:nil];
+}
+
+-(void) showStatusView:(UIView*)statusView hideAfter:(NSTimeInterval)hideAfter completion:(void(^)(void))completion {
+    
+    if ([self isViewVisible])
+    {
+        OPNavigationBar *navigationBar = (OPNavigationBar*)self.navigationController.navigationBar;
+        if (! navigationBar && [self respondsToSelector:@selector(navigationBar)]) {
+            navigationBar = (OPNavigationBar*)[(id)self navigationBar];
+        }
+        if ([navigationBar isKindOfClass:[OPNavigationBar class]])
+        {
+            [navigationBar showStatusView:statusView hideAfter:hideAfter completion:completion];
+        }
+    }
+}
+
+-(void) hideStatusView {
+    [self hideStatusView:nil];
+}
+
+-(void) hideStatusView:(void(^)(void))completion {
+    
+    if ([self isViewVisible])
+    {
+        OPNavigationBar *navigationBar = (OPNavigationBar*)self.navigationController.navigationBar;
+        if (! navigationBar && [self respondsToSelector:@selector(navigationBar)]) {
+            navigationBar = (OPNavigationBar*)[(id)self navigationBar];
+        }
+        if ([navigationBar isKindOfClass:[OPNavigationBar class]])
+        {
+            [navigationBar hideStatusView:completion];
+        }
     }
 }
 
