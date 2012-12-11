@@ -268,16 +268,13 @@
 
 -(void) hideStatusView:(void(^)(void))completion {
     
-    if ([self isViewVisible])
+    OPNavigationBar *navigationBar = (OPNavigationBar*)self.navigationController.navigationBar;
+    if (! navigationBar && [self respondsToSelector:@selector(navigationBar)]) {
+        navigationBar = (OPNavigationBar*)[(id)self navigationBar];
+    }
+    if ([navigationBar isKindOfClass:[OPNavigationBar class]])
     {
-        OPNavigationBar *navigationBar = (OPNavigationBar*)self.navigationController.navigationBar;
-        if (! navigationBar && [self respondsToSelector:@selector(navigationBar)]) {
-            navigationBar = (OPNavigationBar*)[(id)self navigationBar];
-        }
-        if ([navigationBar isKindOfClass:[OPNavigationBar class]])
-        {
-            [navigationBar hideStatusView:completion];
-        }
+        [navigationBar hideStatusView:completion];
     }
 }
 
