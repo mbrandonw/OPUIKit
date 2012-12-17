@@ -105,9 +105,13 @@
 }
 
 +(id) buttonWithSymbolSet:(NSString*)symbol target:(id)target action:(SEL)action {
-    
+    return [[self class] buttonWithSymbolSet:symbol size:18.0f target:self action:action];
+}
+
++(id) buttonWithSymbolSet:(NSString*)symbol size:(CGFloat)size target:(id)target action:(SEL)action {
+
     OPBarButtonItem *item = [[self class] buttonWithTitle:symbol target:target action:action];
-    item.button.titleLabel.font = [UIFont fontWithName:@"SS Standard" size:18.0f];
+    item.button.titleLabel.font = [UIFont fontWithName:@"SS Standard" size:size];
     item.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
     
     CGFloat originalHeight = item.button.height;

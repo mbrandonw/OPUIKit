@@ -23,6 +23,7 @@
 +(id) buttonWithIcon:(UIImage*)icon target:(id)target action:(SEL)action;
 +(id) buttonWithGlyphish:(NSString*)glyph target:(id)target action:(SEL)action;
 +(id) buttonWithSymbolSet:(NSString*)symbol target:(id)target action:(SEL)action;
++(id) buttonWithSymbolSet:(NSString*)symbol size:(CGFloat)size target:(id)target action:(SEL)action;
 
 /**
  Adding actions to bar buttons (this just forwards to the underlying OPButton).
