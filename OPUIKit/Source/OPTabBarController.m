@@ -343,7 +343,7 @@
         [UIView animateWithDuration:(0.35f * animated) animations:^{
             self.tabBar.left = 0.0f;
         } asapCompletion:^(BOOL finished) {
-            self.selectedViewController.view.height -= self.tabBar.height;
+            self.selectedViewController.view.height = self.view.height - self.tabBar.height;
         }];
     }
     
