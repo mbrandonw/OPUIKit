@@ -105,7 +105,7 @@
 }
 
 +(id) buttonWithSymbolSet:(NSString*)symbol target:(id)target action:(SEL)action {
-    return [[self class] buttonWithSymbolSet:symbol size:18.0f target:self action:action];
+    return [[self class] buttonWithSymbolSet:symbol size:18.0f target:target action:action];
 }
 
 +(id) buttonWithSymbolSet:(NSString*)symbol size:(CGFloat)size target:(id)target action:(SEL)action {
