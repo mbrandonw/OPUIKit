@@ -180,17 +180,9 @@
     {
         // do nothing
     }
-    else if (self.visibleStatusView)
-    {
-        [self hideStatusView:^{
-            // need a small delay before piggy backing onto the hide animation
-            dispatch_after_delay(0.1f, ^{
-                [self showStatusView:statusView hideAfter:hideAfter completion:completion];
-            });
-        }];
-    }
     else
     {
+        [self.visibleStatusView removeFromSuperview];
         self.visibleStatusView = statusView;
         statusView.width = self.width;
         
