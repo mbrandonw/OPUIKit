@@ -17,11 +17,11 @@
 #import "Quartz+Opetopic.h"
 
 const struct OPViewControllerNotifications OPViewControllerNotifications = {
-	.viewDidLoad = @"viewDidLoad",
-	.viewWillAppear = @"viewWillAppear",
-	.viewDidAppear = @"viewDidAppear",
-	.viewWillDisappear = @"viewWillDisappear",
-	.viewDidDisappear = @"viewDidDisappear",
+	.viewDidLoad = @"OPViewControllerNotifications.viewDidLoad",
+	.viewWillAppear = @"OPViewControllerNotifications.viewWillAppear",
+	.viewDidAppear = @"OPViewControllerNotifications.viewDidAppear",
+	.viewWillDisappear = @"OPViewControllerNotifications.viewWillDisappear",
+	.viewDidDisappear = @"OPViewControllerNotifications.viewDidDisappear",
 };
 
 @implementation OPViewController

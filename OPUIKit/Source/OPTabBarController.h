@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "OPViewController.h"
 
+extern const struct OPTabBarControllerNotifications {
+	__unsafe_unretained NSString *willSelectViewController;
+	__unsafe_unretained NSString *didSelectViewController;
+} OPTabBarControllerNotifications;
+
 @class OPTabBar;
 @class OPTabBarController;
 

@@ -15,6 +15,11 @@
 #import "UIView+Opetopic.h"
 #import "UIDevice+Opetopic.h"
 
+const struct OPTabBarControllerNotifications OPTabBarControllerNotifications = {
+	.willSelectViewController = @"OPTabBarControllerNotifications.willSelectViewController",
+	.didSelectViewController = @"OPTabBarControllerNotifications.didSelectViewController",
+};
+
 #define kOPTabBarRotationFudgePixels    8.0f
 
 @interface OPTabBarController (/**/) <OPTabBarDelegate, UINavigationControllerDelegate>
@@ -202,6 +207,7 @@
         UIViewController *previousController = self.selectedViewController;
         
         // send out delegate messages
+        [[NSNotificationCenter defaultCenter] postNotificationName:OPTabBarControllerNotifications.willSelectViewController object:nextController userInfo:nil];
         if ([self.delegate respondsToSelector:@selector(tabController:willSelectViewController:)])
             [self.delegate tabController:self willSelectViewController:nextController];
         
@@ -236,6 +242,7 @@
             [self.selectedViewController viewDidAppear:NO];
         
         // send out delegate messages
+        [[NSNotificationCenter defaultCenter] postNotificationName:OPTabBarControllerNotifications.didSelectViewController object:nextController userInfo:nil];
         if ([self.delegate respondsToSelector:@selector(tabController:didSelectViewController:)])
             [self.delegate tabController:self didSelectViewController:self.selectedViewController];
     }
