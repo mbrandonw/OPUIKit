@@ -154,10 +154,11 @@
 
 -(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation {
     
-    if (self.flush)
+    if (self.flush) {
         return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 32.0f : 44.0f;
+    }
     
-    return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 24.0f : 30.0f;
+    return UIInterfaceOrientationIsLandscape(orientation) && ![UIDevice isPad] ? 24.0f : 29.0f;
 }
 
 #pragma mark -
