@@ -11,6 +11,7 @@
 @interface OPTableSectionView : UIView
 
 @property (nonatomic, strong) id object;
+@property (nonatomic, assign) NSInteger section;
 
 +(CGFloat) heightForWidth:(CGFloat)width;
 

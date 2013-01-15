@@ -21,6 +21,7 @@
  */
 @property (nonatomic, assign, getter = isFirstInSection) BOOL firstInSection;
 @property (nonatomic, assign, getter = isLastInSection) BOOL lastInSection;
+@property (nonatomic, strong) NSIndexPath *indexPath;
 
 /**
  OPTableViewController instances will use this method to automatically layout 

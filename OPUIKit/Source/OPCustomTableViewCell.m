@@ -158,6 +158,12 @@
     [self setNeedsLayout];
 }
 
+-(void) setIndexPath:(NSIndexPath *)indexPath {
+    _indexPath = indexPath;
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+}
+
 -(void) setObject:(id)object {
     _object = object;
     [self setNeedsDisplay];

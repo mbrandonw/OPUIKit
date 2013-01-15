@@ -380,8 +380,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     Class class = [self tableView:tableView classForHeaderInSection:section];
     UIView *header = [class new];
     
-    if ([header respondsToSelector:@selector(setObject:)]) {
-        [(id)header setObject:[self tableView:tableView objectForHeaderAtSection:section]];
+    if ([header isKindOfClass:[OPTableSectionView class]]) {
+        [(OPTableSectionView*)header setObject:[self tableView:tableView objectForHeaderAtSection:section]];
+        [(OPTableSectionView*)header setSection:section];
     }
     
     return header;
@@ -417,6 +418,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
         [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
         [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
         [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
+        [(OPCustomTableViewCell*)cell setIndexPath:indexPath];
     }
 }
 
