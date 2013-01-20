@@ -43,8 +43,9 @@
 }
 
 -(void) dealloc {
-    if (_pdf)
+    if (_pdf) {
         CGPDFDocumentRelease(_pdf);
+    }
     _pdf = NULL;
 }
 

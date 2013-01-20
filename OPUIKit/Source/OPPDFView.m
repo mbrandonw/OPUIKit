@@ -19,7 +19,10 @@
 @implementation OPPDFView
 
 -(void) dealloc {
-    CGPDFDocumentRelease(self.pdf);
+    if (_pdf) {
+        CGPDFDocumentRelease(_pdf);
+    }
+    _pdf = NULL;
 }
 
 -(void) loadPDFAtPath:(NSString*)path {
