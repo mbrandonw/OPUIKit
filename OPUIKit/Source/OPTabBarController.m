@@ -99,14 +99,22 @@ const struct OPTabBarControllerNotifications OPTabBarControllerNotifications = {
 
 -(void) setViewControllers:(NSArray*)viewControllers withTabBarItems:(NSArray*)tabBarItems animated:(BOOL)animated completion:(void(^)(void))completion {
     
-    [self.childViewControllers makeObjectsPerformSelector:@selector(removeFromParentViewController)];
+    for (UIViewController *controller in self.childViewControllers) {
+        if (! [viewControllers containsObject:controller]) {
+            [controller removeFromParentViewController];
+        }
+    }
+    
     for (UIViewController *controller in viewControllers)
     {
-        [self addChildViewController:controller];
+        if (controller.parentViewController != self) {
+            [self addChildViewController:controller];
+        }
         
         // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
-        if ([controller isKindOfClass:[UINavigationController class]])
+        if ([controller isKindOfClass:[UINavigationController class]]) {
             [(UINavigationController*)controller setDelegate:self];
+        }
     }
     
     [self.tabBar setItems:tabBarItems animated:animated completion:completion];
