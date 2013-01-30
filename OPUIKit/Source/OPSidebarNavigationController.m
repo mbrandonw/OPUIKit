@@ -122,7 +122,7 @@
         
         if (animated)
         {
-            [UIView animateWithDuration:HBSliderbarAnimationDuration delay:0.0f options:UIViewAnimationCurveLinear animations:^{
+            [UIView animateWithDuration:HBSliderbarAnimationDuration delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
                 
                 switch (self.interfaceOrientation) {
                     case UIInterfaceOrientationLandscapeLeft:
@@ -145,7 +145,7 @@
                 
                 [self.sidebarViewController viewDidAppear:animated];
                 
-                [UIView animateWithDuration:HBSliderbarAnimationDuration/2.0f delay:0.0f options:UIViewAnimationCurveLinear animations:^{
+                [UIView animateWithDuration:HBSliderbarAnimationDuration/2.0f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
                     
                     switch (self.interfaceOrientation) {
                         case UIInterfaceOrientationLandscapeLeft:
@@ -178,7 +178,7 @@
     {
         if (animated)
         {
-            [UIView animateWithDuration:HBSliderbarAnimationDuration delay:0.0f options:UIViewAnimationCurveLinear animations:^{
+            [UIView animateWithDuration:HBSliderbarAnimationDuration delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
                 
                 self.view.window.frame = [[UIScreen mainScreen] bounds];
                 
@@ -206,11 +206,11 @@
     {
         if (animated)
         {
-            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveLinear animations:^{
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
                 self.view.window.left = self.sidebarVisible ? self.minimumSidebarWidth - HBSidebarAnimateOvershoot : - HBSidebarAnimateOvershoot;
                 self.sidebarViewController.view.width = self.minimumSidebarWidth;
             } completion:^(BOOL finished) {
-                [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationCurveLinear animations:^{
+                [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
                     self.view.window.left = self.minimumSidebarWidth;
                 } completion:nil];
             }];
