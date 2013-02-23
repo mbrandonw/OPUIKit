@@ -101,4 +101,12 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
 -(NSIndexPath*) tableViewIndexPathToFetchedResultsIndexPath:(NSIndexPath*)indexPath;
 -(NSIndexPath*) fetchedResultsIndexPathToTableViewIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Methods for working with UIRefreshControl.
+ */
+-(void) useRefreshControl;
+-(void) useRefreshControl:(void(^)(UIRefreshControl *refreshControl))handler;
+-(void) refreshControlDidRefresh;
+-(void) refreshControlDidFinish;
+
 @end

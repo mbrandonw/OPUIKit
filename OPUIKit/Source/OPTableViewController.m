@@ -617,6 +617,34 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     }
 }
 
+#pragma mark -
+#pragma mark UIRefreshControl methods
+#pragma mark -
+
+-(void) useRefreshControl {
+    [self useRefreshControl:nil];
+}
+
+-(void) useRefreshControl:(void(^)(UIRefreshControl *refreshControl))handler {
+    
+    if ([self respondsToSelector:@selector(refreshControl)]) {
+        self.refreshControl = [UIRefreshControl new];
+        [self.refreshControl addTarget:self action:@selector(refreshControlDidRefresh) forControlEvents:UIControlEventValueChanged];
+        if (handler) {
+            handler(self.refreshControl);
+        }
+    }
+}
+
+-(void) refreshControlDidRefresh {
+}
+
+-(void) refreshControlDidFinish {
+    if ([self respondsToSelector:@selector(refreshControl)]) {
+        [self.refreshControl endRefreshing];
+    }
+}
+
 @end
 
 
