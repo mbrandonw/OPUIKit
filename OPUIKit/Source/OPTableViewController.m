@@ -146,11 +146,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     DLogClassAndMethod();
-    
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
-    
-    [self.fetchedResultsController faultUnfaultedFetchedObjects];
-    self.fetchedResultsController = nil;
 }
 
 #pragma mark -
@@ -169,11 +164,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
         v.delegate = self;
         v.dataSource = self;
         self.tableView = v;
-    }
-    
-    if (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
 }
 
@@ -215,32 +205,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     DLogClassAndMethod();
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
-    
-    // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
-    // situation. You drill down from a table view controller, something triggers that table view to release it's fetch controller,
-    // and then you go back. Now the fetch controller gets recomputed and the fetched objects could have changed, yet the table
-    // view didn't recompute it's rows and sections. So, bad things can happen. This fixes that situation.
-    
-    if (self.hasUsedFetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
-    {
-        [self.tableView reloadData];
-    }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
     DLogClassAndMethod();
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
-    // that chooses to hide the bottom bar
-//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-//                                                       self.tableView.contentInset.left,
-//                                                       MAX(0.0f, self.tableView.contentInset.bottom - self.tabController.tabBar.height),
-//                                                       self.tableView.contentInset.right);
-//    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -248,30 +218,15 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
     
-    if (self.tableView.decelerating)
+    if (self.tableView.decelerating) {
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
-    // that chooses to hide the bottom bar
-//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-//                                                       self.tableView.contentInset.left,
-//                                                       self.tableView.contentInset.bottom + self.tabController.tabBar.height,
-//                                                       self.tableView.contentInset.right);
-//    }
+    }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     DLogClassAndMethod();
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
-    
-    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionFlushObjects)
-        [self.fetchedResultsController faultUnfaultedFetchedObjects];
-    
-    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionRelease)
-        self.fetchedResultsController = nil;
 }
 
 #pragma mark -
@@ -594,26 +549,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             self.bottomShadowLayer.width = self.tableView.width;
             [self.tableView.layer insertSublayer:self.bottomShadowLayer atIndex:0];
         }
-    }
-}
-
-#pragma mark -
-#pragma mark Notification methods
-#pragma mark -
-
--(void) appEnteredBackground {
-    
-    if (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone)
-    {
-        [[UIApplication sharedApplication] performBackgroundTaskOnMainThread:^{
-            
-            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionFlushObjects)
-                [self.fetchedResultsController faultUnfaultedFetchedObjects];
-            
-            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionRelease)
-                self.fetchedResultsController = nil;
-            
-        } completion:nil expiration:nil];
     }
 }
 
