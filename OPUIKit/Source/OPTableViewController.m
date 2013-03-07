@@ -149,8 +149,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
     
-    [self.fetchedResultsController faultUnfaultedFetchedObjects];
-    self.fetchedResultsController = nil;
+    [_fetchedResultsController faultUnfaultedFetchedObjects];
+    _fetchedResultsController = nil;
 }
 
 #pragma mark -
