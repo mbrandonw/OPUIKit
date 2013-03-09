@@ -267,11 +267,13 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
     
-    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionFlushObjects)
-        [self.fetchedResultsController faultUnfaultedFetchedObjects];
+    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionFlushObjects) {
+        [_fetchedResultsController faultUnfaultedFetchedObjects];
+    }
     
-    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionRelease)
-        self.fetchedResultsController = nil;
+    if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionRelease) {
+        _fetchedResultsController = nil;
+    }
 }
 
 #pragma mark -
@@ -607,11 +609,13 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     {
         [[UIApplication sharedApplication] performBackgroundTaskOnMainThread:^{
             
-            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionFlushObjects)
-                [self.fetchedResultsController faultUnfaultedFetchedObjects];
+            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionFlushObjects) {
+                [_fetchedResultsController faultUnfaultedFetchedObjects];
+            }
             
-            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionRelease)
-                self.fetchedResultsController = nil;
+            if (self.fetchControllerEnterBackgroundActions & OPTableViewFetchControllerActionRelease) {
+                _fetchedResultsController = nil;
+            }
             
         } completion:nil expiration:nil];
     }
