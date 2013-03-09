@@ -140,6 +140,8 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 -(void) dealloc {
     _fetchedResultsController.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 -(void) didReceiveMemoryWarning {
@@ -173,7 +175,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     if (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
 }
 
@@ -221,7 +225,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     // and then you go back. Now the fetch controller gets recomputed and the fetched objects could have changed, yet the table
     // view didn't recompute it's rows and sections. So, bad things can happen. This fixes that situation.
     
-    if (self.hasUsedFetchedResultsController && (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
+    if (! _fetchedResultsController &&
+        self.hasUsedFetchedResultsController &&
+        (self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone || self.fetchControllerViewDisappearActions != OPTableViewFetchControllerActionNone))
     {
         [self.tableView reloadData];
     }
@@ -618,6 +624,17 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             }
             
         } completion:nil expiration:nil];
+    }
+}
+
+-(void) appEnteredForeground {
+    
+    if (! _fetchedResultsController &&
+        [self isViewVisible] &&
+        self.hasUsedFetchedResultsController &&
+        self.fetchControllerEnterBackgroundActions != OPTableViewFetchControllerActionNone)
+    {
+        [self.tableView reloadData];
     }
 }
 
