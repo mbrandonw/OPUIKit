@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OPViewController.h"
 
-@interface OPScrollViewController : UIViewController
+@interface OPScrollViewController : OPViewController
 
 @property (nonatomic, readonly) UIScrollView *scrollView;
 

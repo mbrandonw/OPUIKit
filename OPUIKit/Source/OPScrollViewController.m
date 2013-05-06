@@ -10,17 +10,13 @@
 
 @implementation OPScrollViewController
 
--(void) loadView {
-    [super loadView];
+-(void) viewDidLoad {
     self.view = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    [super viewDidLoad];
 }
 
 -(UIScrollView*) scrollView {
-    return (UIScrollView*)self.view;
-}
-
--(void) setView:(UIView *)view {
-    [super setView:[view isKindOfClass:[UIScrollView class]] ? view : nil];
+    return [self.view isKindOfClass:[UIScrollView class]] ? (UIScrollView*)self.view : nil;
 }
 
 @end

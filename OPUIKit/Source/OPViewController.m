@@ -83,24 +83,24 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
         }
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
     }
-    else if (self.backgroundColor)
+    else if (self.backgroundColor) {
         self.view.backgroundColor = self.backgroundColor;
-    else
+    } else {
         self.view.backgroundColor = [UIColor whiteColor];
+    }
     
     // set the default navigation item title view
-    if (self.defaultTitleImage && !self.navigationItem.titleView)
+    if (self.defaultTitleImage && !self.navigationItem.titleView) {
         self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-    if (self.defaultTitle && !self.title)
+    }
+    if (self.defaultTitle && !self.title) {
         [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+    }
     
-    if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]])
-    {
+    if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView*)self.view setContentInsetBottom:self.toolbarView.height];
         [(UIScrollView*)self.view setScrollIndicatorInsetBottom:self.toolbarView.height];
-    }
-    else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]])
-    {
+    } else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]]) {
         [[(UIWebView*)self.view scrollView] setContentInsetBottom:self.toolbarView.height];
         [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:self.toolbarView.height];
     }
