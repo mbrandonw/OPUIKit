@@ -24,6 +24,7 @@ extern NSString * const OPViewDrawingBevelBorderColorKey;
 @interface OPView : UIView <OPStyleProtocol>
 
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
+-(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
 
 /**
  Some fancy custom drawing blocks.

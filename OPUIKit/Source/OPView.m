@@ -28,6 +28,13 @@
     return self;
 }
 
+-(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock {
+    if (! (self = [self initWithFrame:rect]))
+        return nil;
+    [self.drawingBlocks addObject:drawingBlock];
+    return self;
+}
+
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (! (self = [super initWithCoder:aDecoder]))
         return nil;
