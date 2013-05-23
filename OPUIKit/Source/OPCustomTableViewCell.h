@@ -14,7 +14,7 @@
 /**
  Subclasses should override this.
  */
--(void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted;
+-(void) drawContentView:(CGRect)rect context:(CGContextRef)c highlighted:(BOOL)highlighted;
 
 /**
  Determines if this cell is the first/last in it's section.

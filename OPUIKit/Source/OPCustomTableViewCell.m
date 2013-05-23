@@ -25,7 +25,7 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-    [(OPCustomTableViewCell*)[self superview] drawContentView:rect highlighted:NO];
+    [(OPCustomTableViewCell*)[self superview] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
 }
 
 @end
@@ -40,7 +40,7 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-    [(OPCustomTableViewCell *)[self superview] drawContentView:rect highlighted:YES];
+    [(OPCustomTableViewCell *)[self superview] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:YES];
 }
 
 @end
@@ -134,7 +134,7 @@
     [self.contentView removeFromSuperview];
 }
 
-- (void)drawContentView:(CGRect)rect highlighted:(BOOL)highlighted {
+- (void)drawContentView:(CGRect)rect context:(CGContextRef)c highlighted:(BOOL)highlighted {
     // subclasses should implement this
 }
 
