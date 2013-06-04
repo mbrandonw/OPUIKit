@@ -110,8 +110,10 @@
 
 +(id) buttonWithSymbolSet:(NSString*)symbol size:(CGFloat)size target:(id)target action:(SEL)action {
 
-    OPBarButtonItem *item = [[self class] buttonWithTitle:symbol target:target action:action];
-    item.button.titleLabel.font = [UIFont fontWithName:@"SS Standard" size:size];
+    OPBarButtonItem *item = [[self class] buttonWithTitle:[UIFont ssStandardSymbolForString:symbol]
+                                                   target:target
+                                                   action:action];
+    item.button.titleLabel.font = [UIFont ssStandardFontWithSize:size];
     item.button.titleEdgeInsets = UIEdgeInsetsMake(6.0f, 1.0f, 0.0f, 0.0f);
     
     CGFloat originalHeight = item.button.height;
