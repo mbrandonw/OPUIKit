@@ -425,6 +425,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     {
         [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
         [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
+        [(OPCustomTableViewCell*)cell setEven:(indexPath.row % 2 == 0)];
         [(OPCustomTableViewCell*)cell setIndexPath:indexPath];
         [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
     }

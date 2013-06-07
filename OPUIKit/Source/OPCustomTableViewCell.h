@@ -21,6 +21,8 @@
  */
 @property (nonatomic, assign, getter = isFirstInSection) BOOL firstInSection;
 @property (nonatomic, assign, getter = isLastInSection) BOOL lastInSection;
+@property (nonatomic, assign, getter = isEven) BOOL even;
+@property (nonatomic, assign, getter = isOdd) BOOL odd;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 /**

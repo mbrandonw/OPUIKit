@@ -158,6 +158,20 @@
     [self setNeedsLayout];
 }
 
+-(void) setEven:(BOOL)even {
+  _even = even;
+  [self setNeedsDisplay];
+  [self setNeedsLayout];
+}
+
+-(void) setOdd:(BOOL)odd {
+  self.even = !odd;
+}
+
+-(BOOL) isOdd {
+  return !self.even;
+}
+
 -(void) setIndexPath:(NSIndexPath *)indexPath {
     _indexPath = indexPath;
     [self setNeedsDisplay];
