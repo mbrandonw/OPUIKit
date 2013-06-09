@@ -108,7 +108,9 @@ const struct OPTabBarControllerNotifications OPTabBarControllerNotifications = {
     for (UIViewController *controller in viewControllers)
     {
         if (controller.parentViewController != self) {
+            [controller willMoveToParentViewController:self];
             [self addChildViewController:controller];
+            [controller didMoveToParentViewController:self];
         }
         
         // wish there was a better way to do this, but unfortunately we need the navigation controller delegate so that we can hide/show the tab bar
