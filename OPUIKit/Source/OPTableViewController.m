@@ -391,6 +391,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     if ([header isKindOfClass:[OPTableSectionView class]]) {
         [(OPTableSectionView*)header setObject:[self tableView:tableView objectForHeaderAtSection:section]];
         [(OPTableSectionView*)header setSection:section];
+        [(OPTableSectionView*)header setBackgroundColor:self.view.backgroundColor];
     }
     
     return header;

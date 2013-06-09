@@ -15,4 +15,6 @@
 
 +(CGFloat) heightForWidth:(CGFloat)width;
 
+-(void) drawRect:(CGRect)rect context:(CGContextRef)c;
+
 @end

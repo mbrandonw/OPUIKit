@@ -14,6 +14,14 @@
     return 22.0f;
 }
 
+-(void) drawRect:(CGRect)rect {
+  [super drawRect:rect];
+  [self drawRect:rect context:UIGraphicsGetCurrentContext()];
+}
+
+-(void) drawRect:(CGRect)rect context:(CGContextRef)c {
+}
+
 -(void) setObject:(id)object {
     _object = object;
     [self setNeedsDisplay];
