@@ -7,6 +7,7 @@
 //
 
 #import "OPCustomTableViewCell.h"
+#import "OPExtensionKit.h"
 
 @interface OPTableViewCellView : UIView
 @end
@@ -25,7 +26,8 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-    [(OPCustomTableViewCell*)[self superview] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
+  [[self.superview typedAs:[OPCustomTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
+  [[self.superview.superview typedAs:[OPCustomTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
 }
 
 @end
@@ -40,7 +42,9 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-    [(OPCustomTableViewCell *)[self superview] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:YES];
+  [[self.superview typedAs:[OPCustomTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
+  [[self.superview.superview typedAs:[OPCustomTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
+  
 }
 
 @end
