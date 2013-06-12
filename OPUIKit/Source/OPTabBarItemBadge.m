@@ -45,7 +45,7 @@
     self.valueLabel.backgroundColor = [UIColor clearColor];
     self.valueLabel.font = [UIFont boldSystemFontOfSize:15.0f];
     self.valueLabel.textColor = [UIColor whiteColor];
-    self.valueLabel.textAlignment = UITextAlignmentCenter;
+    self.valueLabel.textAlignment = NSTextAlignmentCenter;
     self.valueLabelInsets = UIEdgeInsetsMake(2.0f, 6.0f, 2.0f, 6.0f);
     self.minSize = CGSizeMake(23.0f, 23.0f);
     self.relativeCenter = CGPointMake(0.75f, 0.2f);

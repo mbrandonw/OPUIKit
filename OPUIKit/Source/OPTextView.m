@@ -43,7 +43,7 @@
     if (! _placeholderLabel)
     {
         self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0f,8.0f,self.bounds.size.width - 16.0f,0)];
-        _placeholderLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _placeholderLabel.numberOfLines = 0;
         _placeholderLabel.font = self.font;
         _placeholderLabel.backgroundColor = [UIColor clearColor];

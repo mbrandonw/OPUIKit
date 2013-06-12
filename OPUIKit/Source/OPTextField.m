@@ -14,7 +14,7 @@
   [self.placeholderTextColor setFill];
   [self.placeholder drawInRect:rect
                       withFont:self.font
-                 lineBreakMode:UILineBreakModeTailTruncation
+                 lineBreakMode:NSLineBreakByTruncatingTail
                      alignment:self.textAlignment];
 }
 
