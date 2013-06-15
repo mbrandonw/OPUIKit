@@ -11,27 +11,12 @@
 #import "OPStyle.h"
 
 typedef enum {
-    OPTableViewControllerShadowNone     = 0,
-    OPTableViewControllerShadowOrigin   = 1 << 0,
-    OPTableViewControllerShadowTop      = 1 << 1,
-    OPTableViewControllerShadowBottom   = 1 << 2,
-    OPTableViewControllerShadowAll = OPTableViewControllerShadowOrigin|OPTableViewControllerShadowTop|OPTableViewControllerShadowBottom,
-} OPTableViewControllerShadows;
-
-typedef enum {
     OPTableViewFetchControllerActionNone         = 1 << 0,
     OPTableViewFetchControllerActionFlushObjects = 1 << 1,
     OPTableViewFetchControllerActionRelease      = 1 << 2,
 } OPTableViewFetchControllerActions;
 
-extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRowAnimation rowAnimation);
-
 @interface OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, OPStyleProtocol>
-
-/**
- Customize shadows at the top and bottom of the table view.
- */
-@property (nonatomic, assign) OPTableViewControllerShadows tableViewShadows;
 
 /**
  */
@@ -50,11 +35,6 @@ extern UITableViewRowAnimation UITableViewRowAnimationAutomaticOr(UITableViewRow
  */
 @property (nonatomic, assign) BOOL resignKeyboardWhileScrolling;
 @property (nonatomic, assign) CGFloat resignKeyboardScrollDelta;
-
-/**
- Holds the velocity (pixels/sec) of the table view scrolling.
- */
-@property (nonatomic, assign, readonly) CGPoint contentOffsetVelocity;
 
 /**
  Shortcut to creating a controller with style, title and subtitle.

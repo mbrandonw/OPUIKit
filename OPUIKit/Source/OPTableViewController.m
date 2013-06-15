@@ -27,13 +27,6 @@
 #import "UIScrollView+Opetopic.h"
 #import "OPTableSectionView.h"
 
-UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation);
-UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation rowAnimation) {
-    if (rowAnimation == NSIntegerMax)
-        return UITableViewRowAnimationAutomaticOr(UITableViewRowAnimationFade);
-    return rowAnimation;
-}
-
 @interface UIViewController (OPTableViewController)
 @property (nonatomic, readonly) BOOL selfOrParentsHidesBottomBarWhenPushed;
 @end
@@ -43,48 +36,25 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 
 @property (nonatomic, assign) BOOL touchIsDown;
 @property (nonatomic, assign) CGPoint beginDraggingContentOffset;
-@property (nonatomic, assign, readwrite) CGPoint contentOffsetVelocity;
-@property (nonatomic, assign) NSTimeInterval lastDragTimeInterval;
-@property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, assign) BOOL hasUsedFetchedResultsController;
 
-@property (nonatomic, strong) CAGradientLayer *originShadowLayer;
-@property (nonatomic, strong) CAGradientLayer *topShadowLayer;
-@property (nonatomic, strong) CAGradientLayer *bottomShadowLayer;
-
 -(void) __init;
--(void) layoutShadows;
 @end
 #pragma mark -
 
 @implementation OPTableViewController
 
-@synthesize tableViewShadows = _tableViewShadows;
-@synthesize originShadowLayer = _originShadowLayer;
-@synthesize topShadowLayer = _topShadowLayer;
-@synthesize bottomShadowLayer = _bottomShadowLayer;
-@synthesize useOPTableView = _useOPTableView;
-@synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize fetchedResultsControllerAnimation = _fetchedResultsControllerAnimation;
-@synthesize resignKeyboardWhileScrolling = _resignKeyboardWhileScrolling;
-@synthesize resignKeyboardScrollDelta = _resignKeyboardScrollDelta;
-@synthesize beginDraggingContentOffset = _beginDraggingContentOffset;
-@synthesize touchIsDown = _touchIsDown;
-@synthesize contentOffsetVelocity = _contentOffsetVelocity;
-@synthesize lastDragTimeInterval = _lastDragTimeInterval;
-@synthesize lastContentOffset = _lastContentOffset;
-
 // OPStyle storage
-@synthesize backgroundColor = _backgroundColor;
-@synthesize backgroundImage = _backgroundImage;
-@synthesize defaultTitle = _defaultTitle;
-@synthesize defaultSubtitle = _defaultSubtitle;
-@synthesize defaultTitleImage = _defaultTitleImage;
-@synthesize titleFont = _titleFont;
-@synthesize subtitleFont = _subtitleFont;
-@synthesize titleColor = _titleColor;
-@synthesize titleShadowColor = _titleShadowColor;
-@synthesize titleShadowOffset = _titleShadowOffset;
+@synthesize backgroundColor;
+@synthesize backgroundImage;
+@synthesize defaultTitle;
+@synthesize defaultSubtitle;
+@synthesize defaultTitleImage;
+@synthesize titleFont;
+@synthesize subtitleFont;
+@synthesize titleColor;
+@synthesize titleShadowColor;
+@synthesize titleShadowOffset;
 
 #pragma mark -
 #pragma mark Object lifecycle
@@ -117,22 +87,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     // default ivars
     self.resignKeyboardScrollDelta = 40.0f;
-    self.fetchedResultsControllerAnimation = UITableViewRowAnimationNone;
-    
-    self.originShadowLayer = [CAGradientLayer new];
-    self.originShadowLayer.height = 10.0f;
-    self.originShadowLayer.colors = @[(id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
-                                     (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor];
-    
-    self.topShadowLayer = [CAGradientLayer new];
-    self.topShadowLayer.height = 10.0f;
-    self.topShadowLayer.colors = @[(id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor, 
-                                  (id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor];
-    
-    self.bottomShadowLayer = [CAGradientLayer new];
-    self.bottomShadowLayer.height = 20.0f;
-    self.bottomShadowLayer.colors = @[(id)[UIColor colorWithWhite:0.0f alpha:0.1f].CGColor, 
-                                  (id)[UIColor colorWithWhite:1.0f alpha:0.0f].CGColor];
+    self.fetchedResultsControllerAnimation = UITableViewRowAnimationAutomatic;
     
     // apply stylings
     [[self styling] applyTo:self];
@@ -188,14 +143,14 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidLoad object:self];
     
     // set up default background color
-	if (self.backgroundImage)
+    if (self.backgroundImage)
     {
         if (! CGSizeIsPowerOfTwo(self.backgroundImage.size)) {
             DLogMessageCompat(@"==============================================================");
             DLogMessageCompat(@"Pattern image drawing is most efficient with power of 2 images");
             DLogMessageCompat(@"==============================================================");
         }
-		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
     }
     else if (self.backgroundColor)
         self.view.backgroundColor = self.backgroundColor;
@@ -236,17 +191,7 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 -(void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
     DLogClassAndMethod();
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
-    // that chooses to hide the bottom bar
-//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-//                                                       self.tableView.contentInset.left,
-//                                                       MAX(0.0f, self.tableView.contentInset.bottom - self.tabController.tabBar.height),
-//                                                       self.tableView.contentInset.right);
-//    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -254,17 +199,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
     
-    if (self.tableView.decelerating)
+    if (self.tableView.decelerating) {
         [[OPActiveScrollViewManager sharedManager] removeActiveScrollView];
-    
-    // this is a hacky thing to get the prevent the shifting of the table view when transitioning to a controller
-    // that chooses to hide the bottom bar
-//    if (self.tabController && ! self.selfOrParentsHidesBottomBarWhenPushed) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top,
-//                                                       self.tableView.contentInset.left,
-//                                                       self.tableView.contentInset.bottom + self.tabController.tabBar.height,
-//                                                       self.tableView.contentInset.right);
-//    }
+    }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
@@ -305,38 +242,13 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    // layout the shadows if we are using any
-    if (self.tableViewShadows != OPTableViewControllerShadowNone)
-    {
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-        [self layoutShadows];
-        [CATransaction commit];
-    }
-    
-    // computes the velocity of the content offset
-    if (CGPointEqualToPoint(self.lastContentOffset, CGPointMax))
-    {
-        self.lastContentOffset = scrollView.contentOffset;
-        self.lastDragTimeInterval = [NSDate timeIntervalSinceReferenceDate];
-    }
-    else
-    {
-        CGFloat timeDelta = (CGFloat)([NSDate timeIntervalSinceReferenceDate] - self.lastDragTimeInterval);
-        CGPoint contentOffsetDelta = CGPointMake(scrollView.contentOffset.x-self.lastContentOffset.x, scrollView.contentOffset.y-self.lastContentOffset.y);
-        
-        self.contentOffsetVelocity = CGPointMake(contentOffsetDelta.x/timeDelta, contentOffsetDelta.y/timeDelta);
-        
-        self.lastContentOffset = scrollView.contentOffset;
-        self.lastDragTimeInterval = [NSDate timeIntervalSinceReferenceDate];
-    }
-    
+
     // check if we need to resign the keyboard
     CGPoint p1 = scrollView.contentOffset;
     CGPoint p2 = self.beginDraggingContentOffset;
-    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta)
+    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta) {
         [self.view endEditing:YES];
+    }
 }
 
 #pragma mark -
@@ -359,7 +271,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 }
 
 -(void) viewDidLayoutSubviews {
-    [self layoutShadows];
     [self layoutToolbarView];
 }
 
@@ -477,12 +388,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:[self fetchedResultsSectionToTableViewSection:sectionIndex]]
-                          withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                          withRowAnimation:self.fetchedResultsControllerAnimation];
             break;
             
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:[self fetchedResultsSectionToTableViewSection:sectionIndex]] 
-                          withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                          withRowAnimation:self.fetchedResultsControllerAnimation];
             break;
     }
 }
@@ -494,12 +405,12 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             
         case NSFetchedResultsChangeInsert:
             [tableView insertRowsAtIndexPaths:@[[self fetchedResultsIndexPathToTableViewIndexPath:newIndexPath]]
-                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                             withRowAnimation:self.fetchedResultsControllerAnimation];
             break;
             
         case NSFetchedResultsChangeDelete:
             [tableView deleteRowsAtIndexPaths:@[[self fetchedResultsIndexPathToTableViewIndexPath:indexPath]] 
-                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                             withRowAnimation:self.fetchedResultsControllerAnimation];
             break;
             
         case NSFetchedResultsChangeUpdate:
@@ -510,9 +421,9 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             
         case NSFetchedResultsChangeMove:
             [tableView deleteRowsAtIndexPaths:@[[self fetchedResultsIndexPathToTableViewIndexPath:indexPath]] 
-                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                             withRowAnimation:self.fetchedResultsControllerAnimation];
             [tableView insertRowsAtIndexPaths:@[[self fetchedResultsIndexPathToTableViewIndexPath:newIndexPath]] 
-                             withRowAnimation:OPCoalesceTableViewRowAnimation(self.fetchedResultsControllerAnimation)];
+                             withRowAnimation:self.fetchedResultsControllerAnimation];
             break;
     }
 }
@@ -524,18 +435,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
 #pragma mark -
 #pragma mark Custom getters/setters
 #pragma mark -
-
--(void) setTableViewShadows:(OPTableViewControllerShadows)tableViewShadows {
-    _tableViewShadows = tableViewShadows;
-    
-    // check if we need to remove any of the shadow layers
-    if (! (_tableViewShadows & OPTableViewControllerShadowOrigin))
-        [self.originShadowLayer removeFromSuperlayer];
-    if (! (_tableViewShadows & OPTableViewControllerShadowTop))
-        [self.topShadowLayer removeFromSuperlayer];
-    if (! (_tableViewShadows & OPTableViewControllerShadowBottom))
-        [self.bottomShadowLayer removeFromSuperlayer];
-}
 
 -(void) setUseOPTableView:(BOOL)useOPTableView {
     _useOPTableView = useOPTableView;
@@ -556,53 +455,6 @@ UITableViewRowAnimation OPCoalesceTableViewRowAnimation(UITableViewRowAnimation 
             UITableView *v = [[UITableView alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
             v.autoresizingMask = self.tableView.autoresizingMask;
             self.tableView = v;
-        }
-    }
-}
-
-#pragma mark -
-#pragma mark Private methods
-#pragma mark -
-
--(void) layoutShadows {
-    
-    // don't ever use shadows on grouped table views
-    if (! [self isViewLoaded] || self.tableView.style == UITableViewStyleGrouped)
-        return ;
-    
-    if (self.tableViewShadows & OPTableViewControllerShadowOrigin)
-    {
-        if (self.tableView.contentOffset.y >= 0.0f)
-            [self.originShadowLayer removeFromSuperlayer];
-        else
-        {
-            self.originShadowLayer.top = self.tableView.contentOffset.y;
-            self.originShadowLayer.width = self.tableView.width;
-            [self.tableView.layer insertSublayer:self.originShadowLayer atIndex:0];
-        }
-    }
-    
-    if (self.tableViewShadows & OPTableViewControllerShadowTop)
-    {
-        if (self.tableView.contentOffset.y >= 0.0f)
-            [self.topShadowLayer removeFromSuperlayer];
-        else
-        {
-            self.topShadowLayer.top = -self.topShadowLayer.height;
-            self.topShadowLayer.width = self.tableView.width;
-            [self.tableView.layer insertSublayer:self.topShadowLayer atIndex:0];
-        }
-    }
-    
-    if (self.tableViewShadows & OPTableViewControllerShadowBottom)
-    {
-        if (self.tableView.contentOffset.y + self.tableView.height <= self.tableView.contentSize.height)
-            [self.bottomShadowLayer removeFromSuperlayer];
-        else
-        {
-            self.bottomShadowLayer.top = self.tableView.contentSize.height;
-            self.bottomShadowLayer.width = self.tableView.width;
-            [self.tableView.layer insertSublayer:self.bottomShadowLayer atIndex:0];
         }
     }
 }
