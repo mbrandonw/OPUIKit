@@ -22,7 +22,7 @@
 #import "NSFetchedResultsController+Opetopic.h"
 #import "OPTabBarController.h"
 #import "OPTabBar.h"
-#import "OPCustomTableViewCell.h"
+#import "OPTableViewCell.h"
 #import "OPViewController.h"
 #import "UIScrollView+Opetopic.h"
 #import "OPTableSectionView.h"
@@ -310,7 +310,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-    if ([class isSubclassOfClass:[OPCustomTableViewCell class]])
+    if ([class isSubclassOfClass:[OPTableViewCell class]])
     {
         id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
         NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
@@ -333,13 +333,14 @@
 
 -(void) tableView:(UITableView*)tableView configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     
-    if ([cell isKindOfClass:[OPCustomTableViewCell class]])
-    {
-        [(OPCustomTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
-        [(OPCustomTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
-        [(OPCustomTableViewCell*)cell setEven:(indexPath.row % 2 == 0)];
-        [(OPCustomTableViewCell*)cell setIndexPath:indexPath];
-        [(OPCustomTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
+    if ([cell isKindOfClass:[OPTableViewCell class]]) {
+        [(OPTableViewCell*)cell setFirstInSection:(indexPath.row == 0)];
+        [(OPTableViewCell*)cell setFirstSection:(indexPath.section == 0)];
+        [(OPTableViewCell*)cell setLastInSection:(indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]-1)];
+        [(OPTableViewCell*)cell setLastSection:(indexPath.section == [self numberOfSectionsInTableView:tableView]-1)];
+        [(OPTableViewCell*)cell setEven:(indexPath.row % 2 == 0)];
+        [(OPTableViewCell*)cell setIndexPath:indexPath];
+        [(OPTableViewCell*)cell setObject:[self tableView:tableView objectForRowAtIndexPath:indexPath]];
     }
 }
 

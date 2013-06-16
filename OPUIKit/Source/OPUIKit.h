@@ -30,7 +30,6 @@
 #import "OPButton.h"
 #import "OPUIKitBlockDefinitions.h"
 #import "OPTableViewCell.h"
-#import "OPCustomTableViewCell.h"
 #import "NSManagedObjectContext+OPUIKit.h"
 #import "OPDataDetectorLabel.h"
 #import "OPPDFView.h"
