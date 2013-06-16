@@ -26,8 +26,9 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-  [[self.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
-  [[self.superview.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:NO];
+  CGContextRef c = UIGraphicsGetCurrentContext();
+  [[self.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:c highlighted:NO];
+  [[self.superview.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:c highlighted:NO];
 }
 
 @end
@@ -42,8 +43,9 @@
 }
 
 -(void) drawRect:(CGRect)rect {
-  [[self.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:YES];
-  [[self.superview.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:UIGraphicsGetCurrentContext() highlighted:YES];
+  CGContextRef c = UIGraphicsGetCurrentContext();
+  [[self.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:c highlighted:YES];
+  [[self.superview.superview typedAs:[OPTableViewCell class]] drawContentView:rect context:c highlighted:YES];
 }
 
 @end
@@ -129,12 +131,6 @@
     if([self isHighlighted] || [self isSelected]) {
         [self.selectedBackgroundView setNeedsDisplayInRect:rect];
     }
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.contentView.hidden = YES;
-    [self.contentView removeFromSuperview];
 }
 
 - (void)drawContentView:(CGRect)rect context:(CGContextRef)c highlighted:(BOOL)highlighted {
