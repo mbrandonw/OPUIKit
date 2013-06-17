@@ -134,7 +134,8 @@
 }
 
 - (void)drawContentView:(CGRect)rect context:(CGContextRef)c highlighted:(BOOL)highlighted {
-    // subclasses should implement this
+  [self.backgroundColor set];
+  CGContextFillRect(c, rect);
 }
 
 +(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width {
