@@ -75,10 +75,7 @@
     // check if we should restore the previously saved badge value
     if (self.rememberBadgeValue)
         [self.badge setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsBadgeKey(title)]];
-    
-    // observe changes in the badge value so that we can remember it
-//    [self.badge.valueLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:NULL];
-    
+
     return self;
 }
 
@@ -99,10 +96,6 @@
     self.iconView.highlightedImage = highlightedImage;
     
     return self;
-}
-
--(void) dealloc {
-//    [self.badge.valueLabel removeObserver:self forKeyPath:@"text"];
 }
 
 -(void) layoutSubviews {
@@ -169,26 +162,6 @@
     self.badge.frame = CGRectMake(floorf(self.width * self.badge.relativeCenter.x - self.badge.width/2.0f), 
                                   floorf(self.height * self.badge.relativeCenter.y - self.badge.height/2.0f), 
                                   self.badge.width, self.badge.height);
-}
-
-#pragma mark -
-#pragma KVO methods
-#pragma mark -
-
--(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    
-    // check if it is the badge value that changed
-    if (object == self.badge.valueLabel)
-    {
-        // record the badge value when it changes
-        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
-        if (newValue != [NSNull null])
-            [[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
-        else
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsBadgeKey(self.titleLabel.text)];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 }
 
 #pragma mark -
