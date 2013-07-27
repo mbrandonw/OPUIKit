@@ -11,9 +11,9 @@
 #import "OPStyle.h"
 #import "NSNumber+Opetopic.h"
 
-static void * const enabledContext = @"enabledContext";
-static void * const selectedContext = @"selectedContext";
-static void * const highlightedContext = @"highlightedContext";
+static NSInteger enabledContext;
+static NSInteger selectedContext;
+static NSInteger highlightedContext;
 
 @implementation OPControl
 
@@ -34,9 +34,9 @@ static void * const highlightedContext = @"highlightedContext";
                                         [NSMutableArray new], @(UIControlStateSelected), nil];
     
     // observe states so we can redraw the button when it changes
-    [self addObserver:self forKeyPath:@"enabled" options:0 context:enabledContext];
-    [self addObserver:self forKeyPath:@"selected" options:0 context:selectedContext];
-    [self addObserver:self forKeyPath:@"highlighted" options:0 context:highlightedContext];
+    [self addObserver:self forKeyPath:@"enabled" options:0 context:&enabledContext];
+    [self addObserver:self forKeyPath:@"selected" options:0 context:&selectedContext];
+    [self addObserver:self forKeyPath:@"highlighted" options:0 context:&highlightedContext];
     
     // apply styles
     [[[self class] styling] applyTo:self];
@@ -45,9 +45,9 @@ static void * const highlightedContext = @"highlightedContext";
 }
 
 -(void) dealloc {
-    [self removeObserver:self forKeyPath:@"enabled" context:enabledContext];
-    [self removeObserver:self forKeyPath:@"selected" context:selectedContext];
-    [self removeObserver:self forKeyPath:@"highlighted" context:highlightedContext];
+    [self removeObserver:self forKeyPath:@"enabled" context:&enabledContext];
+    [self removeObserver:self forKeyPath:@"selected" context:&selectedContext];
+    [self removeObserver:self forKeyPath:@"highlighted" context:&highlightedContext];
 }
 
 #pragma mark -
@@ -119,7 +119,7 @@ static void * const highlightedContext = @"highlightedContext";
 -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     // confirm that the object that changed was this control
-    if (context == enabledContext || context == selectedContext || context == highlightedContext) {
+    if (context == &enabledContext || context == &selectedContext || context == &highlightedContext) {
         [self setNeedsDisplay];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

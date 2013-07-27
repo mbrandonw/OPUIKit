@@ -13,7 +13,7 @@
 #import "NSDictionary+Opetopic.h"
 #import "UIBezierPath+Opetopic.h"
 
-static void * const drawingBlocksContext = @"drawingBlocksContext";
+static NSInteger drawingBlocksContext;
 
 @interface OPView (/**/)
 -(void) __init;
@@ -53,12 +53,12 @@ static void * const drawingBlocksContext = @"drawingBlocksContext";
 
 -(void) __init {
     self.drawingBlocks = [NSMutableArray new];
-    [self addObserver:self forKeyPath:@"drawingBlocks" options:0 context:drawingBlocksContext];
+    [self addObserver:self forKeyPath:@"drawingBlocks" options:0 context:&drawingBlocksContext];
     [[[self class] styling] applyTo:self];
 }
 
 -(void) dealloc {
-    [self removeObserver:self forKeyPath:@"drawingBlocks" context:drawingBlocksContext];
+    [self removeObserver:self forKeyPath:@"drawingBlocks" context:&drawingBlocksContext];
 }
 
 -(void) drawRect:(CGRect)rect {
@@ -81,7 +81,7 @@ static void * const drawingBlocksContext = @"drawingBlocksContext";
 }
 
 -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == drawingBlocksContext) {
+    if (context == &drawingBlocksContext) {
         [self setNeedsDisplay];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
