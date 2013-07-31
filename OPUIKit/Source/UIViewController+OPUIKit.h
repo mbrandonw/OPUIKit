@@ -22,4 +22,6 @@
 
 -(void) layoutToolbarView;
 
+-(BOOL) walkViewControllerHierarchy:(void(^)(UIViewController *controller, BOOL *stop))block;
+
 @end

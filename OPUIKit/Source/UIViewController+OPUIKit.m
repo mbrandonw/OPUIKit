@@ -169,4 +169,35 @@ static char toolbarViewKey;
     return [self.toolbarView.superview isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.toolbarView.superview contentOffset] : CGPointZero;
 }
 
+-(BOOL) walkViewControllerHierarchy:(void(^)(UIViewController *controller, BOOL *stop))block {
+
+  // start with us
+  BOOL stop = NO;
+  block(self, &stop);
+  if (stop) {
+    return YES;
+  }
+
+  // then move through the navigation controller stack from top back to root
+  if ([self respondsToSelector:@selector(navigationController)]) {
+    UINavigationController *navigationController = [self valueForKey:@"navigationController"];
+    for (UIViewController *controller in [navigationController.viewControllers reverseObjectEnumerator]) {
+      block(controller, &stop);
+      if (stop) {
+        return YES;
+      }
+    }
+  }
+
+  // then move through the parent view controller hierarchy
+  if ([self.parentViewController walkViewControllerHierarchy:block]) {
+    return YES;
+  }
+  if ([self.presentingViewController walkViewControllerHierarchy:block]) {
+    return YES;
+  }
+
+  return NO;
+}
+
 @end
