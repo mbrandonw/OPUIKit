@@ -7,7 +7,6 @@
 //
 
 #import "OPActiveScrollViewManager.h"
-#import "OPMacros.h"
 
 NSString* const OPActiveScrollViewManagerBecameActive = @"OPActiveScrollViewManagerBecameActive";
 NSString* const OPActiveScrollViewManagerResignedActive = @"OPActiveScrollViewManagerResignedActive";
@@ -16,7 +15,7 @@ NSString* const OPActiveScrollViewManagerResignedActive = @"OPActiveScrollViewMa
     NSUInteger count;
 }
 
-OP_SYNTHESIZE_SINGLETON_FOR_CLASS(OPActiveScrollViewManager, sharedManager);
+OP_SINGLETON_IMPLEMENTATION_FOR(OPActiveScrollViewManager, sharedManager);
 
 -(void) addActiveScrollView {
     count++;

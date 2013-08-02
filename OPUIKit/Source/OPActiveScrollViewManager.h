@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OPMacros.h"
 
 extern NSString* const OPActiveScrollViewManagerBecameActive;
 extern NSString* const OPActiveScrollViewManagerResignedActive;
 
 @interface OPActiveScrollViewManager : NSObject
+
+OP_SINGLETON_HEADER_FOR(NSCache, sharedCache);
 
 +(id) sharedManager;
 
