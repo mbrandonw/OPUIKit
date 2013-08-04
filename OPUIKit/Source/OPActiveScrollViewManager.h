@@ -14,9 +14,7 @@ extern NSString* const OPActiveScrollViewManagerResignedActive;
 
 @interface OPActiveScrollViewManager : NSObject
 
-OP_SINGLETON_HEADER_FOR(NSCache, sharedCache);
-
-+(id) sharedManager;
+OP_SINGLETON_HEADER_FOR(NSCache, sharedManager);
 
 -(void) addActiveScrollView;
 -(void) removeActiveScrollView;
