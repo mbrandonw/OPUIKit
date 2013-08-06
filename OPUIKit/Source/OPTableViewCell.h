@@ -40,4 +40,24 @@
  */
 @property (nonatomic, strong) id object;
 
+/**
+ Adjust for preferred content size.
+ */
+-(void) preferredContentSizeChanged:(NSNotification*)notification;
+
+/**
+ If using fonts that depend on preferred content sizes, then this is a
+ good place to do that work. It will be called at key times (e.g. on init,
+ when preferred size changes, before layout, ...) during the life cycle
+ of the cell. It is only called when the preferred content size has 
+ changed since the last time it was called.
+ */
+-(void) configureForContentSizeCategory:(NSString*)category;
+
+/**
+ Same as `-configureForContentSizeCategory:` except called only when 
+ the preferred content size changes.
+ */
++(void) configureForContentSizeCategory:(NSString*)category;
+
 @end

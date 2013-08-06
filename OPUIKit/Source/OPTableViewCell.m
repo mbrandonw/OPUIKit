@@ -9,6 +9,12 @@
 #import "OPTableViewCell.h"
 #import "OPExtensionKit.h"
 
+@interface OPTableViewCell (/**/)
+@property (nonatomic, strong) NSString *lastContentSizeCategory;
+-(void) configureForCurrentContentSizeCategory;
++(void) configureForCurrentContentSizeCategory;
+@end
+
 @interface OPTableViewCellView : UIView
 @end
 
@@ -21,7 +27,6 @@
     if (! (self = [super initWithFrame:frame]))
         return nil;
     self.contentMode = UIViewContentModeRedraw;
-    
     return self;
 }
 
@@ -52,6 +57,10 @@
 
 @implementation OPTableViewCell
 
++(void) initialize {
+  [[self class] configureForCurrentContentSizeCategory];
+}
+
 -(id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (! (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
         return nil;
@@ -64,8 +73,25 @@
     
     // apply stylings
     [[self styling] applyTo:self];
-    
+
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(preferredContentSizeChanged:)
+                                                     name:UIContentSizeCategoryDidChangeNotification
+                                                   object:nil];
+    }
+
     return self;
+}
+
+-(void) willMoveToSuperview:(UIView *)newSuperview {
+  [self configureForCurrentContentSizeCategory];
+}
+
+-(void) dealloc {
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+    }
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -156,10 +182,54 @@
 
 -(void) setObject:(id)object {
   _object = object;
-  [self setNeedsDisplay];
-  [self setNeedsLayout];
+  [self configureForCurrentContentSizeCategory];
+  [self setNeedsDisplayAndLayout];
   if ([self respondsToSelector:@selector(setNeedsUpdateConstraints)]) {
     [self setNeedsUpdateConstraints];
+  }
+}
+
+-(void) preferredContentSizeChanged:(NSNotification*)notification {
+  [self configureForCurrentContentSizeCategory];
+  [[self class] configureForCurrentContentSizeCategory];
+}
+
+-(void) configureForContentSizeCategory:(NSString*)category {
+}
+
++(void) configureForContentSizeCategory:(NSString*)category {
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) configureForCurrentContentSizeCategory {
+  NSString *currentContentSizeCategory = nil;
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+
+  if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
+    [self configureForContentSizeCategory:currentContentSizeCategory];
+  }
+}
+
++(void) configureForCurrentContentSizeCategory {
+  static NSMutableDictionary *lastContentSizeCategoryByClass = nil;
+  lastContentSizeCategoryByClass = lastContentSizeCategoryByClass ?: [NSMutableDictionary new];
+
+  NSString *classString = NSStringFromClass(self.class);
+  NSString *currentContentSizeCategory = nil;
+  NSString *lastContentSizeCategory = lastContentSizeCategoryByClass[classString];
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+
+  if (! currentContentSizeCategory || ! [lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    lastContentSizeCategoryByClass[classString] = currentContentSizeCategory ?: @"";
+    [[self class] configureForContentSizeCategory:currentContentSizeCategory];
   }
 }
 
