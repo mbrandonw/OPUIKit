@@ -150,8 +150,10 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 
 -(void) preferredContentSizeChanged:(NSNotification*)notification {
   if ([self isViewLoaded]) {
-    [self.view setNeedsDisplay];
-    [self viewDidLayoutSubviews];
+    dispatch_next_runloop(^{
+      [self.view setNeedsDisplay];
+      [self viewDidLayoutSubviews];
+    });
   }
 }
 

@@ -505,7 +505,9 @@
 
 -(void) preferredContentSizeChanged:(NSNotification*)notification {
   if ([self isViewLoaded]) {
-      [self.tableView reloadData];
+      dispatch_next_runloop(^{
+          [self.tableView reloadData];
+      });
   }
 }
 
