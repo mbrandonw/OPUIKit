@@ -91,12 +91,22 @@
     
     // apply stylings
     [[self styling] applyTo:self];
+
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(preferredContentSizeChanged:)
+                                                     name:UIContentSizeCategoryDidChangeNotification
+                                                   object:nil];
+    }
 }
 
 -(void) dealloc {
     _fetchedResultsController.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+    }
 }
 
 -(void) didReceiveMemoryWarning {
@@ -491,6 +501,12 @@
     {
         [self.tableView reloadData];
     }
+}
+
+-(void) preferredContentSizeChanged:(NSNotification*)notification {
+  if ([self isViewLoaded]) {
+      [self.tableView reloadData];
+  }
 }
 
 #pragma mark -

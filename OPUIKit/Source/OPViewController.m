@@ -43,13 +43,27 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark -
 
 -(id) init {
-	if (! (self = [super init]))
-		return nil;
+    if (! (self = [super init])) {
+        return nil;
+    }
 	
     // apply stylings
     [[self styling] applyTo:self];
-	
-	return self;
+
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(preferredContentSizeChanged:)
+                                                     name:UIContentSizeCategoryDidChangeNotification
+                                                   object:nil];
+    }
+
+    return self;
+}
+
+-(void) dealloc {
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+      [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+    }
 }
 
 -(void) didReceiveMemoryWarning {
@@ -132,6 +146,13 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 
 -(void) viewDidLayoutSubviews {
     [self layoutToolbarView];
+}
+
+-(void) preferredContentSizeChanged:(NSNotification*)notification {
+  if ([self isViewLoaded]) {
+    [self.view setNeedsDisplay];
+    [self viewDidLayoutSubviews];
+  }
 }
 
 @end

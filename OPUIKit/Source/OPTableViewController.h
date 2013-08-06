@@ -81,4 +81,9 @@ typedef enum {
 -(NSIndexPath*) tableViewIndexPathToFetchedResultsIndexPath:(NSIndexPath*)indexPath;
 -(NSIndexPath*) fetchedResultsIndexPathToTableViewIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Called when the preferred content size is changed in user's settings.
+ */
+-(void) preferredContentSizeChanged:(NSNotification*)notification;
+
 @end
