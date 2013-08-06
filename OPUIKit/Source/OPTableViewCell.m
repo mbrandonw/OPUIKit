@@ -190,8 +190,8 @@
 }
 
 -(void) preferredContentSizeChanged:(NSNotification*)notification {
-  [self configureForCurrentContentSizeCategory];
   [[self class] configureForCurrentContentSizeCategory];
+  [self configureForCurrentContentSizeCategory];
 }
 
 -(void) configureForContentSizeCategory:(NSString*)category {
