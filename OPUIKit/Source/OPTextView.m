@@ -66,15 +66,14 @@
     [self.placeholderLabel sizeToFit];
     [self addSubview:self.placeholderLabel];
     [self bringSubviewToFront:self.placeholderLabel];
-    
+  self.placeholderLabel.left = self.placeholderLabel.top = 8.0f;
+
     // hide place holder label when there is text in the view
     self.placeholderLabel.hidden = ([self.text length] > 0);
 }
 
--(void) drawRect:(CGRect)rect {
-    
-    [super drawRect:rect];
-    [self updatePlaceholderLabel];
+-(void) layoutSubviews {
+  [self updatePlaceholderLabel];
 }
 
 @end
