@@ -92,21 +92,26 @@
     // apply stylings
     [[self styling] applyTo:self];
 
+#if __IPHONE_7_0
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(preferredContentSizeChanged:)
                                                      name:UIContentSizeCategoryDidChangeNotification
                                                    object:nil];
     }
+#endif
 }
 
 -(void) dealloc {
     _fetchedResultsController.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+
+#if __IPHONE_7_0
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
     }
+#endif
 }
 
 -(void) didReceiveMemoryWarning {

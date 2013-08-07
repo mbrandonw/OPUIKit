@@ -74,12 +74,14 @@
     // apply stylings
     [[self styling] applyTo:self];
 
+#if __IPHONE_7_0
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(preferredContentSizeChanged:)
                                                      name:UIContentSizeCategoryDidChangeNotification
                                                    object:nil];
     }
+#endif
 
     return self;
 }
@@ -89,9 +91,11 @@
 }
 
 -(void) dealloc {
+#if __IPHONE_7_0
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
     }
+#endif
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -206,9 +210,11 @@
 
 -(void) configureForCurrentContentSizeCategory {
   NSString *currentContentSizeCategory = nil;
+#if __IPHONE_7_0
   if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
     currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
   }
+#endif
 
   if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
     self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
@@ -223,9 +229,11 @@
   NSString *classString = NSStringFromClass(self.class);
   NSString *currentContentSizeCategory = nil;
   NSString *lastContentSizeCategory = lastContentSizeCategoryByClass[classString];
+#if __IPHONE_7_0
   if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
     currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
   }
+#endif
 
   if (! currentContentSizeCategory || ! [lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
     lastContentSizeCategoryByClass[classString] = currentContentSizeCategory ?: @"";
