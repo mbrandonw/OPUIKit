@@ -517,7 +517,6 @@
 }
 
 -(void) appEnteredForeground {
-    
     if (! _fetchedResultsController &&
         [self isViewVisible] &&
         self.hasUsedFetchedResultsController &&
@@ -539,7 +538,7 @@
 }
 
 -(void) configureForContentSizeCategory:(NSString *)category {
-  if ([self isViewLoaded] && [self isViewVisible] && [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+  if ([self isViewLoaded] && [self isViewVisible]) {
       [self.tableView reloadData];
   }
 }

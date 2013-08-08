@@ -183,7 +183,7 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 }
 
 -(void) configureForContentSizeCategory:(NSString *)category {
-  if ([self isViewLoaded] && [self isViewLoaded] && [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+  if ([self isViewLoaded] && [self isViewVisible]) {
     [self.view setNeedsDisplayAndLayout];
     [self viewDidLayoutSubviews];
   }
