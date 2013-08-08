@@ -39,6 +39,11 @@
 @property (nonatomic, assign) BOOL hasUsedFetchedResultsController;
 
 -(void) __init;
+
+// helper methods for dealing with content size
+@property (nonatomic, strong) NSString *lastContentSizeCategory;
+-(void) configureForCurrentContentSizeCategory;
++(void) configureForCurrentContentSizeCategory;
 @end
 #pragma mark -
 
@@ -55,6 +60,14 @@
 @synthesize titleColor;
 @synthesize titleShadowColor;
 @synthesize titleShadowOffset;
+
+#pragma mark -
+#pragma mark Class lifecycle methods
+#pragma mark -
+
++(void) initialize {
+  [[self class] configureForCurrentContentSizeCategory];
+}
 
 #pragma mark -
 #pragma mark Object lifecycle
@@ -187,7 +200,8 @@
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     DLogClassAndMethod();
-    
+  
+    [self configureForCurrentContentSizeCategory];
     [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
     
     // We try to free up memory by using the OPTableViewFetchControllerActions options, but this can create the following weird
@@ -232,6 +246,11 @@
     if (self.fetchControllerViewDisappearActions & OPTableViewFetchControllerActionRelease) {
         _fetchedResultsController = nil;
     }
+}
+
+-(void) viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
+  [self configureForCurrentContentSizeCategory];
 }
 
 #pragma mark -
@@ -508,11 +527,60 @@
     }
 }
 
+#pragma mark -
+#pragma mark Preferred content size methods
+#pragma mark -
+
 -(void) preferredContentSizeChanged:(NSNotification*)notification {
-  if ([self isViewLoaded]) {
-      dispatch_next_runloop(^{
-          [self.tableView reloadData];
-      });
+  dispatch_next_runloop(^{
+    [[self class] configureForCurrentContentSizeCategory];
+    [self configureForCurrentContentSizeCategory];
+  });
+}
+
+-(void) configureForContentSizeCategory:(NSString *)category {
+  if ([self isViewLoaded] && [self isViewVisible] && [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+      [self.tableView reloadData];
+  }
+}
+
++(void) configureForContentSizeCategory:(NSString *)category {
+}
+
+#pragma mark -
+#pragma mark Private helper methods for preferred content size
+#pragma mark -
+
+-(void) configureForCurrentContentSizeCategory {
+  NSString *currentContentSizeCategory = @"";
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+#endif
+
+  if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
+    [self configureForContentSizeCategory:currentContentSizeCategory];
+  }
+}
+
++(void) configureForCurrentContentSizeCategory {
+  static NSMutableDictionary *lastContentSizeCategoryByClass = nil;
+  lastContentSizeCategoryByClass = lastContentSizeCategoryByClass ?: [NSMutableDictionary new];
+
+  NSString *classString = NSStringFromClass(self.class);
+  NSString *currentContentSizeCategory = nil;
+  NSString *lastContentSizeCategory = lastContentSizeCategoryByClass[classString];
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+#endif
+
+  if (! currentContentSizeCategory || ! [lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    lastContentSizeCategoryByClass[classString] = currentContentSizeCategory ?: @"";
+    [[self class] configureForContentSizeCategory:currentContentSizeCategory];
   }
 }
 

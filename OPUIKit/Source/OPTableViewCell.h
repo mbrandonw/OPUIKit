@@ -56,8 +56,8 @@
 
 /**
  Same as `-configureForContentSizeCategory:` except called only when 
- the preferred content size changes. This method is called before
- the corresponding instance method.
+ the class initializes and when the preferred content size changes. 
+ This method is called before the corresponding instance method.
  */
 +(void) configureForContentSizeCategory:(NSString*)category;
 
