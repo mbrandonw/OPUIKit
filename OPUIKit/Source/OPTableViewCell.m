@@ -168,12 +168,20 @@
   CGContextFillRect(c, rect);
 }
 
-+(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width {
-    return 44.0f;
++(CGFloat) heightForCellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast {
+  return 0.0f;
 }
 
 +(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast {
-    return [[self class] heightForObject:object cellWidth:width];
+  return [[self class] heightForCellWidth:width isFirst:isFirst isLast:isLast];
+}
+
++(CGFloat) estimatedHeightForCellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast {
+  return 0.0f;
+}
+
++(CGFloat) estimatedHeightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast {
+  return [[self class] estimatedHeightForCellWidth:width isFirst:isFirst isLast:isLast];
 }
 
 -(void) setOdd:(BOOL)odd {

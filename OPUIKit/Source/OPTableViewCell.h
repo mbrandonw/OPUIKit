@@ -31,8 +31,10 @@
  OPTableViewController instances will use this method to automatically layout 
  cell heights.
  */
-+(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width;
++(CGFloat) heightForCellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast;
 +(CGFloat) heightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast;
++(CGFloat) estimatedHeightForCellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast;
++(CGFloat) estimatedHeightForObject:(id)object cellWidth:(CGFloat)width isFirst:(BOOL)isFirst isLast:(BOOL)isLast;
 
 /**
  OPTableViewController instances will assign this object from what it pulls

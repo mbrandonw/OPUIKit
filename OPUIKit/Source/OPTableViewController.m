@@ -343,14 +343,35 @@
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-    if ([class isSubclassOfClass:[OPTableViewCell class]])
-    {
-        id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
-        NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-        return (CGFloat)[(id)class heightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+  Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  CGFloat height = 0.0f;
+
+  if ([class isSubclassOfClass:[OPTableViewCell class]]) {
+    NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    height = [class heightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+    if (height == 0.0f) {
+      id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
+      height = [class heightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
     }
-    return 0.0f;
+  }
+  return height;
+}
+
+-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  CGFloat height = 0.0f;
+
+  if ([class isSubclassOfClass:[OPTableViewCell class]]) {
+    NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    height = [class estimatedHeightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+    if (height == 0.0f) {
+      id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
+      height = [class estimatedHeightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+    }
+  }
+
+  return height;
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
