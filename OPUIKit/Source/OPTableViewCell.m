@@ -196,7 +196,7 @@
   _object = object;
   [self configureForCurrentContentSizeCategory];
   [self setNeedsDisplayAndLayout];
-  if ([self respondsToSelector:@selector(setNeedsUpdateConstraints)]) {
+  if ([self respondsToSelector:@selector(translatesAutoresizingMaskIntoConstraints)] && ! self.translatesAutoresizingMaskIntoConstraints) {
     [self setNeedsUpdateConstraints];
   }
 }
