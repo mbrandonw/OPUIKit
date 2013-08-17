@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "OPStyle.h"
 
+@class SKView;
+
 extern const struct OPViewControllerNotifications {
 	__unsafe_unretained NSString *loadView;
 	__unsafe_unretained NSString *viewDidLoad;
@@ -19,6 +21,11 @@ extern const struct OPViewControllerNotifications {
 } OPViewControllerNotifications;
 
 @interface OPViewController : UIViewController <OPStyleProtocol>
+
+@property (nonatomic, assign) BOOL useSpriteKitView;
+#if __IPHONE_7_0
+@property (nonatomic, readonly) SKView *sceneView;
+#endif
 
 /**
  Called when the preferred content size is changed in user's settings.

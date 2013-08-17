@@ -96,9 +96,14 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark -
 
 -(void) loadView {
-    [super loadView];
-    DLogClassAndMethod();
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.loadView object:self];
+  [super loadView];
+  DLogClassAndMethod();
+
+  if (self.useSpriteKitView) {
+    self.view = [[SKView alloc] initWithFrame:self.view.frame];
+  }
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.loadView object:self];
 }
 
 -(void) viewDidLoad {
@@ -228,5 +233,15 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
     [[self class] configureForContentSizeCategory:currentContentSizeCategory];
   }
 }
+
+#pragma mark -
+#pragma mark Custom accessors
+#pragma mark -
+
+#if __IPHONE_7_0
+-(SKView*) sceneView {
+  return [self.view typedAs:[SKView class]];
+}
+#endif
 
 @end
