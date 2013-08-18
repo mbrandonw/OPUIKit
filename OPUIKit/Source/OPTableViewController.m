@@ -344,12 +344,14 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-  CGFloat height = 0.0f;
+  CGFloat height = 44.0f;
 
   if ([class isSubclassOfClass:[OPTableViewCell class]]) {
     NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    height = [class heightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
-    if (height == 0.0f) {
+
+    if ([class implementsSelector:@selector(heightForCellWidth:isFirst:isLast:)]) {
+      height = [class heightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+    } else if ([class implementsSelector:@selector(heightForObject:cellWidth:isFirst:isLast:)]) {
       id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
       height = [class heightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
     }
@@ -360,12 +362,14 @@
 -(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-  CGFloat height = 0.0f;
+  CGFloat height = 44.0f;
 
   if ([class isSubclassOfClass:[OPTableViewCell class]]) {
     NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    height = [class estimatedHeightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
-    if (height == 0.0f) {
+
+    if ([class implementsSelector:@selector(heightForCellWidth:isFirst:isLast:)]) {
+      height = [class estimatedHeightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+    } else if ([class implementsSelector:@selector(heightForObject:cellWidth:isFirst:isLast:)]) {
       id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
       height = [class estimatedHeightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
     }
