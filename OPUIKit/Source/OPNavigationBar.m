@@ -31,14 +31,8 @@
 @implementation OPNavigationBar
 
 // Supported OPStyle storage
-@synthesize backgroundImage = _backgroundImage;
 @synthesize shadowHeight = _shadowHeight;
 @synthesize shadowColors = _shadowColors;
-@synthesize gradientAmount = _gradientAmount;
-@synthesize glossAmount = _glossAmount;
-@synthesize glossOffset = _glossOffset;
-@synthesize translucent = _translucent;
-@synthesize navigationBarDrawingBlock = _navigationBarDrawingBlock;
 
 #pragma mark -
 #pragma mark Object lifecycle
@@ -55,11 +49,6 @@
   self.shadowView.gradientLayer.startPoint = CGPointMake(0.5f, 1.0f);
   self.shadowView.gradientLayer.endPoint = CGPointMake(0.5f, 0.0);
   [self addSubview:self.shadowView];
-
-  // pass the background color to the tint color so that default bar button items inherit some of the styling
-  if (self.backgroundColor) {
-    self.tintColor = self.backgroundColor;
-  }
 
   // apply stylings
   [[[self class] styling] applyTo:self];
