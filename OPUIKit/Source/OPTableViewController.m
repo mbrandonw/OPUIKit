@@ -360,7 +360,6 @@
 }
 
 -(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
   Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
   CGFloat height = 44.0f;
 
