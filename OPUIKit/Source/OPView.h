@@ -23,6 +23,8 @@ extern NSString * const OPViewDrawingBevelBorderColorKey;
 
 @interface OPView : UIView <OPStyleProtocol>
 
+@property (nonatomic, strong) UIColor *blurTintColor;
+
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
 -(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
 

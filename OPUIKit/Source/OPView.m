@@ -16,6 +16,9 @@
 static NSInteger drawingBlocksContext;
 
 @interface OPView (/**/)
+@property (nonatomic, strong) UIToolbar *blurToolbar;
+@property (nonatomic, strong) CALayer *blurLayer;
+@property (nonatomic, strong) UIView *blurView;
 -(void) __init;
 @end
 
@@ -68,6 +71,38 @@ static NSInteger drawingBlocksContext;
     
     for (OPViewDrawingBlock block in self.drawingBlocks)
         block(self, rect, c);
+}
+
+-(void) setBlurTintColor:(UIColor *)blurTintColor {
+  _blurTintColor = blurTintColor;
+  [self.blurLayer removeFromSuperlayer];
+
+  self.blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
+  self.blurToolbar.barTintColor = blurTintColor;
+  self.blurLayer = self.blurToolbar.layer;
+
+  self.blurView = [UIView viewWithFrame:self.bounds];
+  self.blurView.userInteractionEnabled = NO;
+  [self.blurView.layer addSublayer:self.blurLayer];
+  self.blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
+  self.blurView.clipsToBounds = YES;
+
+  [self addSubview:self.blurView];
+
+  self.backgroundColor = [UIColor clearColor];
+}
+
+-(void) didAddSubview:(UIView *)subview {
+  [super didAddSubview:subview];
+  if (subview != self.blurView) {
+    [self sendSubviewToBack:self.blurView];
+  }
+}
+
+-(void) layoutSubviews {
+  [super layoutSubviews];
+  self.blurView.frame = self.bounds;
+  self.blurLayer.frame = self.bounds;
 }
 
 -(void) setDrawingBlocks:(NSMutableArray *)drawingBlocks {
