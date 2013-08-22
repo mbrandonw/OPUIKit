@@ -39,8 +39,9 @@
 #pragma mark -
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
-	if (! (self = [super initWithCoder:aDecoder]))
+	if (! (self = [super initWithCoder:aDecoder])) {
 		return nil;
+  }
 
   self.clipsToBounds = NO;
 
