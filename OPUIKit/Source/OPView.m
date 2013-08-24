@@ -74,22 +74,24 @@ static NSInteger drawingBlocksContext;
 }
 
 -(void) setBlurTintColor:(UIColor *)blurTintColor {
-  _blurTintColor = blurTintColor;
-  [self.blurLayer removeFromSuperlayer];
+  if ([UIDevice isAtLeastiOS7]) {
+    _blurTintColor = blurTintColor;
+    [self.blurLayer removeFromSuperlayer];
 
-  self.blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
-  self.blurToolbar.barTintColor = blurTintColor;
-  self.blurLayer = self.blurToolbar.layer;
+    self.blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
+    self.blurToolbar.barTintColor = blurTintColor;
+    self.blurLayer = self.blurToolbar.layer;
 
-  self.blurView = [UIView viewWithFrame:self.bounds];
-  self.blurView.userInteractionEnabled = NO;
-  [self.blurView.layer addSublayer:self.blurLayer];
-  self.blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
-  self.blurView.clipsToBounds = YES;
+    self.blurView = [UIView viewWithFrame:self.bounds];
+    self.blurView.userInteractionEnabled = NO;
+    [self.blurView.layer addSublayer:self.blurLayer];
+    self.blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
+    self.blurView.clipsToBounds = YES;
 
-  [self addSubview:self.blurView];
+    [self addSubview:self.blurView];
 
-  self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
+  }
 }
 
 -(void) didAddSubview:(UIView *)subview {
