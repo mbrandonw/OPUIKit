@@ -69,7 +69,7 @@
         
         if (! detailHidden && ! self.detailViewController.view.superview)
         {
-            shouldCallAppearMethodsOnDetail = ! [UIDevice isAtLeastiOS5];
+            shouldCallAppearMethodsOnDetail = ! [UIDevice isiOS5OrLater];
             
             [self.view insertSubview:self.detailViewController.view belowSubview:self.masterViewController.view];
             self.detailViewController.view.frame = self.view.bounds;

@@ -229,10 +229,10 @@ const struct OPTabBarControllerNotifications OPTabBarControllerNotifications = {
         self.selectedViewController = nextController;
         
         // remove the previous view controller from our view hierarchy
-        if (! [UIDevice isAtLeastiOS5])
+        if (! [UIDevice isiOS5OrLater])
             [previousController viewWillDisappear:NO];
         [previousController.view removeFromSuperview];
-        if (! [UIDevice isAtLeastiOS5])
+        if (! [UIDevice isiOS5OrLater])
             [previousController viewDidDisappear:NO];
         
         // configure the next view controller
@@ -244,11 +244,11 @@ const struct OPTabBarControllerNotifications OPTabBarControllerNotifications = {
                                                             self.view.bounds.size.height - self.tabBar.height*(!self.tabBar.hidden));
         
         // add the next view controller to our view hiearchy
-        if (! [UIDevice isAtLeastiOS5])
+        if (! [UIDevice isiOS5OrLater])
             [self.selectedViewController viewWillAppear:NO];
         [self.view addSubviewToBack:self.selectedViewController.view];
         [self.selectedViewController.view setNeedsLayout];
-        if (! [UIDevice isAtLeastiOS5])
+        if (! [UIDevice isiOS5OrLater])
             [self.selectedViewController viewDidAppear:NO];
         
         // send out delegate messages
