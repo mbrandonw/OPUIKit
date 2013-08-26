@@ -74,6 +74,7 @@ static NSInteger drawingBlocksContext;
 }
 
 -(void) setBlurTintColor:(UIColor *)blurTintColor {
+#if __IPHONE_7_0
   if ([UIDevice isiOS7OrLater]) {
     _blurTintColor = blurTintColor;
     [self.blurLayer removeFromSuperlayer];
@@ -92,6 +93,7 @@ static NSInteger drawingBlocksContext;
 
     self.backgroundColor = [UIColor clearColor];
   }
+#endif
 }
 
 -(void) didAddSubview:(UIView *)subview {
