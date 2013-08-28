@@ -28,6 +28,9 @@ extern NSString * const OPViewDrawingBevelBorderColorKey;
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
 -(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
 
+-(void) configureForContentSizeCategory:(NSString*)category;
++(void) configureForContentSizeCategory:(NSString*)category;
+
 /**
  Some fancy custom drawing blocks.
  */

@@ -16,15 +16,29 @@
 static NSInteger drawingBlocksContext;
 
 @interface OPView (/**/)
+-(void) __init;
+
 @property (nonatomic, strong) UIToolbar *blurToolbar;
 @property (nonatomic, strong) CALayer *blurLayer;
 @property (nonatomic, strong) UIView *blurView;
--(void) __init;
+
+@property (nonatomic, strong) NSString *lastContentSizeCategory;
+-(void) configureForCurrentContentSizeCategory;
++(void) configureForCurrentContentSizeCategory;
+
 @end
 
 @implementation OPView
 
 @synthesize drawingBlocks = _drawingBlocks;
+
+#pragma mark -
+#pragma mark Object lifecycle
+#pragma mark -
+
++(void) initialize {
+  [[self class] configureForCurrentContentSizeCategory];
+}
 
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock {
     if (! (self = [self initWithFrame:CGRectZero]))
@@ -55,14 +69,48 @@ static NSInteger drawingBlocksContext;
 }
 
 -(void) __init {
-    self.drawingBlocks = [NSMutableArray new];
-    [self addObserver:self forKeyPath:@"drawingBlocks" options:0 context:&drawingBlocksContext];
-    [[[self class] styling] applyTo:self];
+  self.drawingBlocks = [NSMutableArray new];
+  [self addObserver:self forKeyPath:@"drawingBlocks" options:0 context:&drawingBlocksContext];
+  [[[self class] styling] applyTo:self];
+
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(preferredContentSizeChanged:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+  }
+#endif
 }
 
 -(void) dealloc {
-    [self removeObserver:self forKeyPath:@"drawingBlocks" context:&drawingBlocksContext];
+  [self removeObserver:self forKeyPath:@"drawingBlocks" context:&drawingBlocksContext];
+
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+  }
+#endif
 }
+
+#pragma mark -
+#pragma mark View events
+#pragma mark -
+
+-(void) willMoveToSuperview:(UIView *)newSuperview {
+  [self configureForCurrentContentSizeCategory];
+}
+
+-(void) didAddSubview:(UIView *)subview {
+  [super didAddSubview:subview];
+  if (subview != self.blurView) {
+    [self sendSubviewToBack:self.blurView];
+  }
+}
+
+#pragma mark -
+#pragma mark Drawing and layout
+#pragma mark -
 
 -(void) drawRect:(CGRect)rect {
     [super drawRect:rect];
@@ -96,28 +144,15 @@ static NSInteger drawingBlocksContext;
 #endif
 }
 
--(void) didAddSubview:(UIView *)subview {
-  [super didAddSubview:subview];
-  if (subview != self.blurView) {
-    [self sendSubviewToBack:self.blurView];
-  }
-}
-
 -(void) layoutSubviews {
   [super layoutSubviews];
   self.blurView.frame = self.bounds;
   self.blurLayer.frame = self.bounds;
 }
 
--(void) setDrawingBlocks:(NSMutableArray *)drawingBlocks {
-    _drawingBlocks = drawingBlocks;
-    [self setNeedsDisplay];
-}
-
--(void) insertObject:(OPViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
-    [_drawingBlocks insertObject:block atIndex:index];
-    [self setNeedsDisplay];
-}
+#pragma mark -
+#pragma mark KVO
+#pragma mark -
 
 -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == &drawingBlocksContext) {
@@ -125,6 +160,20 @@ static NSInteger drawingBlocksContext;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark -
+#pragma mark Drawing blocks
+#pragma mark -
+
+-(void) setDrawingBlocks:(NSMutableArray *)drawingBlocks {
+  _drawingBlocks = drawingBlocks;
+  [self setNeedsDisplay];
+}
+
+-(void) insertObject:(OPViewDrawingBlock)block inDrawingBlocksAtIndex:(NSUInteger)index {
+  [_drawingBlocks insertObject:block atIndex:index];
+  [self setNeedsDisplay];
 }
 
 NSString * const OPViewDrawingBaseColorKey = @"OPViewDrawingBaseColorKey";
@@ -271,6 +320,62 @@ NSString * const OPViewDrawingBevelBorderColorKey = @"OPViewDrawingBevelBorderCo
         }
         
     } copy];
+}
+
+#pragma mark -
+#pragma mark Preferred content size methods
+#pragma mark -
+
+-(void) configureForContentSizeCategory:(NSString*)category {
+}
+
++(void) configureForContentSizeCategory:(NSString*)category {
+}
+
+#pragma mark -
+#pragma mark Notification methods
+#pragma mark -
+
+-(void) preferredContentSizeChanged:(NSNotification*)notification {
+  [[self class] configureForCurrentContentSizeCategory];
+  [self configureForCurrentContentSizeCategory];
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) configureForCurrentContentSizeCategory {
+  NSString *currentContentSizeCategory = nil;
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+#endif
+
+  if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
+    [self configureForContentSizeCategory:currentContentSizeCategory];
+  }
+}
+
++(void) configureForCurrentContentSizeCategory {
+  static NSMutableDictionary *lastContentSizeCategoryByClass = nil;
+  lastContentSizeCategoryByClass = lastContentSizeCategoryByClass ?: [NSMutableDictionary new];
+
+  NSString *classString = NSStringFromClass(self.class);
+  NSString *currentContentSizeCategory = nil;
+  NSString *lastContentSizeCategory = lastContentSizeCategoryByClass[classString];
+#if __IPHONE_7_0
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+#endif
+
+  if (! currentContentSizeCategory || ! [lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    lastContentSizeCategoryByClass[classString] = currentContentSizeCategory ?: @"";
+    [[self class] configureForContentSizeCategory:currentContentSizeCategory];
+  }
 }
 
 @end

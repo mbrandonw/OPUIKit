@@ -11,7 +11,7 @@
 @implementation OPTableSectionView
 
 +(CGFloat) heightForWidth:(CGFloat)width {
-    return 22.0f;
+  return 22.0f;
 }
 
 -(void) drawRect:(CGRect)rect {
@@ -23,9 +23,9 @@
 }
 
 -(void) setObject:(id)object {
-    _object = object;
-    [self setNeedsDisplay];
-    [self setNeedsLayout];
+  _object = object;
+  [self setNeedsDisplay];
+  [self setNeedsLayout];
 }
 
 @end
