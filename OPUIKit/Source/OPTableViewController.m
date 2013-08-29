@@ -344,7 +344,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-  CGFloat height = 44.0f;
+  CGFloat height = tableView.rowHeight;
 
   if ([class isSubclassOfClass:[OPTableViewCell class]]) {
     NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
@@ -361,7 +361,7 @@
 
 //-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 //  Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-//  CGFloat height = 44.0f;
+//  CGFloat height = tableView.estimatedRowHeight;
 //
 //  if ([class isSubclassOfClass:[OPTableViewCell class]]) {
 //    NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
