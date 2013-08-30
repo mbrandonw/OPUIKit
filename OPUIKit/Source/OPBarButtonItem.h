@@ -10,6 +10,11 @@
 #import "OPStyleProtocol.h"
 #import "OPButton.h"
 
+typedef NS_ENUM(NSInteger, OPBarButtonItemSide) {
+  OPBarButtonItemSideLeft,
+  OPBarButtonItemSideRight,
+};
+
 @interface OPBarButtonItem : UIBarButtonItem <OPStyleProtocol>
 
 @property (nonatomic, strong, readonly) OPButton *button;
