@@ -26,6 +26,7 @@
 @property (nonatomic, assign, getter = isEven) BOOL even;
 @property (nonatomic, assign, getter = isOdd) BOOL odd;
 @property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, assign) CGFloat scrollRatio;
 
 /**
  OPTableViewController instances will use this method to automatically layout 

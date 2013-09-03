@@ -277,12 +277,25 @@
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
-    // check if we need to resign the keyboard
-    CGPoint p1 = scrollView.contentOffset;
-    CGPoint p2 = self.beginDraggingContentOffset;
-    if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta) {
-        [self.view endEditing:YES];
+  // check if we need to resign the keyboard
+  CGPoint p1 = scrollView.contentOffset;
+  CGPoint p2 = self.beginDraggingContentOffset;
+  if (self.touchIsDown && self.resignKeyboardWhileScrolling && ABS(p1.y-p2.y) >= self.resignKeyboardScrollDelta) {
+    [self.view endEditing:YES];
+  }
+
+  for (OPTableViewCell *cell in self.tableView.visibleCells) {
+    CGFloat y = cell.frame.origin.y - self.tableView.contentOffsetY;
+
+    // TODO: fix this hackiness. If I do the right thing and use topLayoutGuide, then
+    // a weird bug appears where everytime you drill down to content the table view
+    // scrolls back to the top.
+    if ([UIDevice isiOS7OrLater]) {
+      y -= 64.0f;
     }
+
+    [[cell typedAs:[OPTableViewCell class]] setScrollRatio:y / cell.height];
+  }
 }
 
 #pragma mark -
