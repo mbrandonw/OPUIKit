@@ -294,7 +294,7 @@
       y -= 64.0f;
     }
 
-    [[cell typedAs:[OPTableViewCell class]] setScrollRatio:y / cell.height];
+    [[cell typedAs:[OPTableViewCell class]] setScrollRatio:-y / cell.height];
   }
 }
 

@@ -201,6 +201,10 @@
   }
 }
 
+-(void) setScrollRatio:(CGFloat)scrollRatio {
+  _scrollRatio = MAX(0.0f, MIN(1.0f, scrollRatio));
+}
+
 -(void) preferredContentSizeChanged:(NSNotification*)notification {
   [[self class] configureForCurrentContentSizeCategory];
   [self configureForCurrentContentSizeCategory];
