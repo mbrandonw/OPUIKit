@@ -15,7 +15,7 @@
     return nil;
   }
 
-  [self setTitleTextAttributes:@{UITextAttributeFont: [UIFont ssStandardFontWithSize:16.0f]} forState:UIControlStateNormal];
+  [self setTitleTextAttributes:@{NSFontAttributeName: [UIFont ssStandardFontWithSize:16.0f]} forState:UIControlStateNormal];
 
   if (side == OPBarButtonItemSideLeft) {
     [self setTitlePositionAdjustment:UIOffsetMake(8.0f, 2.0f) forBarMetrics:UIBarMetricsDefault];
