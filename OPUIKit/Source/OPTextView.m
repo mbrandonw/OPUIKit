@@ -73,6 +73,7 @@
 }
 
 -(void) layoutSubviews {
+  [super layoutSubviews];
   [self updatePlaceholderLabel];
 }
 
