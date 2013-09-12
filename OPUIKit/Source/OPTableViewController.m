@@ -39,6 +39,7 @@
 @property (nonatomic, assign) BOOL hasUsedFetchedResultsController;
 
 -(void) __init;
+-(void) updateCellScrollRatios;
 
 // helper methods for dealing with content size
 @property (nonatomic, strong) NSString *lastContentSizeCategory;
@@ -215,6 +216,8 @@
     {
         [self.tableView reloadData];
     }
+
+  [self updateCellScrollRatios];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -284,18 +287,7 @@
     [self.view endEditing:YES];
   }
 
-  for (OPTableViewCell *cell in self.tableView.visibleCells) {
-    CGFloat y = cell.frame.origin.y - self.tableView.contentOffsetY;
-
-    // TODO: fix this hackiness. If I do the right thing and use topLayoutGuide, then
-    // a weird bug appears where everytime you drill down to content the table view
-    // scrolls back to the top.
-    if ([UIDevice isiOS7OrLater]) {
-      y -= 64.0f;
-    }
-
-    [[cell typedAs:[OPTableViewCell class]] setScrollRatio:-y / cell.height];
-  }
+  [self updateCellScrollRatios];
 }
 
 #pragma mark -
@@ -501,7 +493,8 @@
 }
 
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
+  [self.tableView endUpdates];
+  [self updateCellScrollRatios];
 }
 
 #pragma mark -
@@ -617,6 +610,26 @@
   if (! currentContentSizeCategory || ! [lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
     lastContentSizeCategoryByClass[classString] = currentContentSizeCategory ?: @"";
     [[self class] configureForContentSizeCategory:currentContentSizeCategory];
+  }
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(void) updateCellScrollRatios {
+
+  for (OPTableViewCell *cell in self.tableView.visibleCells) {
+    CGFloat y = cell.frame.origin.y - self.tableView.contentOffsetY;
+
+    // TODO: fix this hackiness. If I do the right thing and use topLayoutGuide, then
+    // a weird bug appears where everytime you drill down to content the table view
+    // scrolls back to the top.
+    if ([UIDevice isiOS7OrLater]) {
+      y -= 64.0f;
+    }
+
+    [OPTypedAs(cell, OPTableViewCell) setScrollRatio:-y / cell.height];
   }
 }
 
