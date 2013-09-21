@@ -11,6 +11,6 @@
 
 @interface OPScrollViewController : OPViewController
 
-@property (nonatomic, readonly) UIScrollView *scrollView;
+@property (nonatomic, strong, readonly) UIScrollView *scrollView;
 
 @end
