@@ -99,8 +99,8 @@ static NSInteger drawingBlocksContext;
 
 -(void) didAddSubview:(UIView *)subview {
   [super didAddSubview:subview];
-  if (subview != self.blurView) {
-    [self sendSubviewToBack:self.blurView];
+  if (subview != _blurView) {
+    [self sendSubviewToBack:_blurView];
   }
 }
 
@@ -121,28 +121,43 @@ static NSInteger drawingBlocksContext;
 
   if ([UIDevice isiOS7OrLater]) {
     _blurTintColor = blurTintColor;
-    [self.blurLayer removeFromSuperlayer];
-
-    self.blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
     self.blurToolbar.barTintColor = blurTintColor;
-    self.blurLayer = self.blurToolbar.layer;
-
-    self.blurView = [UIView viewWithFrame:self.bounds];
-    self.blurView.userInteractionEnabled = NO;
-    [self.blurView.layer addSublayer:self.blurLayer];
-    self.blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
-    self.blurView.clipsToBounds = YES;
-
-    [self addSubview:self.blurView];
-
     self.backgroundColor = [UIColor clearColor];
   }
 }
 
+-(void) setBlurStyle:(UIBarStyle)style {
+  if ([UIDevice isiOS7OrLater]) {
+    [self.blurToolbar setBarStyle:UIBarStyleBlack];
+    self.backgroundColor = [UIColor clearColor];
+  }
+}
+
+-(void) removeBlurTintColor {
+  [_blurView removeFromSuperview];
+  _blurView = nil;
+  _blurToolbar = nil;
+  _blurLayer = nil;
+}
+
 -(void) layoutSubviews {
   [super layoutSubviews];
-  self.blurView.frame = self.bounds;
-  self.blurLayer.frame = self.bounds;
+  _blurView.frame = self.bounds;
+  _blurLayer.frame = self.bounds;
+}
+
+-(UIToolbar*) blurToolbar {
+  if (! _blurToolbar) {
+    _blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
+    _blurLayer = _blurToolbar.layer;
+    _blurView = [UIView viewWithFrame:self.bounds];
+    _blurView.userInteractionEnabled = NO;
+    [_blurView.layer addSublayer:_blurLayer];
+    _blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
+    _blurView.clipsToBounds = YES;
+    [self addSubview:_blurView];
+  }
+  return _blurToolbar;
 }
 
 #pragma mark -
