@@ -115,13 +115,16 @@
 }
 
 -(void) dealloc {
-    _fetchedResultsController.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+  self.tableView.delegate = nil;
+  self.tableView.dataSource = nil;
 
-    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
-    }
+  _fetchedResultsController.delegate = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+  }
 }
 
 -(void) didReceiveMemoryWarning {
