@@ -363,23 +363,23 @@
   return height;
 }
 
--(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
-  CGFloat height = tableView.estimatedRowHeight;
-
-  if ([class isSubclassOfClass:[OPTableViewCell class]]) {
-    NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-
-    if ([class implementsSelector:@selector(estimatedHeightForCellWidth:isFirst:isLast:)]) {
-      height = [class estimatedHeightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
-    } else if ([class implementsSelector:@selector(estimatedHeightForObject:cellWidth:isFirst:isLast:)]) {
-      id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
-      height = [class estimatedHeightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
-    }
-  }
-
-  return height > 0 ? height : UITableViewAutomaticDimension;
-}
+//-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//  Class class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+//  CGFloat height = tableView.estimatedRowHeight;
+//
+//  if ([class isSubclassOfClass:[OPTableViewCell class]]) {
+//    NSUInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+//
+//    if ([class implementsSelector:@selector(estimatedHeightForCellWidth:isFirst:isLast:)]) {
+//      height = [class estimatedHeightForCellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+//    } else if ([class implementsSelector:@selector(estimatedHeightForObject:cellWidth:isFirst:isLast:)]) {
+//      id object = [self tableView:tableView objectForRowAtIndexPath:indexPath];
+//      height = [class estimatedHeightForObject:object cellWidth:self.view.width isFirst:indexPath.row==0 isLast:indexPath.row==numberOfRows-1];
+//    }
+//  }
+//
+//  return height > 0 ? height : UITableViewAutomaticDimension;
+//}
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
