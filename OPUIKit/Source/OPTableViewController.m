@@ -378,7 +378,7 @@
     }
   }
 
-  return height;
+  return height > 0 ? height : UITableViewAutomaticDimension;
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
