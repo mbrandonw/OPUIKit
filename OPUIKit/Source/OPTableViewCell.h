@@ -41,7 +41,7 @@
  OPTableViewController instances will assign this object from what it pulls
  from the -tableView:objectForRowAtIndexPath: method.
  */
-@property (nonatomic, strong) id object;
+@property (nonatomic, weak) id object;
 
 /**
  Adjust for preferred content size.
