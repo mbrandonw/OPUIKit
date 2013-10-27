@@ -59,33 +59,33 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark -
 
 -(id) init {
-    if (! (self = [super init])) {
-        return nil;
-    }
-	
-    // apply stylings
-    [[self styling] applyTo:self];
+  if (! (self = [super init])) {
+    return nil;
+  }
 
-    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(preferredContentSizeChanged:)
-                                                     name:UIContentSizeCategoryDidChangeNotification
-                                                   object:nil];
-    }
+  // apply stylings
+  [[self styling] applyTo:self];
 
-    return self;
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(preferredContentSizeChanged:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+  }
+
+  return self;
 }
 
 -(void) dealloc {
 
-    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
-      [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
-    }
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+  }
 }
 
 -(void) didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    DLogClassAndMethod();
+  [super didReceiveMemoryWarning];
+  DLogClassAndMethod();
 }
 
 #pragma mark -
@@ -99,67 +99,67 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 }
 
 -(void) viewDidLoad {
-    [super viewDidLoad];
-    DLogClassAndMethod();
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidLoad object:self];
-    
-    // default the background color if the view doesn't already have one
+  [super viewDidLoad];
+  DLogClassAndMethod();
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidLoad object:self];
+
+  // default the background color if the view doesn't already have one
 	if (self.backgroundImage)
-    {
-        if (! CGSizeIsPowerOfTwo(self.backgroundImage.size)) {
-            DLog(@"==============================================================");
-            DLog(@"Pattern image drawing is most efficient with power of 2 images");
-            DLog(@"==============================================================");
-        }
+  {
+    if (! CGSizeIsPowerOfTwo(self.backgroundImage.size)) {
+      DLog(@"==============================================================");
+      DLog(@"Pattern image drawing is most efficient with power of 2 images");
+      DLog(@"==============================================================");
+    }
 		self.view.backgroundColor = [UIColor colorWithPatternImage:self.backgroundImage];
-    }
-    else if (self.backgroundColor) {
-        self.view.backgroundColor = self.backgroundColor;
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
-    
-    // set the default navigation item title view
-    if (self.defaultTitleImage && !self.navigationItem.titleView) {
-        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-    }
-    if (self.defaultTitle && !self.title) {
-        [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
-    }
-    
-    if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]]) {
-        [(UIScrollView*)self.view setContentInsetBottom:self.toolbarView.height];
-        [(UIScrollView*)self.view setScrollIndicatorInsetBottom:self.toolbarView.height];
-    } else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]]) {
-        [[(UIWebView*)self.view scrollView] setContentInsetBottom:self.toolbarView.height];
-        [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:self.toolbarView.height];
-    }
+  }
+  else if (self.backgroundColor) {
+    self.view.backgroundColor = self.backgroundColor;
+  } else {
+    self.view.backgroundColor = [UIColor whiteColor];
+  }
+
+  // set the default navigation item title view
+  if (self.defaultTitleImage && !self.navigationItem.titleView) {
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
+  }
+  if (self.defaultTitle && !self.title) {
+    [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+  }
+
+  if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]]) {
+    [(UIScrollView*)self.view setContentInsetBottom:self.toolbarView.height];
+    [(UIScrollView*)self.view setScrollIndicatorInsetBottom:self.toolbarView.height];
+  } else if (self.toolbarView && [self.view isKindOfClass:[UIWebView class]]) {
+    [[(UIWebView*)self.view scrollView] setContentInsetBottom:self.toolbarView.height];
+    [[(UIWebView*)self.view scrollView] setScrollIndicatorInsetBottom:self.toolbarView.height];
+  }
 }
 
 -(void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    DLogClassAndMethod();
-    [self configureForCurrentContentSizeCategory];
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
+  [super viewWillAppear:animated];
+  DLogClassAndMethod();
+  [self configureForCurrentContentSizeCategory];
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    DLogClassAndMethod();
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
+  [super viewDidAppear:animated];
+  DLogClassAndMethod();
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    DLogClassAndMethod();
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
+  [super viewWillDisappear:animated];
+  DLogClassAndMethod();
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    DLogClassAndMethod();
-    [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
+  [super viewDidDisappear:animated];
+  DLogClassAndMethod();
+  [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
 }
 
 -(void) viewDidLayoutSubviews {
