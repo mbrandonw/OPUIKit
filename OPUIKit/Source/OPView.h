@@ -9,19 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "OPStyleProtocol.h"
 #import "OPUIKitBlockDefinitions.h"
-
-extern NSString * const OPViewDrawingBaseColorKey;
-extern NSString * const OPViewDrawingBaseGradientKey;
-extern NSString * const OPViewDrawingGradientAmountKey;
-extern NSString * const OPViewDrawingInvertedKey;
-extern NSString * const OPViewDrawingBorderColorKey;
-extern NSString * const OPViewDrawingCornerRadiusKey;
-extern NSString * const OPViewDrawingBevelKey;
-extern NSString * const OPViewDrawingBevelInnerColorKey;
-extern NSString * const OPViewDrawingBevelOuterColorKey;
-extern NSString * const OPViewDrawingBevelBorderColorKey;
+#import "OPViewController.h"
 
 @interface OPView : UIView <OPStyleProtocol>
+
+@property (nonatomic, weak) OPViewController *controller;
 
 @property (nonatomic, strong) UIColor *blurTintColor;
 -(void) setBlurStyle:(UIBarStyle)style;
@@ -32,11 +24,5 @@ extern NSString * const OPViewDrawingBevelBorderColorKey;
 
 -(void) configureForContentSizeCategory:(NSString*)category;
 +(void) configureForContentSizeCategory:(NSString*)category;
-
-/**
- Some fancy custom drawing blocks.
- */
-+(OPViewDrawingBlock) roundedRectDrawingBlocksWithOptions:(NSDictionary*)options;
-+(OPViewDrawingBlock) roundedBackRectDrawingBlocksWithOptions:(NSDictionary*)options;
 
 @end

@@ -13,6 +13,7 @@
 #import "UIViewController+Opetopic.h"
 #import "UIViewController+OPUIKit.h"
 #import "OPNavigationController.h"
+#import "OPView.h"
 #import "OPMacros.h"
 #import "Quartz+Opetopic.h"
 
@@ -92,10 +93,23 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark View lifecycle
 #pragma mark -
 
++(Class) viewClass {
+  return nil;
+}
+
 -(void) loadView {
   [super loadView];
   DLogClassAndMethod();
   [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.loadView object:self];
+
+  Class viewClass = [[self class] viewClass];
+  if (viewClass) {
+    OPView *view = [[viewClass alloc] initWithFrame:self.view.frame];
+    self.view = view;
+    if ([view respondsToSelector:@selector(setController:)]) {
+      view.controller = self;
+    }
+  }
 }
 
 -(void) viewDidLoad {

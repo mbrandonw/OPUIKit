@@ -7,12 +7,16 @@
 //
 
 #import "OPScrollViewController.h"
+#import "OPScrollView.h"
 
 @interface OPScrollViewController (/**/)
-@property (nonatomic, strong, readwrite) UIScrollView *scrollView;
 @end
 
 @implementation OPScrollViewController
+
++(Class) viewClass {
+  return nil;
+}
 
 -(id) init {
   if (! (self = [super init])) {
@@ -34,9 +38,16 @@
 
 -(void) loadView {
   [super loadView];
-  self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-  self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleAll;
-  [self.view addSubview:self.scrollView];
+
+  Class viewClass = [[self class] viewClass];
+  if (! viewClass || ! [viewClass isSubclassOfClass:[UIScrollView class]]) {
+    self.view = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleAll;
+  }
+}
+
+-(UIScrollView*) scrollView {
+  return [self.view typedAs:[UIScrollView class]];
 }
 
 -(void) updateInsetsForKeyboard:(NSNotification*)notification {
