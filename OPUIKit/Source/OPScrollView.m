@@ -20,6 +20,10 @@
 
 @implementation OPScrollView
 
++(void) initialize {
+  [[self class] configureForCurrentContentSizeCategory];
+}
+
 -(id) initWithFrame:(CGRect)frame {
   if (! (self = [super initWithFrame:frame])) {
     return nil;
@@ -39,6 +43,10 @@
   if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
   }
+}
+
+-(void) willMoveToSuperview:(UIView *)newSuperview {
+  [self configureForCurrentContentSizeCategory];
 }
 
 #pragma mark -
