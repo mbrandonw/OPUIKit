@@ -134,14 +134,6 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
     self.view.backgroundColor = [UIColor whiteColor];
   }
 
-  // set the default navigation item title view
-  if (self.defaultTitleImage && !self.navigationItem.titleView) {
-    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-  }
-  if (self.defaultTitle && !self.title) {
-    [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
-  }
-
   if (self.toolbarView && [self.view isKindOfClass:[UIScrollView class]]) {
     [(UIScrollView*)self.view setContentInsetBottom:self.toolbarView.height];
     [(UIScrollView*)self.view setScrollIndicatorInsetBottom:self.toolbarView.height];
@@ -156,6 +148,14 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
   DLogClassAndMethod();
   [self configureForCurrentContentSizeCategory];
   [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillAppear object:self];
+
+  // set the default navigation item title view
+  if (self.defaultTitleImage && !self.navigationItem.titleView && !self.title) {
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
+  }
+  if (self.defaultTitle && !self.navigationItem.titleView && !self.title) {
+    [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+  }
 }
 
 -(void) viewDidAppear:(BOOL)animated {

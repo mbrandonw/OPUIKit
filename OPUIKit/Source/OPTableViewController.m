@@ -184,13 +184,7 @@
         self.view.backgroundColor = self.backgroundColor;
     else
         self.view.backgroundColor = self.tableView.style == UITableViewStylePlain ? [UIColor whiteColor] : [UIColor groupTableViewBackgroundColor];
-    
-    // set up default navigation item title view
-    if (self.defaultTitleImage && !self.navigationItem.titleView)
-        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
-    if (self.defaultTitle && !self.title)
-        [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
-    
+
     if (self.toolbarView) {
         self.tableView.contentInsetBottom += self.toolbarView.height;
         self.tableView.scrollIndicatorInsetBottom += self.toolbarView.height;
@@ -217,6 +211,13 @@
     }
 
   [self updateCellScrollRatios];
+
+  // set up default navigation item title view
+  if (self.defaultTitleImage && !self.navigationItem.titleView && !self.title) {
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:self.defaultTitleImage];
+  } else if (self.defaultTitle && !self.navigationItem.titleView && !self.title) {
+    [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
+  }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
