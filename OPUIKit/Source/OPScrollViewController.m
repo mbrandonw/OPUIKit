@@ -8,15 +8,12 @@
 
 #import "OPScrollViewController.h"
 #import "OPScrollView.h"
+#import "UIViewController+OPUIKit.h"
 
 @interface OPScrollViewController (/**/)
 @end
 
 @implementation OPScrollViewController
-
-+(Class) viewClass {
-  return nil;
-}
 
 -(id) init {
   if (! (self = [super init])) {

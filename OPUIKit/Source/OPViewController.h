@@ -20,8 +20,6 @@ extern const struct OPViewControllerNotifications {
 
 @interface OPViewController : UIViewController <OPStyleProtocol>
 
-+(Class) viewClass;
-
 /**
  Called when the preferred content size is changed in user's settings.
  */

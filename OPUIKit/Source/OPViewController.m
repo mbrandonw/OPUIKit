@@ -93,10 +93,6 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark View lifecycle
 #pragma mark -
 
-+(Class) viewClass {
-  return nil;
-}
-
 -(void) loadView {
   [super loadView];
   DLogClassAndMethod();

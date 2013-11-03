@@ -24,4 +24,11 @@
 
 -(BOOL) walkViewControllerHierarchy:(void(^)(UIViewController *controller, BOOL *stop))block;
 
+/**
+ Extracts the Class return type from the "view" property. Used
+ in OPViewController and OPScrollViewController for providing
+ custom views.
+ */
++(Class) viewClass;
+
 @end
