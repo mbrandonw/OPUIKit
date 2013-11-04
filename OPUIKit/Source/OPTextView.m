@@ -7,19 +7,22 @@
 //
 
 #import "OPTextView.h"
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 
-@interface OPTextView (/**/)
+@interface OPTextView (/**/) <EKEventEditViewDelegate>
 @property (nonatomic, strong, readwrite) UILabel *placeholderLabel;
 -(void) updatePlaceholderLabel;
 @end
 
 @implementation OPTextView
 
-@synthesize placeholderLabel = _placeholderLabel;
-
 -(id) init {
-  if (! (self = [super init]))
+  if (! (self = [super init])) {
     return nil;
+  }
+
+  self.delegate = self;
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:nil];
 
@@ -40,8 +43,7 @@
 }
 
 -(UILabel*) placeholderLabel {
-  if (! _placeholderLabel)
-  {
+  if (! _placeholderLabel) {
     self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0f,8.0f,self.bounds.size.width - 16.0f,0)];
     _placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _placeholderLabel.numberOfLines = 0;
@@ -62,19 +64,137 @@
 }
 
 -(void) updatePlaceholderLabel {
+  // update placeholder only if we are actually using it.
+  if (_placeholderLabel) {
+    [self.placeholderLabel sizeToFit];
+    [self addSubview:self.placeholderLabel];
+    [self bringSubviewToFront:self.placeholderLabel];
+    self.placeholderLabel.left = self.placeholderLabel.top = 8.0f;
 
-  [self.placeholderLabel sizeToFit];
-  [self addSubview:self.placeholderLabel];
-  [self bringSubviewToFront:self.placeholderLabel];
-  self.placeholderLabel.left = self.placeholderLabel.top = 8.0f;
-
-  // hide place holder label when there is text in the view
-  self.placeholderLabel.hidden = ([self.text length] > 0);
+    // hide place holder label when there is text in the view
+    self.placeholderLabel.hidden = ([self.text length] > 0);
+  }
 }
 
 -(void) layoutSubviews {
   [super layoutSubviews];
   [self updatePlaceholderLabel];
+}
+
+-(void) setAttributedTextWithPlainText:(NSString*)plainText
+                         dataDetectors:(UIDataDetectorTypes)dataDetectorTypes
+                     defaultAttributes:(NSDictionary*)defaultAttributes
+                        linkAttributes:(NSDictionary*)linkAttributes {
+
+  linkAttributes = [defaultAttributes merge:linkAttributes];
+
+  NSTextCheckingTypes textCheckingTypes = 0;
+  if (dataDetectorTypes | UIDataDetectorTypeAddress) {
+    textCheckingTypes |= NSTextCheckingTypeAddress;
+  }
+  if (dataDetectorTypes | UIDataDetectorTypeCalendarEvent) {
+    textCheckingTypes |= NSTextCheckingTypeDate;
+  }
+  if (dataDetectorTypes | UIDataDetectorTypeLink) {
+    textCheckingTypes |= NSTextCheckingTypeLink;
+  }
+  if (dataDetectorTypes | UIDataDetectorTypePhoneNumber) {
+    textCheckingTypes |= NSTextCheckingTypePhoneNumber;
+  }
+
+  NSString *key = [NSString stringWithFormat:@"UITextView_Opetopic_DataDetector_%llu", textCheckingTypes];
+  NSMutableDictionary *threadDictionary = [[NSThread currentThread] threadDictionary];
+  NSDataDetector *detector = threadDictionary[key] = threadDictionary[key] ?: [NSDataDetector dataDetectorWithTypes:textCheckingTypes error:NULL];
+
+  NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:plainText attributes:defaultAttributes];
+  [text beginEditing];
+
+  [[detector matchesInString:plainText options:0] enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
+
+    if (match.resultType == NSTextCheckingTypeLink) {
+      [text addAttribute:NSLinkAttributeName value:match.URL range:match.range];
+    } else if (match.resultType == NSTextCheckingTypePhoneNumber) {
+      [text addAttribute:NSLinkAttributeName value:$url($strfmt(@"tel://%@", match.phoneNumber)) range:match.range];
+    } else if (match.resultType == NSTextCheckingTypeAddress) {
+      // compile all the address components into one big string
+      NSString *address = [[NSString stringWithFormat:@"%@, %@, %@ %@, %@, %@",
+                            match.addressComponents[NSTextCheckingNameKey] ?: @"",
+                            match.addressComponents[NSTextCheckingStreetKey] ?: @"",
+                            match.addressComponents[NSTextCheckingCityKey] ?: @"",
+                            match.addressComponents[NSTextCheckingStateKey] ?: @"",
+                            match.addressComponents[NSTextCheckingZIPKey] ?: @"",
+                            match.addressComponents[NSTextCheckingCountryKey] ?: @""]
+                           stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+      if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"comgooglemaps://"]]) {
+        [text addAttribute:NSLinkAttributeName
+                     value:[NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?q=%@", address]]
+                     range:match.range];
+      } else {
+        [text addAttribute:NSLinkAttributeName
+                     value:[NSURL URLWithString:[NSString stringWithFormat:@"http://maps.apple.com/?q=%@", address]]
+                     range:match.range];
+      }
+    } else if (match.resultType == NSTextCheckingTypeDate) {
+
+      [text addAttribute:NSLinkAttributeName
+                   value:[NSURL URLWithString:[NSString stringWithFormat:@"op_cal://?date=%f&duration=%f&time_zone_name=%@", [match.date timeIntervalSince1970], match.duration, match.timeZone.name]]
+                   range:match.range];
+    }
+
+    [text addAttributes:linkAttributes range:match.range];
+  }];
+
+  [text endEditing];
+  self.attributedText = text;
+}
+
+#pragma mark -
+#pragma mark UITextViewDelegate methods
+#pragma mark -
+
+-(BOOL) textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+
+  if ([URL.absoluteString hasPrefix:@"op_cal://"] && NSClassFromString(@"EKEvent")) {
+
+    NSDictionary *params = [URL queryParameters];
+
+    EKEventStore *eventStore = [EKEventStore new];
+    EKEvent *event = [EKEvent eventWithEventStore:eventStore];
+    event.startDate = [NSDate dateWithTimeIntervalSince1970:[params[@"date"] doubleValue]];
+    event.endDate = [event.startDate dateByAddingTimeInterval:[params[@"duration"] doubleValue]];
+    event.timeZone = event.timeZone ?: [NSTimeZone timeZoneWithName:params[@"time_zone_name"]];
+
+    EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
+    controller.event = event;
+    controller.eventStore = eventStore;
+    controller.editViewDelegate = self;
+    [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+      // NB: delaying this presentation for one run loop helps the animation
+      // to always play. Before it was sometimes just skipping animation and
+      // going straight to the screen.
+      dispatch_next_runloop(^{
+        UIViewController *root = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+        [root presentViewController:controller animated:YES completion:nil];
+      });
+    }];
+
+    return NO;
+  }
+
+  return [[UIApplication sharedApplication] openURL:URL];
+}
+
+#pragma mark -
+#pragma mark EKEventEditViewDelegate methods
+#pragma mark -
+
+-(void) eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
+
+  // NB: Same here as above.
+  dispatch_next_runloop(^{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+  });
 }
 
 @end
