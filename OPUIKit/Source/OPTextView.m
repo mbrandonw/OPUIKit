@@ -18,58 +18,58 @@
 @synthesize placeholderLabel = _placeholderLabel;
 
 -(id) init {
-    if (! (self = [super init]))
-        return nil;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:nil];
-    
-    return self;
+  if (! (self = [super init]))
+    return nil;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:nil];
+
+  return self;
 }
 
 -(id) initWithFrame:(CGRect)frame {
-    if (! (self = [super initWithFrame:frame]))
-        return nil;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:nil];
-    
-    return self;
+  if (! (self = [super initWithFrame:frame]))
+    return nil;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:nil];
+
+  return self;
 }
 
 -(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
 }
 
 -(UILabel*) placeholderLabel {
-    if (! _placeholderLabel)
-    {
-        self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0f,8.0f,self.bounds.size.width - 16.0f,0)];
-        _placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _placeholderLabel.numberOfLines = 0;
-        _placeholderLabel.font = self.font;
-        _placeholderLabel.backgroundColor = [UIColor clearColor];
-        _placeholderLabel.textColor = [UIColor grayColor];
-    }
-    return _placeholderLabel;
+  if (! _placeholderLabel)
+  {
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0f,8.0f,self.bounds.size.width - 16.0f,0)];
+    _placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _placeholderLabel.numberOfLines = 0;
+    _placeholderLabel.font = self.font;
+    _placeholderLabel.backgroundColor = [UIColor clearColor];
+    _placeholderLabel.textColor = [UIColor grayColor];
+  }
+  return _placeholderLabel;
 }
 
 -(void) setText:(NSString *)text {
-    [super setText:text];
-    [self updatePlaceholderLabel];
+  [super setText:text];
+  [self updatePlaceholderLabel];
 }
 
 -(void) textDidChange:(NSNotification*)notification {
-    [self updatePlaceholderLabel];
+  [self updatePlaceholderLabel];
 }
 
 -(void) updatePlaceholderLabel {
-    
-    [self.placeholderLabel sizeToFit];
-    [self addSubview:self.placeholderLabel];
-    [self bringSubviewToFront:self.placeholderLabel];
+
+  [self.placeholderLabel sizeToFit];
+  [self addSubview:self.placeholderLabel];
+  [self bringSubviewToFront:self.placeholderLabel];
   self.placeholderLabel.left = self.placeholderLabel.top = 8.0f;
 
-    // hide place holder label when there is text in the view
-    self.placeholderLabel.hidden = ([self.text length] > 0);
+  // hide place holder label when there is text in the view
+  self.placeholderLabel.hidden = ([self.text length] > 0);
 }
 
 -(void) layoutSubviews {
