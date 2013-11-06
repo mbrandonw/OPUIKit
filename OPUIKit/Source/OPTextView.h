@@ -18,6 +18,9 @@
  */
 -(void) setAttributedTextWithPlainText:(NSString*)plainText
                          dataDetectors:(UIDataDetectorTypes)dataDetectorTypes
+                     defaultAttributes:(NSDictionary*)defaultAttributes;
+-(void) setAttributedTextWithPlainText:(NSString*)plainText
+                         dataDetectors:(UIDataDetectorTypes)dataDetectorTypes
                      defaultAttributes:(NSDictionary*)defaultAttributes
                         linkAttributes:(NSDictionary*)linkAttributes;
 

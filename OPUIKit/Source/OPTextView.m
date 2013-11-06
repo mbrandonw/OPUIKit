@@ -81,12 +81,22 @@
   [self updatePlaceholderLabel];
 }
 
+
+-(void) setAttributedTextWithPlainText:(NSString*)plainText
+                         dataDetectors:(UIDataDetectorTypes)dataDetectorTypes
+                     defaultAttributes:(NSDictionary*)defaultAttributes {
+  [self setAttributedTextWithPlainText:plainText
+                         dataDetectors:dataDetectorTypes
+                     defaultAttributes:defaultAttributes
+                        linkAttributes:[UIDevice isiOS7OrLater] ? self.linkTextAttributes : @{}];
+}
+
 -(void) setAttributedTextWithPlainText:(NSString*)plainText
                          dataDetectors:(UIDataDetectorTypes)dataDetectorTypes
                      defaultAttributes:(NSDictionary*)defaultAttributes
                         linkAttributes:(NSDictionary*)linkAttributes {
 
-  linkAttributes = [defaultAttributes merge:linkAttributes];
+  linkAttributes = linkAttributes ?: @{};
 
   NSTextCheckingTypes textCheckingTypes = 0;
   if (dataDetectorTypes | UIDataDetectorTypeAddress) {
