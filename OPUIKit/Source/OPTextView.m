@@ -121,11 +121,11 @@
 
   [[detector matchesInString:plainText options:0] enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
 
-    if (match.resultType == NSTextCheckingTypeLink) {
+    if (match.resultType == NSTextCheckingTypeLink && match.URL) {
       [text addAttribute:NSLinkAttributeName value:match.URL range:match.range];
-    } else if (match.resultType == NSTextCheckingTypePhoneNumber) {
+    } else if (match.resultType == NSTextCheckingTypePhoneNumber && match.phoneNumber) {
       [text addAttribute:NSLinkAttributeName value:$url($strfmt(@"tel://%@", match.phoneNumber)) range:match.range];
-    } else if (match.resultType == NSTextCheckingTypeAddress) {
+    } else if (match.resultType == NSTextCheckingTypeAddress && match.addressComponents) {
       // compile all the address components into one big string
       NSString *address = [[NSString stringWithFormat:@"%@, %@, %@ %@, %@, %@",
                             match.addressComponents[NSTextCheckingNameKey] ?: @"",
@@ -136,16 +136,18 @@
                             match.addressComponents[NSTextCheckingCountryKey] ?: @""]
                            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
+      // prefer the native google maps app if it is installed.
       if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"comgooglemaps://"]]) {
         [text addAttribute:NSLinkAttributeName
                      value:[NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?q=%@", address]]
                      range:match.range];
       } else {
+        // fall back to apple maps :-(
         [text addAttribute:NSLinkAttributeName
                      value:[NSURL URLWithString:[NSString stringWithFormat:@"http://maps.apple.com/?q=%@", address]]
                      range:match.range];
       }
-    } else if (match.resultType == NSTextCheckingTypeDate) {
+    } else if (match.resultType == NSTextCheckingTypeDate && match.date) {
 
       [text addAttribute:NSLinkAttributeName
                    value:[NSURL URLWithString:[NSString stringWithFormat:@"op_cal://?date=%f&duration=%f&time_zone_name=%@", [match.date timeIntervalSince1970], match.duration, match.timeZone.name]]
@@ -201,7 +203,7 @@
 
 -(void) eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
 
-  // NB: Same here as above.
+  // NB: This dispatch is here for the same reason as above.
   dispatch_next_runloop(^{
     [controller dismissViewControllerAnimated:YES completion:nil];
   });
