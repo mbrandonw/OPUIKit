@@ -43,6 +43,8 @@
   if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
   }
+
+  self.delegate = nil;
 }
 
 -(void) willMoveToSuperview:(UIView *)newSuperview {

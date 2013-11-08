@@ -115,8 +115,10 @@
 }
 
 -(void) dealloc {
-  self.tableView.delegate = nil;
-  self.tableView.dataSource = nil;
+  if ([self isViewLoaded]) {
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+  }
 
   _fetchedResultsController.delegate = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
