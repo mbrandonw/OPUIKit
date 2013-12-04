@@ -120,11 +120,12 @@
   [text beginEditing];
 
   [[detector matchesInString:plainText options:0] enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
+    id dataValue = nil;
 
     if (match.resultType == NSTextCheckingTypeLink && match.URL) {
-      [text addAttribute:NSLinkAttributeName value:match.URL range:match.range];
+      dataValue = match.URL;
     } else if (match.resultType == NSTextCheckingTypePhoneNumber && match.phoneNumber) {
-      [text addAttribute:NSLinkAttributeName value:$url($strfmt(@"tel://%@", match.phoneNumber)) range:match.range];
+      dataValue = $url($strfmt(@"tel://%@", match.phoneNumber));
     } else if (match.resultType == NSTextCheckingTypeAddress && match.addressComponents) {
       // compile all the address components into one big string
       NSString *address = [[NSString stringWithFormat:@"%@, %@, %@ %@, %@, %@",
@@ -138,23 +139,19 @@
 
       // prefer the native google maps app if it is installed.
       if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"comgooglemaps://"]]) {
-        [text addAttribute:NSLinkAttributeName
-                     value:[NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?q=%@", address]]
-                     range:match.range];
+        dataValue = [NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?q=%@", address]];
       } else {
         // fall back to apple maps :-(
-        [text addAttribute:NSLinkAttributeName
-                     value:[NSURL URLWithString:[NSString stringWithFormat:@"http://maps.apple.com/?q=%@", address]]
-                     range:match.range];
+        dataValue = [NSURL URLWithString:[NSString stringWithFormat:@"http://maps.apple.com/?q=%@", address]];
       }
     } else if (match.resultType == NSTextCheckingTypeDate && match.date) {
-
-      [text addAttribute:NSLinkAttributeName
-                   value:[NSURL URLWithString:[NSString stringWithFormat:@"op_cal://?date=%f&duration=%f&time_zone_name=%@", [match.date timeIntervalSince1970], match.duration, match.timeZone.name]]
-                   range:match.range];
+      dataValue = [NSURL URLWithString:[NSString stringWithFormat:@"op_cal://?date=%f&duration=%f&time_zone_name=%@", [match.date timeIntervalSince1970], match.duration, match.timeZone.name]];
     }
 
-    [text addAttributes:linkAttributes range:match.range];
+    if (dataValue && NSIntersectionRange(match.range, [text.string fullRange]).length > 0) {
+      [text addAttribute:NSLinkAttributeName value:dataValue range:match.range];
+      [text addAttributes:linkAttributes range:match.range];
+    }
   }];
 
   [text endEditing];
