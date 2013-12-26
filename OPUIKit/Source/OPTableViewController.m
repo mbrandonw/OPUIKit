@@ -631,23 +631,6 @@
   }
 }
 
-#pragma mark -
-#pragma mark UIRefreshControl methods
-#pragma mark -
-
--(UIRefreshControl*) refreshControl {
-    if ([UITableViewController instancesRespondToSelector:@selector(refreshControl)]) {
-        return [super refreshControl];
-    }
-    return nil;
-}
-
--(void) setRefreshControl:(UIRefreshControl *)refreshControl {
-    if ([UITableViewController instancesRespondToSelector:@selector(setRefreshControl:)]) {
-        [super setRefreshControl:refreshControl];
-    }
-}
-
 @end
 
 
