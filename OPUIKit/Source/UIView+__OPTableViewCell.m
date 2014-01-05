@@ -110,4 +110,29 @@
   return objc_getAssociatedObject(self, @selector(tableCellView));
 }
 
+#pragma mark -
+#pragma mark Cell size methods
+#pragma mark -
+
+-(CGSize) cellSizeWithAutolayout {
+  [self layoutIfNeeded];
+  CGSize size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  return (CGSize){
+    ceilf(size.width),
+    ceilf(size.height)
+  };
+}
+
+-(CGSize) cellSizeWithManualLayout {
+  [self layoutIfNeeded];
+  CGFloat height = 0;
+  for (UIView *subview in self.subviews) {
+    height = MAX(height, subview.bottom);
+  }
+  return (CGSize){
+    self.bounds.size.width,
+    ceilf(height)
+  };
+}
+
 @end

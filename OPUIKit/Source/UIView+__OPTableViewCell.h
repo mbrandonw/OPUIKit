@@ -26,6 +26,22 @@
 @property (nonatomic, strong) __OPTableViewCell *tableCellView;
 
 /**
+ Subclasses can implement this method to bypass calculating
+ cell size based on autolayout.
+ */
+-(CGSize) cellSize;
+
+/**
+ Subclasses can implement this method to
+ */
+-(CGSize) estimatedCellSize;
+
+/**
+ */
+-(CGSize) cellSizeWithAutolayout;
+-(CGSize) cellSizeWithManualLayout;
+
+/**
  Subclasses can implement these methods. They are all optional.
  */
 -(BOOL) cellCanSelect;

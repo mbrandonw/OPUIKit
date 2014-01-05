@@ -12,6 +12,7 @@
 
 @interface __OPTableViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
+-(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @implementation __OPTableViewController
@@ -94,24 +95,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
 
-  UIView *metricCellView = self.metricsCellViews[cellClass];
-  if (! metricCellView) {
-    metricCellView = [cellClass new];
-    [tableView addSubview:metricCellView];
-    metricCellView.hidden = YES;
-    self.metricsCellViews[(id<NSCopying>)cellClass] = metricCellView;
+  if ([metricCellView respondsToSelector:@selector(cellSize)]) {
+    return ceilf(metricCellView.cellSize.height) + 1.0f;
   }
 
-  metricCellView.width = tableView.bounds.size.width;
-  metricCellView.height = 9999.0f;
+  return ceilf(metricCellView.cellSizeWithAutolayout.height);
+}
 
-  [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
-  [metricCellView layoutIfNeeded];
-  CGSize size = [metricCellView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  return roundf(size.height) + 1.0f;
+  UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
+
+  if ([metricCellView respondsToSelector:@selector(estimatedCellSize)]) {
+    return ceilf(metricCellView.estimatedCellSize.height);
+  }
+
+  return UITableViewAutomaticDimension;
 }
 
 #pragma mark -
@@ -123,6 +124,24 @@
     _metricsCellViews = [NSMutableDictionary new];
   }
   return _metricsCellViews;
+}
+
+-(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath {
+
+  Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
+
+  UIView *metricCellView = self.metricsCellViews[cellClass];
+  if (! metricCellView) {
+    metricCellView = [[cellClass alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
+    metricCellView.hidden = YES;
+    self.metricsCellViews[(id<NSCopying>)cellClass] = metricCellView;
+  }
+
+  metricCellView.width = tableView.bounds.size.width;
+  metricCellView.height = 10000.0f;
+  [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
+
+  return metricCellView;
 }
 
 @end

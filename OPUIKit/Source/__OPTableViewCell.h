@@ -13,8 +13,6 @@
 @property (nonatomic, strong, readonly) UIView *cellView;
 @property (nonatomic, readonly) Class cellClass;
 
-//+(Class) subclassWithCellClass:(Class)cellClass;
-
 -(id) initWithViewClass:(Class)viewClass reuseIdentifier:(NSString *)reuseIdentifier;
 
 @end
