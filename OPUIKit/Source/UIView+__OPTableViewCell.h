@@ -32,7 +32,8 @@
 -(CGSize) cellSize;
 
 /**
- Subclasses can implement this method to
+ Subclasses can implement this method to provide a quick
+ estimation of the size of the cell.
  */
 -(CGSize) estimatedCellSize;
 
@@ -46,6 +47,21 @@
  */
 -(BOOL) cellCanSelect;
 -(BOOL) cellDidSelect;
+
+/**
+ Called when the object representing the cell changes. Optional.
+ */
 -(void) cellObjectChanged;
+
+/**
+ Implement this to do any last minute work just before the cell
+ is displayed, e.g. loading images. Optional.
+ */
+-(void) cellWillDisplay;
+
+/**
+ */
++(void) configureForContentSizeCategory:(NSString*)contentSize;
+-(void) configureForContentSizeCategory:(NSString*)contentSize;
 
 @end

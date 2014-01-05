@@ -32,4 +32,9 @@
  */
 -(void) tableView:(UITableView*)tableView configureCellView:(UIView*)cellView atIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ */
++(void) configureForContentSizeCategory:(NSString*)contentSize;
+-(void) configureForContentSizeCategory:(NSString*)contentSize;
+
 @end

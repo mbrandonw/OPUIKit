@@ -8,14 +8,72 @@
 
 #import "__OPTableViewController.h"
 #import "__OPTableViewCell.h"
+#import "OPEnumerable.h"
 #import "UIView+__OPTableViewCell.h"
 
 @interface __OPTableViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
 -(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
+
+// helper methods for dealing with content size
+@property (nonatomic, strong) NSString *lastContentSizeCategory;
+-(void) configureForCurrentContentSizeCategory;
 @end
 
 @implementation __OPTableViewController
+
+#pragma mark -
+#pragma mark Object lifecycle methods
+#pragma mark -
+
+-(id) init {
+  if (! (self = [super init])) {
+    return nil;
+  }
+
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(preferredContentSizeChanged:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+  }
+
+  return self;
+}
+
+-(void) dealloc {
+
+  // This is just extra precaution. It seems sometimes delegates can
+  // get left over, causing bad method calls.
+  if ([self isViewLoaded]) {
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+  }
+
+  _tableResults.delegate = nil;
+
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+  }
+}
+
+#pragma mark -
+#pragma mark View lifecycle methods
+#pragma mark -
+
+-(void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self configureForCurrentContentSizeCategory];
+}
+
+-(void) viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
+  [self configureForCurrentContentSizeCategory];
+}
+
+#pragma mark -
+#pragma mark UITableView methods
+#pragma mark -
 
 -(Class) tableView:(UITableView *)tableView classForRowAtIndexPath:(NSIndexPath *)indexPath {
   return [UITableViewCell class];
@@ -93,6 +151,12 @@
   return cell;
 }
 
+-(void) tableView:(UITableView*)tableView willDisplayCell:(__OPTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
+  if ([cell.cellView respondsToSelector:@selector(cellWillDisplay)]) {
+    [cell.cellView cellWillDisplay];
+  }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
@@ -116,8 +180,44 @@
 }
 
 #pragma mark -
+#pragma mark Content size methods
+#pragma mark -
+
+-(void) preferredContentSizeChanged:(NSNotification*)notification {
+  dispatch_next_runloop(^{
+    [self configureForCurrentContentSizeCategory];
+  });
+}
+
+-(void) configureForContentSizeCategory:(NSString *)category {
+  if ([self isViewLoaded] && [self isViewVisible]) {
+    [self.tableView reloadData];
+  }
+}
+
++(void) configureForContentSizeCategory:(NSString *)category {
+}
+
+#pragma mark -
 #pragma mark Private methods
 #pragma mark -
+
+-(void) configureForCurrentContentSizeCategory {
+  // Make sure to call the public facing content size methods
+  // only when the content size actually changes.
+
+  NSString *currentContentSizeCategory = @"";
+  if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+    currentContentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+  }
+
+  if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
+    self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
+
+    [self.class configureForContentSizeCategory:currentContentSizeCategory];
+    [self configureForContentSizeCategory:currentContentSizeCategory];
+  }
+}
 
 -(NSMutableDictionary*) metricsCellViews {
   if (! _metricsCellViews) {
@@ -135,6 +235,17 @@
     metricCellView = [[cellClass alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
     metricCellView.hidden = YES;
     self.metricsCellViews[(id<NSCopying>)cellClass] = metricCellView;
+
+    NSString *contentSize = @"";
+    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
+      contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
+    }
+    if ([metricCellView.class respondsToSelector:@selector(configureForContentSizeCategory:)]) {
+      [metricCellView.class configureForContentSizeCategory:contentSize];
+    }
+    if ([metricCellView respondsToSelector:@selector(configureForContentSizeCategory:)]) {
+      [metricCellView configureForContentSizeCategory:contentSize];
+    }
   }
 
   metricCellView.width = tableView.bounds.size.width;
