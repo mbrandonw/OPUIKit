@@ -127,7 +127,9 @@
   [self layoutIfNeeded];
   CGFloat height = 0;
   for (UIView *subview in self.subviews) {
-    height = MAX(height, subview.bottom);
+    if (subview.alpha > 0.0f && !subview.hidden) {
+      height = MAX(height, subview.bottom);
+    }
   }
   return (CGSize){
     self.bounds.size.width,

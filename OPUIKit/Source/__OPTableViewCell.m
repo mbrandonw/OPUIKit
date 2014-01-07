@@ -71,10 +71,6 @@
   if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
     self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
 
-    if ([self.cellView.class respondsToSelector:@selector(configureForContentSizeCategory:)]) {
-      [self.cellView.class configureForContentSizeCategory:currentContentSizeCategory];
-    }
-
     if ([self.cellView respondsToSelector:@selector(configureForContentSizeCategory:)]) {
       [self.cellView configureForContentSizeCategory:currentContentSizeCategory];
     }

@@ -18,10 +18,6 @@ static NSInteger drawingBlocksContext;
 @interface OPView (/**/)
 -(void) __init;
 
-@property (nonatomic, strong) UIToolbar *blurToolbar;
-@property (nonatomic, strong) CALayer *blurLayer;
-@property (nonatomic, strong) UIView *blurView;
-
 @property (nonatomic, strong) NSString *lastContentSizeCategory;
 -(void) configureForCurrentContentSizeCategory;
 +(void) configureForCurrentContentSizeCategory;
@@ -109,13 +105,6 @@ static NSInteger drawingBlocksContext;
   [self configureForCurrentContentSizeCategory];
 }
 
--(void) didAddSubview:(UIView *)subview {
-  [super didAddSubview:subview];
-  if (subview != _blurView) {
-    [self sendSubviewToBack:_blurView];
-  }
-}
-
 #pragma mark -
 #pragma mark Drawing and layout
 #pragma mark -
@@ -127,49 +116,6 @@ static NSInteger drawingBlocksContext;
   for (OPViewDrawingBlock block in self.drawingBlocks) {
     block(self, rect, c);
   }
-}
-
--(void) setBlurTintColor:(UIColor *)blurTintColor {
-
-  if ([UIDevice isiOS7OrLater]) {
-    _blurTintColor = blurTintColor;
-    self.blurToolbar.barTintColor = blurTintColor;
-    self.backgroundColor = [UIColor clearColor];
-  }
-}
-
--(void) setBlurStyle:(UIBarStyle)style {
-  if ([UIDevice isiOS7OrLater]) {
-    [self.blurToolbar setBarStyle:UIBarStyleBlack];
-    self.backgroundColor = [UIColor clearColor];
-  }
-}
-
--(void) removeBlurTintColor {
-  [_blurView removeFromSuperview];
-  _blurView = nil;
-  _blurToolbar = nil;
-  _blurLayer = nil;
-}
-
--(void) layoutSubviews {
-  [super layoutSubviews];
-  _blurView.frame = self.bounds;
-  _blurLayer.frame = self.bounds;
-}
-
--(UIToolbar*) blurToolbar {
-  if (! _blurToolbar) {
-    _blurToolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
-    _blurLayer = _blurToolbar.layer;
-    _blurView = [UIView viewWithFrame:self.bounds];
-    _blurView.userInteractionEnabled = NO;
-    [_blurView.layer addSublayer:_blurLayer];
-    _blurView.autoresizingMask = UIViewAutoresizingFlexibleAll;
-    _blurView.clipsToBounds = YES;
-    [self addSubview:_blurView];
-  }
-  return _blurToolbar;
 }
 
 #pragma mark -

@@ -7,17 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OPStyleProtocol.h"
 #import "OPUIKitBlockDefinitions.h"
-#import "OPViewController.h"
+#import "OPStyleProtocol.h"
 
 @interface OPView : UIView <OPStyleProtocol>
 
-@property (nonatomic, weak) OPViewController *controller;
-
-@property (nonatomic, strong) UIColor *blurTintColor;
--(void) setBlurStyle:(UIBarStyle)style;
--(void) removeBlurTintColor;
+@property (nonatomic, weak) UIViewController *controller;
 
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
 -(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;

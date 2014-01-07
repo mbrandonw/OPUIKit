@@ -195,9 +195,6 @@
   }
 }
 
-+(void) configureForContentSizeCategory:(NSString *)category {
-}
-
 #pragma mark -
 #pragma mark Private methods
 #pragma mark -
@@ -214,7 +211,6 @@
   if (! currentContentSizeCategory || ! [self.lastContentSizeCategory isEqualToString:currentContentSizeCategory]) {
     self.lastContentSizeCategory = currentContentSizeCategory ?: @"";
 
-    [self.class configureForContentSizeCategory:currentContentSizeCategory];
     [self configureForContentSizeCategory:currentContentSizeCategory];
   }
 }
@@ -239,9 +235,6 @@
     NSString *contentSize = @"";
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
       contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
-    }
-    if ([metricCellView.class respondsToSelector:@selector(configureForContentSizeCategory:)]) {
-      [metricCellView.class configureForContentSizeCategory:contentSize];
     }
     if ([metricCellView respondsToSelector:@selector(configureForContentSizeCategory:)]) {
       [metricCellView configureForContentSizeCategory:contentSize];

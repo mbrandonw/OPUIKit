@@ -23,23 +23,30 @@
 @property (nonatomic, assign) BOOL cellSectionIsLast;
 @property (nonatomic, assign) BOOL cellSectionIsEven;
 @property (nonatomic, strong) NSIndexPath *cellIndexPath;
-@property (nonatomic, strong) __OPTableViewCell *tableCellView;
+@property (nonatomic, weak) __OPTableViewCell *tableCellView;
 
 /**
- Subclasses can implement this method to bypass calculating
+ @b Optional: Subclasses can implement this method to bypass calculating
  cell size based on autolayout.
  */
 -(CGSize) cellSize;
 
 /**
- Subclasses can implement this method to provide a quick
+ @b Optional: Subclasses can implement this method to provide a quick
  estimation of the size of the cell.
  */
 -(CGSize) estimatedCellSize;
 
 /**
+ Performs a layout and then returns the size of the view.
  */
 -(CGSize) cellSizeWithAutolayout;
+
+/**
+ Performs a layout, and then returns the small size containing
+ all visible subviews. Visiable in this sense means hidden=NO
+ and alpha>0.
+ */
 -(CGSize) cellSizeWithManualLayout;
 
 /**
@@ -61,7 +68,6 @@
 
 /**
  */
-+(void) configureForContentSizeCategory:(NSString*)contentSize;
 -(void) configureForContentSizeCategory:(NSString*)contentSize;
 
 @end

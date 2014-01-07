@@ -34,7 +34,6 @@
 
 /**
  */
-+(void) configureForContentSizeCategory:(NSString*)contentSize;
 -(void) configureForContentSizeCategory:(NSString*)contentSize;
 
 @end
