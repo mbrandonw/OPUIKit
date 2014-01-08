@@ -16,9 +16,12 @@
 
 -(void) setCellObject:(id)cellObject {
   objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
   if ([self respondsToSelector:@selector(cellObjectChanged)]) {
     [self cellObjectChanged];
+  }
+
+  for (UIView *subview in self.subviews) {
+    subview.cellObject = cellObject;
   }
 
   [self setNeedsDisplay];
