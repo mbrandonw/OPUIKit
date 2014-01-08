@@ -61,6 +61,11 @@
 #pragma mark View lifecycle methods
 #pragma mark -
 
+-(void) viewDidLoad {
+  [super viewDidLoad];
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   [self configureForCurrentContentSizeCategory];
@@ -162,7 +167,7 @@
   UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
 
   if ([metricCellView respondsToSelector:@selector(cellSize)]) {
-    return ceilf(metricCellView.cellSize.height) + 1.0f;
+    return ceilf(metricCellView.cellSize.height);
   }
 
   return ceilf(metricCellView.cellSizeWithAutolayout.height);
