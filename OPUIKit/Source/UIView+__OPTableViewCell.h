@@ -35,7 +35,7 @@
  @b Optional: Subclasses can implement this method to provide a quick
  estimation of the size of the cell.
  */
--(CGSize) estimatedCellSize;
++(CGSize) estimatedCellSize;
 
 /**
  Performs a layout and then returns the size of the view.

@@ -81,10 +81,11 @@
 #pragma mark -
 
 -(Class) tableView:(UITableView *)tableView classForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return [UITableViewCell class];
+  return [UIView class];
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+
   if (self.tableResults) {
     return self.tableResults.sections.count;
   } else if (self.tableData) {
@@ -94,11 +95,12 @@
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
   if (self.tableResults) {
     BOOL condition = section < self.tableResults.sections.count;
     NSAssert(condition, @"");
     if (condition) {
-      return [self.tableResults.sections[section] count];
+      return [self.tableResults.sections[section] numberOfObjects];
     }
   } else if (self.tableData) {
     BOOL condition = section < self.tableData.count;
@@ -113,7 +115,7 @@
 -(id) tableView:(UITableView *)tableView objectForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   if (self.tableResults) {
-    BOOL condition = indexPath.section < self.tableResults.sections.count && indexPath.row < [self.tableResults.sections[indexPath.section] count];
+    BOOL condition = indexPath.section < self.tableResults.sections.count && indexPath.row < [self.tableResults.sections[indexPath.section] numberOfObjects];
     if (condition) {
       return [self.tableResults objectAtIndexPath:indexPath];
     }
@@ -146,7 +148,7 @@
   Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
   NSString *reuseIdentifier = NSStringFromClass(cellClass);
 
-  __OPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+  __OPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
   if (! cell) {
     cell = [[__OPTableViewCell alloc] initWithViewClass:cellClass reuseIdentifier:reuseIdentifier];
   }
@@ -157,28 +159,36 @@
 }
 
 -(void) tableView:(UITableView*)tableView willDisplayCell:(__OPTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
+
+  [cell.cellView layoutIfNeeded];
+
   if ([cell.cellView respondsToSelector:@selector(cellWillDisplay)]) {
     [cell.cellView cellWillDisplay];
   }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 400.0f;
 
   UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
+
+  metricCellView.width = tableView.bounds.size.width;
+  metricCellView.height = 10000.0f;
+  [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
+  [metricCellView layoutIfNeeded];
 
   if ([metricCellView respondsToSelector:@selector(cellSize)]) {
     return ceilf(metricCellView.cellSize.height);
   }
 
-  return ceilf(metricCellView.cellSizeWithAutolayout.height);
+  return ceilf(metricCellView.cellSizeWithManualLayout.height);
 }
 
 -(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
-
-  if ([metricCellView respondsToSelector:@selector(estimatedCellSize)]) {
-    return ceilf(metricCellView.estimatedCellSize.height);
+  Class viewClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  if ([viewClass respondsToSelector:@selector(estimatedCellSize)]) {
+    return ceilf([viewClass estimatedCellSize].height);
   }
 
   return UITableViewAutomaticDimension;
@@ -229,28 +239,10 @@
 
 -(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath {
 
-  Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  id class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  self.metricsCellViews[class] = self.metricsCellViews[class] ?: [[class alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
 
-  UIView *metricCellView = self.metricsCellViews[cellClass];
-  if (! metricCellView) {
-    metricCellView = [[cellClass alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
-    metricCellView.hidden = YES;
-    self.metricsCellViews[(id<NSCopying>)cellClass] = metricCellView;
-
-    NSString *contentSize = @"";
-    if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
-      contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
-    }
-    if ([metricCellView respondsToSelector:@selector(configureForContentSizeCategory:)]) {
-      [metricCellView configureForContentSizeCategory:contentSize];
-    }
-  }
-
-  metricCellView.width = tableView.bounds.size.width;
-  metricCellView.height = 10000.0f;
-  [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
-
-  return metricCellView;
+  return self.metricsCellViews[class];
 }
 
 @end
