@@ -15,6 +15,10 @@
 @implementation UIView (__OPTableViewCell)
 
 -(void) setCellObject:(id)cellObject {
+//  [self setNeedsDisplay];
+//  [self setNeedsLayout];
+//  [self setNeedsUpdateConstraints];
+
   objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   if ([self respondsToSelector:@selector(cellObjectChanged)]) {
     [self cellObjectChanged];
@@ -23,10 +27,6 @@
   for (UIView *subview in self.subviews) {
     subview.cellObject = cellObject;
   }
-
-  [self setNeedsDisplay];
-  [self setNeedsLayout];
-  [self setNeedsUpdateConstraints];
 }
 
 -(id) cellObject {
@@ -118,7 +118,7 @@
 #pragma mark -
 
 -(CGSize) cellSizeWithAutolayout {
-  [self layoutIfNeeded];
+  [self layoutSubviews];
   CGSize size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
   return (CGSize){
     ceilf(size.width),
@@ -127,7 +127,7 @@
 }
 
 -(CGSize) cellSizeWithManualLayout {
-  [self layoutIfNeeded];
+  [self layoutSubviews];
   CGFloat height = 0;
   for (UIView *subview in self.subviews) {
     if (subview.alpha > 0.01f && !subview.hidden) {
