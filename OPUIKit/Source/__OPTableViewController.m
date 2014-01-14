@@ -77,11 +77,23 @@
 }
 
 #pragma mark -
+#pragma mark Convenience methods
+#pragma mark -
+
+-(void) clearTableData {
+  [self.tableData makeObjectsPerformSelector:@selector(removeAllObjects)];
+}
+
+#pragma mark -
 #pragma mark UITableView methods
 #pragma mark -
 
 -(Class) tableView:(UITableView *)tableView classForRowAtIndexPath:(NSIndexPath *)indexPath {
   return [UIView class];
+}
+
+-(UIEdgeInsets) tableView:(UITableView*)tableView cellInsetsForRowAtIndexPath:(NSIndexPath*)indexPath {
+  return UIEdgeInsetsZero;
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -91,7 +103,7 @@
   } else if (self.tableData) {
     return self.tableData.count;
   }
-  return 1;
+  return 0;
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -116,11 +128,13 @@
 
   if (self.tableResults) {
     BOOL condition = indexPath.section < self.tableResults.sections.count && indexPath.row < [self.tableResults.sections[indexPath.section] numberOfObjects];
+    NSAssert(condition, @"");
     if (condition) {
       return [self.tableResults objectAtIndexPath:indexPath];
     }
   } else if (self.tableData) {
     BOOL condition = indexPath.section < self.tableData.count && indexPath.row < [self.tableData[indexPath.section] count];
+    NSAssert(condition, @"");
     if (condition) {
       return self.tableData[indexPath.section][indexPath.row];
     }
@@ -160,35 +174,44 @@
 
 -(void) tableView:(UITableView*)tableView willDisplayCell:(__OPTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
 
+  UIEdgeInsets insets = [self tableView:tableView cellInsetsForRowAtIndexPath:indexPath];
+  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.bounds, insets);
+
   if ([cell.cellView respondsToSelector:@selector(cellWillDisplay)]) {
     [cell.cellView cellWillDisplay];
   }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  CGFloat height = 0.0f;
 
   UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
 
-  metricCellView.width = tableView.bounds.size.width;
+  UIEdgeInsets insets = [self tableView:tableView cellInsetsForRowAtIndexPath:indexPath];
+  height += insets.top + insets.bottom;
+
+  metricCellView.width = tableView.bounds.size.width - insets.left - insets.right;
   metricCellView.height = 10000.0f;
   [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
 
   if ([metricCellView respondsToSelector:@selector(cellSize)]) {
-    return ceilf(metricCellView.cellSize.height);
+    height += ceilf(metricCellView.cellSize.height);
+  } else {
+    height += ceilf(metricCellView.cellSizeWithManualLayout.height);
   }
-
-  return ceilf(metricCellView.cellSizeWithManualLayout.height);
+  
+  return height;
 }
 
--(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  Class viewClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
-  if ([viewClass respondsToSelector:@selector(estimatedCellSize)]) {
-    return ceilf([viewClass estimatedCellSize].height);
-  }
-
-  return UITableViewAutomaticDimension;
-}
+//-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//  Class viewClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
+//  if ([viewClass respondsToSelector:@selector(estimatedCellSize)]) {
+//    return ceilf([viewClass estimatedCellSize].height);
+//  }
+//
+//  return UITableViewAutomaticDimension;
+//}
 
 #pragma mark -
 #pragma mark Content size methods

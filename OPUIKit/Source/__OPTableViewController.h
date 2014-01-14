@@ -11,13 +11,23 @@
 @interface __OPTableViewController : UITableViewController
 
 @property (nonatomic, strong) NSFetchedResultsController *tableResults;
-@property (nonatomic, strong) NSArray *tableData;
+@property (nonatomic, strong) NSMutableArray *tableData;
+
+/**
+ A convenience method that simply removes all objects
+ from subsets.
+ */
+-(void) clearTableData;
 
 /**
  Returns the class of the UIView that represents the cell
  at the specified index path.
  */
 -(Class) tableView:(UITableView*)tableView classForRowAtIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ */
+-(UIEdgeInsets) tableView:(UITableView*)tableView cellInsetsForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
  Returns the object that represents the cell at the 

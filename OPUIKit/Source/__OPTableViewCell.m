@@ -28,6 +28,7 @@
 
   self.cellView = [[viewClass alloc] initWithFrame:self.contentView.bounds];
   self.cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  self.cellView.frame = CGRectInset(self.cellView.frame, 120.0f, 0.0f);
   [self.contentView addSubview:self.cellView];
 
   self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
