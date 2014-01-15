@@ -92,7 +92,7 @@
   return [UIView class];
 }
 
--(UIEdgeInsets) tableView:(UITableView*)tableView cellInsetsForRowAtIndexPath:(NSIndexPath*)indexPath {
+-(UIEdgeInsets) tableView:(UITableView*)tableView insetsForRowAtIndexPath:(NSIndexPath*)indexPath {
   return UIEdgeInsetsZero;
 }
 
@@ -169,17 +169,16 @@
 
   [self tableView:tableView configureCellView:cell.cellView atIndexPath:indexPath];
 
-  return cell;
-}
-
--(void) tableView:(UITableView*)tableView willDisplayCell:(__OPTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
-
-  UIEdgeInsets insets = [self tableView:tableView cellInsetsForRowAtIndexPath:indexPath];
+  UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
   cell.cellView.frame = UIEdgeInsetsInsetRect(cell.bounds, insets);
 
-  if ([cell.cellView respondsToSelector:@selector(cellWillDisplay)]) {
-    [cell.cellView cellWillDisplay];
-  }
+  [cell.cellView traverseSelfAndSubviews:^(UIView *subview) {
+    if ([subview respondsToSelector:@selector(cellWillDisplay)]) {
+      [subview cellWillDisplay];
+    }
+  }];
+  
+  return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -187,7 +186,7 @@
 
   UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
 
-  UIEdgeInsets insets = [self tableView:tableView cellInsetsForRowAtIndexPath:indexPath];
+  UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
   height += insets.top + insets.bottom;
 
   metricCellView.width = tableView.bounds.size.width - insets.left - insets.right;

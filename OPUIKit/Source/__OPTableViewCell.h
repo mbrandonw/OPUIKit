@@ -11,7 +11,6 @@
 @interface __OPTableViewCell : UITableViewCell
 
 @property (nonatomic, strong, readonly) UIView *cellView;
-@property (nonatomic, readonly) Class cellClass;
 
 -(id) initWithViewClass:(Class)viewClass reuseIdentifier:(NSString *)reuseIdentifier;
 

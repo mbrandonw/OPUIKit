@@ -67,6 +67,11 @@
 -(void) cellWillDisplay;
 
 /**
+ @b Optional: Called when the cell is about to be reused.
+ */
+-(void) prepareForReuse;
+
+/**
  */
 -(void) configureForContentSizeCategory:(NSString*)contentSize;
 

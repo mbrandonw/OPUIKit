@@ -27,7 +27,7 @@
 
 /**
  */
--(UIEdgeInsets) tableView:(UITableView*)tableView cellInsetsForRowAtIndexPath:(NSIndexPath*)indexPath;
+-(UIEdgeInsets) tableView:(UITableView*)tableView insetsForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
  Returns the object that represents the cell at the 

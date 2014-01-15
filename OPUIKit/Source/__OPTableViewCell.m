@@ -28,7 +28,6 @@
 
   self.cellView = [[viewClass alloc] initWithFrame:self.contentView.bounds];
   self.cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  self.cellView.frame = CGRectInset(self.cellView.frame, 120.0f, 0.0f);
   [self.contentView addSubview:self.cellView];
 
   self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -49,6 +48,17 @@
   if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
   }
+}
+#pragma mark -
+#pragma mark Content size methods
+#pragma mark -
+
+-(void) prepareForReuse {
+  [self traverseSubviews:^(UIView *subview) {
+    if ([subview respondsToSelector:@selector(prepareForReuse)]) {
+      [subview prepareForReuse];
+    }
+  }];
 }
 
 #pragma mark -
