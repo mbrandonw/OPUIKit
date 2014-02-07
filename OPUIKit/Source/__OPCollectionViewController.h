@@ -30,6 +30,10 @@
 -(UIEdgeInsets) collectionView:(UICollectionView*)collectionView insetsForCellAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
+ */
+-(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath;
+
+/**
  Returns the object that represents the cell at the
  specified index path.
  */

@@ -11,6 +11,11 @@
 #import "__OPCollectionViewCell.h"
 #import "OPExtensionKit.h"
 
+@interface __OPCollectionViewController (/**/) <UICollectionViewDelegateFlowLayout>
+@property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
+-(UIView*) collectionView:(UICollectionView*)collectionView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
+@end
+
 @implementation __OPCollectionViewController
 
 #pragma mark -
@@ -55,6 +60,15 @@
 
 -(UIEdgeInsets) collectionView:(UICollectionView *)collectionView insetsForCellAtIndexPath:(NSIndexPath *)indexPath {
   return UIEdgeInsetsZero;
+}
+
+-(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(self.collectionView.collectionViewLayout, UICollectionViewFlowLayout);
+  if (layout) {
+    return layout.itemSize.width;
+  }
+  return 320.0f;
 }
 
 -(NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -130,7 +144,11 @@
     cell.cellViewClass = cellClass;
   }
 
+  UIEdgeInsets insets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
+  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.contentView.bounds, insets);
+
   [self collectionView:collectionView configureCellView:cell.cellView atIndexPath:indexPath];
+
   [cell.cellView traverseSelfAndSubviews:^(UIView *subview) {
     if ([subview respondsToSelector:@selector(cellWillDisplay)]) {
       [subview cellWillDisplay];
@@ -170,5 +188,89 @@
 //  
 //  return height;
 //}
+
+#pragma mark -
+#pragma mark UICollectionViewFlowLayout methods
+#pragma mark -
+
+-(CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  UIView *metricCellView = [self collectionView:collectionView metricCellViewForRowAtIndexPath:indexPath];
+
+  UIEdgeInsets insets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
+  CGSize size = {
+    [self collectionView:collectionView widthForCellAtIndexPath:indexPath],
+    insets.top + insets.bottom,
+  };
+
+  metricCellView.width = size.width;
+  metricCellView.height = 10000.0f;
+  [self collectionView:collectionView configureCellView:metricCellView atIndexPath:indexPath];
+
+  if ([metricCellView respondsToSelector:@selector(cellSize)]) {
+    size.height += ceilf(metricCellView.cellSize.height);
+  } else {
+    size.height += ceilf(metricCellView.cellSizeWithManualLayout.height);
+  }
+
+  size.width += insets.left + insets.right;
+  return size;
+}
+
+-(UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(collectionViewLayout, UICollectionViewFlowLayout);
+  return layout.sectionInset;
+}
+
+-(CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(collectionViewLayout, UICollectionViewFlowLayout);
+  return layout.minimumInteritemSpacing;
+}
+
+-(CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(collectionViewLayout, UICollectionViewFlowLayout);
+  return layout.minimumLineSpacing;
+}
+
+-(CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(collectionViewLayout, UICollectionViewFlowLayout);
+  return layout.footerReferenceSize;
+}
+
+-(CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+
+  UICollectionViewFlowLayout *layout = OPTypedAs(collectionViewLayout, UICollectionViewFlowLayout);
+  return layout.headerReferenceSize;
+}
+
+#pragma mark -
+#pragma mark Accessor methods
+#pragma mark -
+
+-(NSMutableDictionary*) metricsCellViews {
+  if (! _metricsCellViews) {
+    _metricsCellViews = [NSMutableDictionary new];
+  }
+  return _metricsCellViews;
+}
+
+#pragma mark -
+#pragma mark Private methods
+#pragma mark -
+
+-(UIView*) collectionView:(UICollectionView*)collectionView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath {
+
+  id class = [self collectionView:collectionView classForCellAtIndexPath:indexPath];
+
+  if (! self.metricsCellViews[class]) {
+    self.metricsCellViews[class] = [[class alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
+  }
+
+  return self.metricsCellViews[class];
+}
 
 @end

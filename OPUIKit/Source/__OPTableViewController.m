@@ -167,10 +167,10 @@
     cell = [[__OPTableViewCell alloc] initWithViewClass:cellClass reuseIdentifier:reuseIdentifier];
   }
 
-  [self tableView:tableView configureCellView:cell.cellView atIndexPath:indexPath];
-
   UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
-  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.bounds, insets);
+  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.contentView.bounds, insets);
+
+  [self tableView:tableView configureCellView:cell.cellView atIndexPath:indexPath];
 
   [cell.cellView traverseSelfAndSubviews:^(UIView *subview) {
     if ([subview respondsToSelector:@selector(cellWillDisplay)]) {
