@@ -15,11 +15,17 @@
 @implementation UIView (__OPTableViewCell)
 
 -(void) setCellObject:(id)cellObject {
-//  [self setNeedsDisplay];
-//  [self setNeedsLayout];
-//  [self setNeedsUpdateConstraints];
+  // early out if the object didn't change.
+  id previousCellObject = self.cellObject;
+  if (cellObject == previousCellObject) {
+    return ;
+  }
+
+  [self setNeedsDisplay];
+  [self setNeedsLayout];
 
   objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
   if ([self respondsToSelector:@selector(cellObjectChanged)]) {
     [self cellObjectChanged];
   }
