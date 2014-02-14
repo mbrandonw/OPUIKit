@@ -138,7 +138,7 @@
   NSString *reuseIdentifier = NSStringFromClass(cellClass);
 
   [collectionView registerClass:__OPCollectionViewCell.class forCellWithReuseIdentifier:reuseIdentifier];
-  
+
   __OPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
   if (! cell.cellViewClass) {
     cell.cellViewClass = cellClass;
@@ -157,37 +157,6 @@
 
   return cell;
 }
-
-//-(void) tableView:(UITableView*)tableView willDisplayCell:(__OPTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
-//
-//  UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
-//  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.bounds, insets);
-//
-//  if ([cell.cellView respondsToSelector:@selector(cellWillDisplay)]) {
-//    [cell.cellView cellWillDisplay];
-//  }
-//}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  CGFloat height = 0.0f;
-//
-//  UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
-//
-//  UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
-//  height += insets.top + insets.bottom;
-//
-//  metricCellView.width = tableView.bounds.size.width - insets.left - insets.right;
-//  metricCellView.height = 10000.0f;
-//  [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
-//
-//  if ([metricCellView respondsToSelector:@selector(cellSize)]) {
-//    height += ceilf(metricCellView.cellSize.height);
-//  } else {
-//    height += ceilf(metricCellView.cellSizeWithManualLayout.height);
-//  }
-//  
-//  return height;
-//}
 
 #pragma mark -
 #pragma mark UICollectionViewFlowLayout methods

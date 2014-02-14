@@ -49,6 +49,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
   }
 }
+
 #pragma mark -
 #pragma mark Content size methods
 #pragma mark -
