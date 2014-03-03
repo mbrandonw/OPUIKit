@@ -1,18 +1,17 @@
 //
-//  UIView+__OPTableViewCell.m
+//  UIView+__OPCellView.m
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/3/14.
 //  Copyright (c) 2014 Kickstarter. All rights reserved.
 //
 
-#import "UIView+__OPTableViewCell.h"
-#import "__OPTableViewCell.h"
+#import "UIView+__OPCellView.h"
 #import <objc/runtime.h>
 
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 
-@implementation UIView (__OPTableViewCell)
+@implementation UIView (__OPCellView)
 
 -(void) setCellObject:(id)cellObject {
   // early out if the object didn't change.
@@ -105,18 +104,6 @@
 
 -(NSIndexPath*) cellIndexPath {
   return objc_getAssociatedObject(self, @selector(cellIndexPath));
-}
-
-#pragma mark -
-#pragma mark Table cell methods
-#pragma mark -
-
--(void) setTableCellView:(__OPTableViewCell *)tableCellView {
-  objc_setAssociatedObject(self, @selector(tableCellView), tableCellView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(__OPTableViewCell*) tableCellView {
-  return objc_getAssociatedObject(self, @selector(tableCellView));
 }
 
 #pragma mark -

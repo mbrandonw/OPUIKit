@@ -7,7 +7,7 @@
 //
 
 #import "__OPCollectionViewCell.h"
-#import "UIView+__OPTableViewCell.h"
+#import "UIView+__OPCellView.h"
 #import "OPExtensionKit.h"
 
 @interface __OPCollectionViewCell (/**/)

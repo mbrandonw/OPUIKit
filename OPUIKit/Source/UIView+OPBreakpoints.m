@@ -7,7 +7,7 @@
 //
 
 #import "UIView+OPBreakpoints.h"
-#import "UIView+__OPTableViewCell.h"
+#import "UIView+__OPCellView.h"
 
 @interface UIView (OPBreakpoints_Private)
 @property (nonatomic, strong, readwrite) NSMutableArray *breakpoints;

@@ -1,5 +1,5 @@
 //
-//  UIView+__OPTableViewCell.h
+//  UIView+__OPCellView.h
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/3/14.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class __OPTableViewCell;
+@class __OPCellView;
 
-@interface UIView (__OPTableViewCell)
+@interface UIView (__OPCellView)
 
 /**
  Subclasses should *NOT* override these getters/setters.
@@ -23,7 +23,6 @@
 @property (nonatomic, assign) BOOL cellSectionIsLast;
 @property (nonatomic, assign) BOOL cellSectionIsEven;
 @property (nonatomic, strong) NSIndexPath *cellIndexPath;
-@property (nonatomic, weak) __OPTableViewCell *tableCellView;
 
 /**
  @b Optional: Subclasses can implement this method to bypass calculating

@@ -9,7 +9,7 @@
 #import "__OPTableViewController.h"
 #import "__OPTableViewCell.h"
 #import "OPEnumerable.h"
-#import "UIView+__OPTableViewCell.h"
+#import "UIView+__OPCellView.h"
 
 @interface __OPTableViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
