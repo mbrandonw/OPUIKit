@@ -100,11 +100,10 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 
   Class viewClass = [[self class] viewClass];
   if (viewClass) {
-    OPView *view = [[viewClass alloc] initWithFrame:self.view.frame];
-    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.view = view;
-    if ([view respondsToSelector:@selector(setController:)]) {
-      view.controller = self;
+    self.view = [[viewClass alloc] initWithFrame:self.view.frame];
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if ([self.view respondsToSelector:@selector(setController:)]) {
+      [(id)self.view setController:self];
     }
   }
 }
