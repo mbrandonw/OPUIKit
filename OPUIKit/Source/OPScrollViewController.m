@@ -43,7 +43,7 @@
   Class viewClass = [[self class] viewClass];
   if (! viewClass || ! [viewClass isSubclassOfClass:[UIScrollView class]]) {
     self.view = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleAll;
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   }
 }
 
