@@ -11,6 +11,9 @@
 #import "UIViewController+OPUIKit.h"
 
 @interface OPScrollViewController (/**/)
+@property (nonatomic, assign) CGPoint contentOffsetOnRotation;
+@property (nonatomic, assign) CGSize contentSizeOnRotation;
+@property (nonatomic, assign) CGSize sizeOnRotation;
 @end
 
 @implementation OPScrollViewController
@@ -124,6 +127,30 @@
     return [(id)self.view viewForZoomingInScrollView:scrollView];
   }
   return nil;
+}
+
+#pragma mark -
+#pragma mark Rotation methods
+#pragma mark -
+
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  self.contentOffsetOnRotation = self.scrollView.contentOffset;
+  self.contentSizeOnRotation = self.scrollView.contentSize;
+  self.sizeOnRotation = self.scrollView.bounds.size;
+}
+
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+  self.scrollView.contentOffset = (CGPoint){
+    (self.scrollView.contentSize.width - self.scrollView.bounds.size.width) * self.contentOffsetOnRotation.x / (self.contentSizeOnRotation.width - self.sizeOnRotation.width),
+    (self.scrollView.contentSize.height - self.scrollView.bounds.size.height) * self.contentOffsetOnRotation.y / (self.contentSizeOnRotation.height - self.sizeOnRotation.height),
+  };
+}
+
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  self.contentOffsetOnRotation = CGPointZero;
+  self.contentSizeOnRotation = CGSizeZero;
+  self.sizeOnRotation = CGSizeZero;
 }
 
 @end
