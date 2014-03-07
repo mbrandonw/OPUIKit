@@ -79,6 +79,12 @@
   }
 }
 
+-(void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+  if ([self.view respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]) {
+    [(id)self.view scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+  }
+}
+
 -(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
   if ([self.view respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)]) {
     [(id)self.view scrollViewDidEndScrollingAnimation:scrollView];
