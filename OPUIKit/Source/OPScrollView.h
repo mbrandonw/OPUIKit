@@ -11,7 +11,7 @@
 
 @interface OPScrollView : UIScrollView
 
-@property (nonatomic, weak) OPScrollViewController *controller;
+@property (nonatomic, weak) OPScrollViewController *viewController;
 
 /**
  Set to YES if you want to have a root subview inside the scrollview

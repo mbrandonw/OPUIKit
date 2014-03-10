@@ -12,7 +12,7 @@
 
 @interface OPView : UIView <OPStyleProtocol>
 
-@property (nonatomic, weak) UIViewController *controller;
+@property (nonatomic, weak) UIViewController *viewController;
 
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
 -(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
