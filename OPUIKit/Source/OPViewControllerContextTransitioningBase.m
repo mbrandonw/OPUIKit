@@ -32,26 +32,26 @@
   self.to = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
   [self.from traverseSelfAndChildrenControllers:^(UIViewController *child) {
-    if ([child respondsToSelector:@selector(presentationAnimationStart:)]) {
-      [child presentationAnimationStart:NO];
+    if ([child respondsToSelector:@selector(presentationAnimationStart:duration:)]) {
+      [child presentationAnimationStart:NO duration:[self transitionDuration:transitionContext]];
     }
   }];
 
   [self.from.view traverseSelfAndSubviews:^(UIView *subview) {
-    if ([subview respondsToSelector:@selector(presentationAnimationStart:)]) {
-      [subview presentationAnimationStart:NO];
+    if ([subview respondsToSelector:@selector(presentationAnimationStart:duration:)]) {
+      [subview presentationAnimationStart:NO duration:[self transitionDuration:transitionContext]];
     }
   }];
 
   [self.to traverseSelfAndChildrenControllers:^(UIViewController *child) {
-    if ([child respondsToSelector:@selector(presentationAnimationStart:)]) {
-      [child presentationAnimationStart:YES];
+    if ([child respondsToSelector:@selector(presentationAnimationStart:duration:)]) {
+      [child presentationAnimationStart:YES duration:[self transitionDuration:transitionContext]];
     }
   }];
 
   [self.to.view traverseSelfAndSubviews:^(UIView *subview) {
-    if ([subview respondsToSelector:@selector(presentationAnimationStart:)]) {
-      [subview presentationAnimationStart:YES];
+    if ([subview respondsToSelector:@selector(presentationAnimationStart:duration:)]) {
+      [subview presentationAnimationStart:YES duration:[self transitionDuration:transitionContext]];
     }
   }];
 }
@@ -59,26 +59,26 @@
 -(void) animationEnded:(BOOL)transitionCompleted {
 
   [self.from traverseSelfAndChildrenControllers:^(UIViewController *child) {
-    if ([child respondsToSelector:@selector(presentationAnimationEnded:)]) {
-      [child presentationAnimationEnded:NO];
+    if ([child respondsToSelector:@selector(presentationAnimationEnded:duration:)]) {
+      [child presentationAnimationEnded:NO duration:[self transitionDuration:nil]];
     }
   }];
 
   [self.from.view traverseSelfAndSubviews:^(UIView *subview) {
-    if ([subview respondsToSelector:@selector(presentationAnimationEnded:)]) {
-      [subview presentationAnimationEnded:NO];
+    if ([subview respondsToSelector:@selector(presentationAnimationEnded:duration:)]) {
+      [subview presentationAnimationEnded:NO duration:[self transitionDuration:nil]];
     }
   }];
 
   [self.to traverseSelfAndChildrenControllers:^(UIViewController *child) {
-    if ([child respondsToSelector:@selector(presentationAnimationEnded:)]) {
-      [child presentationAnimationEnded:YES];
+    if ([child respondsToSelector:@selector(presentationAnimationEnded:duration:)]) {
+      [child presentationAnimationEnded:YES duration:[self transitionDuration:nil]];
     }
   }];
 
   [self.to.view traverseSelfAndSubviews:^(UIView *subview) {
-    if ([subview respondsToSelector:@selector(presentationAnimationEnded:)]) {
-      [subview presentationAnimationEnded:YES];
+    if ([subview respondsToSelector:@selector(presentationAnimationEnded:duration:)]) {
+      [subview presentationAnimationEnded:YES duration:[self transitionDuration:nil]];
     }
   }];
 }

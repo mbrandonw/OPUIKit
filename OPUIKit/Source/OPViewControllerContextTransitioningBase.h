@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface UIView (OPViewControllerContextTransitioningBase)
--(void) presentationAnimationStart:(BOOL)isDestination;
--(void) presentationAnimationEnded:(BOOL)isDestination;
+-(void) presentationAnimationStart:(BOOL)isDestination duration:(NSTimeInterval)duration;
+-(void) presentationAnimationEnded:(BOOL)isDestination duration:(NSTimeInterval)duration;
 @end
 
 @interface UIViewController (OPViewControllerContextTransitioningBase)
--(void) presentationAnimationStart:(BOOL)isDestination;
--(void) presentationAnimationEnded:(BOOL)isDestination;
+-(void) presentationAnimationStart:(BOOL)isDestination duration:(NSTimeInterval)duration;
+-(void) presentationAnimationEnded:(BOOL)isDestination duration:(NSTimeInterval)duration;
 @end
 
 @interface OPViewControllerContextTransitioningBase : NSObject <UIViewControllerAnimatedTransitioning>
