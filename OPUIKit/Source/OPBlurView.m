@@ -34,7 +34,7 @@
 
 -(void) setBlurStyle:(UIBarStyle)style {
   if ([UIDevice isiOS7OrLater]) {
-    [self.blurToolbar setBarStyle:UIBarStyleBlack];
+    [self.blurToolbar setBarStyle:style];
     self.backgroundColor = [UIColor clearColor];
   }
 }
