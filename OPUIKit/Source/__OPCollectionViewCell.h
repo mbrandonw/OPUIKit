@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong, readonly) UIView *cellView;
 @property (nonatomic, strong) Class cellViewClass;
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets;
 
 @end

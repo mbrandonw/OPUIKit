@@ -13,6 +13,7 @@
 
 @interface __OPCollectionViewController (/**/) <UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
+-(void) collectionView:(UICollectionView *)collectionView configureCell:(__OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 -(UIView*) collectionView:(UICollectionView*)collectionView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
@@ -117,6 +118,11 @@
   return nil;
 }
 
+-(void) collectionView:(UICollectionView *)collectionView configureCell:(__OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+  cell.contentEdgeInsets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
+  [self collectionView:collectionView configureCellView:cell.cellView atIndexPath:indexPath];
+}
+
 -(void) collectionView:(UICollectionView *)collectionView configureCellView:(UIView *)cellView atIndexPath:(NSIndexPath *)indexPath {
 
   cellView.cellRowIsFirst = indexPath.row == 0;
@@ -132,6 +138,13 @@
   cellView.cellObject = [self collectionView:collectionView objectForCellAtIndexPath:indexPath];
 }
 
+-(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell {
+  NSIndexPath *indexPath = [collectionView indexPathForCell:cell];
+  [self collectionView:collectionView configureCell:cell atIndexPath:indexPath];
+  [cell setNeedsLayout];
+  [cell layoutIfNeeded];
+}
+
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
   Class cellClass = [self collectionView:collectionView classForCellAtIndexPath:indexPath];
@@ -144,10 +157,7 @@
     cell.cellViewClass = cellClass;
   }
 
-  UIEdgeInsets insets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
-  cell.cellView.frame = UIEdgeInsetsInsetRect(cell.contentView.bounds, insets);
-
-  [self collectionView:collectionView configureCellView:cell.cellView atIndexPath:indexPath];
+  [self collectionView:collectionView configureCell:cell atIndexPath:indexPath];
 
   [cell.cellView traverseSelfAndSubviews:^(UIView *subview) {
     if ([subview respondsToSelector:@selector(cellWillDisplay)]) {

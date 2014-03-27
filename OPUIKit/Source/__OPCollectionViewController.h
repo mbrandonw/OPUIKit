@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class __OPCollectionViewCell;
+
 @interface __OPCollectionViewController : UICollectionViewController
 
 @property (nonatomic, strong) NSFetchedResultsController *collectionResults;
@@ -45,5 +47,7 @@
  Implementations must call the super method.
  */
 -(void) collectionView:(UICollectionView*)collectionView configureCellView:(UIView*)cellView atIndexPath:(NSIndexPath*)indexPath;
+
+-(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell;
 
 @end

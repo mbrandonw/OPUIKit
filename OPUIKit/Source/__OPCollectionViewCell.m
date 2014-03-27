@@ -26,6 +26,11 @@
   return self;
 }
 
+-(void) layoutSubviews {
+  [super layoutSubviews];
+  self.cellView.frame = UIEdgeInsetsInsetRect(self.contentView.bounds, self.contentEdgeInsets);
+}
+
 -(void) setCellViewClass:(Class)cellViewClass {
   _cellViewClass = cellViewClass;
 
