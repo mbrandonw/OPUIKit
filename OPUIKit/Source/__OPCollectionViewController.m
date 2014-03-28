@@ -52,6 +52,90 @@
 }
 
 #pragma mark -
+#pragma mark UIScrollViewDelegate methods
+#pragma mark -
+
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
+    [(id)self.view scrollViewDidEndDecelerating:scrollView];
+  }
+}
+
+-(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+  if ([self.view respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+    [(id)self.view scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+  }
+}
+
+-(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)]) {
+    [(id)self.view scrollViewDidEndScrollingAnimation:scrollView];
+  }
+}
+
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
+  if ([self.view respondsToSelector:@selector(scrollViewDidEndZooming:withView:atScale:)]) {
+    [(id)self.view scrollViewDidEndZooming:scrollView withView:view atScale:scale];
+  }
+}
+
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewDidScroll:)]) {
+    [(id)self.view scrollViewDidScroll:scrollView];
+  }
+}
+
+-(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewDidScrollToTop:)]) {
+    [(id)self.view scrollViewDidScrollToTop:scrollView];
+  }
+}
+
+-(void) scrollViewDidZoom:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewDidZoom:)]) {
+    [(id)self.view scrollViewDidZoom:scrollView];
+  }
+}
+
+-(void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewWillBeginDecelerating:)]) {
+    [(id)self.view scrollViewWillBeginDecelerating:scrollView];
+  }
+}
+
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+    [(id)self.view scrollViewWillBeginDragging:scrollView];
+  }
+}
+
+-(void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
+  if ([self.view respondsToSelector:@selector(scrollViewWillBeginZooming:withView:)]) {
+    [(id)self.view scrollViewWillBeginZooming:scrollView withView:view];
+  }
+}
+
+-(void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+  if ([self.view respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]) {
+    [(id)self.view scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+  }
+}
+
+-(BOOL) scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(scrollViewShouldScrollToTop:)]) {
+    return [(id)self.view scrollViewShouldScrollToTop:scrollView];
+  }
+  return YES;
+}
+
+-(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+  if ([self.view respondsToSelector:@selector(viewForZoomingInScrollView:)]) {
+    [(id)self.view viewForZoomingInScrollView:scrollView];
+  }
+  return nil;
+}
+
+#pragma mark -
 #pragma mark UICollectionView methods
 #pragma mark -
 
@@ -119,8 +203,9 @@
 }
 
 -(void) collectionView:(UICollectionView *)collectionView configureCell:(__OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  cell.contentEdgeInsets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
   [self collectionView:collectionView configureCellView:cell.cellView atIndexPath:indexPath];
+  cell.contentEdgeInsets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
+  [cell setNeedsLayout];
 }
 
 -(void) collectionView:(UICollectionView *)collectionView configureCellView:(UIView *)cellView atIndexPath:(NSIndexPath *)indexPath {
@@ -141,8 +226,8 @@
 -(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell {
   NSIndexPath *indexPath = [collectionView indexPathForCell:cell];
   [self collectionView:collectionView configureCell:cell atIndexPath:indexPath];
-  [cell setNeedsLayout];
-  [cell layoutIfNeeded];
+  [cell layoutSubviews];
+  [cell.cellView layoutSubviews];
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
