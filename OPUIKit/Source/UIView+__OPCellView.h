@@ -23,6 +23,8 @@
 @property (nonatomic, assign) BOOL cellSectionIsLast;
 @property (nonatomic, assign) BOOL cellSectionIsEven;
 @property (nonatomic, strong) NSIndexPath *cellIndexPath;
+@property (nonatomic, assign) BOOL cellIsSelected;
+@property (nonatomic, assign) BOOL cellIsHighlighted;
 
 /**
  @b Optional: Subclasses can implement this method to bypass calculating

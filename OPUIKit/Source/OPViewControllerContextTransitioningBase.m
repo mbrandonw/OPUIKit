@@ -17,14 +17,14 @@
 @end
 
 @interface OPViewControllerContextTransitioningBase (/**/)
-@property (nonatomic, weak) UIViewController *from;
-@property (nonatomic, weak) UIViewController *to;
+@property (nonatomic, weak, readwrite) UIViewController *from;
+@property (nonatomic, weak, readwrite) UIViewController *to;
 @end
 
 @implementation OPViewControllerContextTransitioningBase
 
 -(NSTimeInterval) transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-  return 0.0;
+  return self.transitionDuration;
 }
 
 -(void) animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {

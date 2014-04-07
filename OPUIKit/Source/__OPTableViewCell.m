@@ -51,6 +51,26 @@
 }
 
 #pragma mark -
+#pragma mark State methods
+#pragma mark -
+
+-(void) setSelected:(BOOL)selected animated:(BOOL)animated {
+  [super setSelected:selected animated:animated];
+  [self.cellView setCellIsSelected:selected];
+  [self.cellView setNeedsDisplay];
+  [self.cellView setNeedsLayout];
+  [self.cellView cellWillDisplay];
+}
+
+-(void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+  [super setHighlighted:highlighted animated:animated];
+  [self.cellView setCellIsHighlighted:highlighted];
+  [self.cellView setNeedsDisplay];
+  [self.cellView setNeedsLayout];
+  [self.cellView cellWillDisplay];
+}
+
+#pragma mark -
 #pragma mark Content size methods
 #pragma mark -
 

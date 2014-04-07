@@ -19,4 +19,8 @@
 @end
 
 @interface OPViewControllerContextTransitioningBase : NSObject <UIViewControllerAnimatedTransitioning>
+@property (nonatomic, weak, readonly) UIViewController *from;
+@property (nonatomic, weak, readonly) UIViewController *to;
+@property (nonatomic, assign, getter = isPresenting) BOOL presenting;
+@property (nonatomic, assign) NSTimeInterval transitionDuration;
 @end

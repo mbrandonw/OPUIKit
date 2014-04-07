@@ -107,6 +107,26 @@
 }
 
 #pragma mark -
+#pragma mark State methods
+#pragma mark -
+
+-(BOOL) cellIsSelected {
+  return [objc_getAssociatedObject(self, @selector(cellIsSelected)) boolValue];
+}
+
+-(void) setCellIsSelected:(BOOL)selected {
+  objc_setAssociatedObject(self, @selector(cellIsSelected), @(selected), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(BOOL) cellIsHighlighted {
+  return [objc_getAssociatedObject(self, @selector(cellIsHighlighted)) boolValue];
+}
+
+-(void) setCellIsHighlighted:(BOOL)highlighted {
+  objc_setAssociatedObject(self, @selector(cellIsHighlighted), @(highlighted), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+#pragma mark -
 #pragma mark Cell size methods
 #pragma mark -
 
