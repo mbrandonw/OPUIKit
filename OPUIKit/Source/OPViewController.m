@@ -179,6 +179,34 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 }
 
 #pragma mark -
+#pragma mark Overridden methods
+#pragma mark -
+
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+  if ([self.view respondsToSelector:@selector(willRotateToInterfaceOrientation:duration:)]) {
+    [self.view willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+  }
+}
+
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+  if ([self.view respondsToSelector:@selector(willAnimateRotationToInterfaceOrientation:duration:)]) {
+    [self.view willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+  }
+}
+
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+  if ([self.view respondsToSelector:@selector(didRotateFromInterfaceOrientation:)]) {
+    [self.view didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+  }
+}
+
+#pragma mark -
 #pragma mark Preferred content size methods
 #pragma mark -
 
@@ -234,3 +262,9 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 }
 
 @end
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
+@implementation UIView (OPViewController)
+@end
+#pragma clang diagnostic pop

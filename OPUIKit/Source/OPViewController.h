@@ -41,3 +41,9 @@ extern const struct OPViewControllerNotifications {
 +(void) configureForContentSizeCategory:(NSString*)category;
 
 @end
+
+@interface UIView (OPViewController)
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
+@end

@@ -140,12 +140,15 @@
 #pragma mark -
 
 -(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
   self.contentOffsetOnRotation = self.scrollView.contentOffset;
   self.contentSizeOnRotation = self.scrollView.contentSize;
   self.sizeOnRotation = self.scrollView.bounds.size;
 }
 
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
   self.scrollView.contentOffset = (CGPoint){
     (self.scrollView.contentSize.width - self.scrollView.bounds.size.width) * self.contentOffsetOnRotation.x / (self.contentSizeOnRotation.width - self.sizeOnRotation.width),
@@ -154,6 +157,8 @@
 }
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
   self.contentOffsetOnRotation = CGPointZero;
   self.contentSizeOnRotation = CGSizeZero;
   self.sizeOnRotation = CGSizeZero;
