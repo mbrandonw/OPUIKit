@@ -56,18 +56,24 @@
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated {
   [super setSelected:selected animated:animated];
-  [self.cellView setCellIsSelected:selected];
-  [self.cellView setNeedsDisplay];
-  [self.cellView setNeedsLayout];
-  [self.cellView cellWillDisplay];
+
+  if (selected != [self isSelected]) {
+    [self.cellView setCellIsSelected:selected];
+    [self.cellView setNeedsDisplay];
+    [self.cellView setNeedsLayout];
+    [self.cellView cellWillDisplay];
+  }
 }
 
 -(void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
   [super setHighlighted:highlighted animated:animated];
-  [self.cellView setCellIsHighlighted:highlighted];
-  [self.cellView setNeedsDisplay];
-  [self.cellView setNeedsLayout];
-  [self.cellView cellWillDisplay];
+
+  if (highlighted != [self isHighlighted]) {
+    [self.cellView setCellIsHighlighted:highlighted];
+    [self.cellView setNeedsDisplay];
+    [self.cellView setNeedsLayout];
+    [self.cellView cellWillDisplay];
+  }
 }
 
 #pragma mark -
