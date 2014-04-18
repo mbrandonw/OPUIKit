@@ -19,6 +19,7 @@
 @interface OPViewControllerContextTransitioningBase (/**/)
 @property (nonatomic, weak, readwrite) UIViewController *from;
 @property (nonatomic, weak, readwrite) UIViewController *to;
+@property (nonatomic, weak, readwrite) id<UIViewControllerContextTransitioning> transitionContext;
 @end
 
 @implementation OPViewControllerContextTransitioningBase
@@ -28,6 +29,7 @@
 }
 
 -(void) animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
+  self.transitionContext = transitionContext;
   self.from = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
   self.to = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
