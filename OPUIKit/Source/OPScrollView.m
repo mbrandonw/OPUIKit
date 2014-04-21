@@ -24,6 +24,20 @@
   [[self class] configureForCurrentContentSizeCategory];
 }
 
+-(instancetype) initWithViewController:(OPScrollViewController*)viewController {
+  return [self initWithFrame:CGRectZero viewController:viewController];
+}
+
+-(instancetype) initWithFrame:(CGRect)frame viewController:(OPScrollViewController*)viewController {
+  self.viewController = viewController;
+
+  if (! (self = [self initWithFrame:frame])) {
+    return nil;
+  }
+
+  return self;
+}
+
 -(id) initWithFrame:(CGRect)frame {
   if (! (self = [super initWithFrame:frame])) {
     return nil;

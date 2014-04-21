@@ -44,8 +44,12 @@
   [super loadView];
 
   Class viewClass = [[self class] viewClass];
-  if (! viewClass || ! [viewClass isSubclassOfClass:[UIScrollView class]]) {
-    self.view = [[UIScrollView alloc] initWithFrame:self.view.frame];
+  if (! [viewClass isSubclassOfClass:[UIScrollView class]]) {
+    if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
+    } else {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame];
+    }
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   }
 

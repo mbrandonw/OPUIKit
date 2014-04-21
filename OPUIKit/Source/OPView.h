@@ -14,8 +14,11 @@
 
 @property (nonatomic, weak) UIViewController *viewController;
 
--(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
--(id) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
+-(instancetype) initWithViewController:(UIViewController*)viewController;
+-(instancetype) initWithFrame:(CGRect)frame viewController:(UIViewController*)viewController;
+
+-(instancetype) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock;
+-(instancetype) initWithFrame:(CGRect)rect drawingBlock:(OPViewDrawingBlock)drawingBlock;
 
 -(void) configureForContentSizeCategory:(NSString*)category;
 +(void) configureForContentSizeCategory:(NSString*)category;

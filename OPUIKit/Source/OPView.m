@@ -36,6 +36,20 @@ static NSInteger drawingBlocksContext;
   [[self class] configureForCurrentContentSizeCategory];
 }
 
+-(instancetype) initWithViewController:(UIViewController*)viewController {
+  return [self initWithFrame:CGRectZero viewController:viewController];
+}
+
+-(instancetype) initWithFrame:(CGRect)frame viewController:(UIViewController*)viewController {
+  self.viewController = viewController;
+
+  if (! (self = [self initWithFrame:frame])) {
+    return nil;
+  }
+
+  return self;
+}
+
 -(id) initWithDrawingBlock:(OPViewDrawingBlock)drawingBlock {
   if (! (self = [self initWithFrame:CGRectZero])) {
     return nil;

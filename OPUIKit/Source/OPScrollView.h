@@ -13,6 +13,9 @@
 
 @property (nonatomic, weak) OPScrollViewController *viewController;
 
+-(instancetype) initWithViewController:(OPScrollViewController*)viewController;
+-(instancetype) initWithFrame:(CGRect)frame viewController:(OPScrollViewController*)viewController;
+
 /**
  Set to YES if you want to have a root subview inside the scrollview
  which contains all other subviews. Can be useful when wanting to
