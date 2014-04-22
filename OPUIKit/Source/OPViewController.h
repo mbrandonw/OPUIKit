@@ -43,6 +43,10 @@ extern const struct OPViewControllerNotifications {
 @end
 
 @interface UIView (OPViewController)
+-(void) viewWillAppear:(BOOL)animated;
+-(void) viewDidAppear:(BOOL)animated;
+-(void) viewWillDisappear:(BOOL)animated;
+-(void) viewDidDisappear:(BOOL)animated;
 -(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;

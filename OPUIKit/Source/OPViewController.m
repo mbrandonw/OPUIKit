@@ -154,24 +154,40 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
   if (self.defaultTitle && !self.navigationItem.titleView && !self.title) {
     [self setTitle:self.defaultTitle subtitle:self.defaultSubtitle];
   }
+
+  if ([self.view respondsToSelector:@selector(viewWillAppear:)]) {
+    [self.view viewWillAppear:animated];
+  }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   DLogClassAndMethod();
   [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidAppear object:self];
+
+  if ([self.view respondsToSelector:@selector(viewDidAppear:)]) {
+    [self.view viewDidAppear:animated];
+  }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   DLogClassAndMethod();
   [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewWillDisappear object:self];
+
+  if ([self.view respondsToSelector:@selector(viewWillDisappear:)]) {
+    [self.view viewWillDisappear:animated];
+  }
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
   [super viewDidDisappear:animated];
   DLogClassAndMethod();
   [[NSNotificationCenter defaultCenter] postNotificationName:OPViewControllerNotifications.viewDidDisappear object:self];
+
+  if ([self.view respondsToSelector:@selector(viewDidDisappear:)]) {
+    [self.view viewDidDisappear:animated];
+  }
 }
 
 -(void) viewDidLayoutSubviews {
