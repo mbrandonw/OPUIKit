@@ -8,7 +8,7 @@
 
 #import "OPWebViewController.h"
 
-@interface OPWebViewController ()
+@interface OPWebViewController () <UIScrollViewDelegate>
 
 @end
 
@@ -30,6 +30,7 @@
   }
 
   self.webView.delegate = self;
+  self.webView.scrollView.delegate = self;
 }
 
 -(UIWebView*) webView {
@@ -54,6 +55,51 @@
 
 -(BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
   return YES;
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate methods
+#pragma mark -
+
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+}
+
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+}
+
+-(void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+}
+
+-(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+}
+
+-(BOOL) scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+  return YES;
+}
+
+-(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+}
+
+-(void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+}
+
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+}
+
+-(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+  return nil;
+}
+
+-(void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
+}
+
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
+}
+
+-(void) scrollViewDidZoom:(UIScrollView *)scrollView {
+}
+
+-(void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
 }
 
 @end
