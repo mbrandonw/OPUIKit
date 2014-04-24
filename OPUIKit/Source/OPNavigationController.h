@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "OPStyle.h"
 
-@protocol OPNavigationChildControllerProtocol <NSObject>
--(void) navigationController:(UINavigationController*)controller isPoppingSelf:(BOOL)animated;
-@end
-
 @interface OPNavigationController : UINavigationController <UINavigationControllerDelegate, OPStyleProtocol>
 
 // initialization methods (don't use any of the alloc+init methods)
