@@ -623,9 +623,7 @@
     // TODO: fix this hackiness. If I do the right thing and use topLayoutGuide, then
     // a weird bug appears where everytime you drill down to content the table view
     // scrolls back to the top.
-    if ([UIDevice isiOS7OrLater]) {
-      y -= 64.0f;
-    }
+    y -= 64.0f;
 
     [OPTypedAs(cell, OPTableViewCell) setScrollRatio:-y / cell.height];
   }

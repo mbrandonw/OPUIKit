@@ -11,11 +11,15 @@
 @implementation OPTextField
 
 -(void) drawPlaceholderInRect:(CGRect)rect {
-  [self.placeholderTextColor setFill];
+
+  NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+  style.alignment = self.textAlignment;
+
   [self.placeholder drawInRect:rect
-                      withFont:self.font
-                 lineBreakMode:NSLineBreakByTruncatingTail
-                     alignment:self.textAlignment];
+                withAttributes:@{NSFontAttributeName: self.font,
+                                 NSParagraphStyleAttributeName: style,
+                                 NSForegroundColorAttributeName: self.placeholderTextColor}];
+
 }
 
 @end
