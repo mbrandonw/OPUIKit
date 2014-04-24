@@ -72,4 +72,14 @@
   [self layoutToolbarView];
 }
 
+#pragma mark -
+#pragma mark UINavigationControllerDelegate methods
+#pragma mark -
+
+-(void) navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+}
+
+-(void) navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+}
+
 @end
