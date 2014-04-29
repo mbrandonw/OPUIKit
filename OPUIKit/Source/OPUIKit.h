@@ -41,6 +41,7 @@
 #import "OPScrollView.h"
 #import "OPBlurView.h"
 #import "UIView+__OPCellView.h"
+#import "OPViewControllerContextTransitioningBase.h"
 #import "__OPTableViewCell.h"
 #import "__OPTableViewController.h"
 #import "__OPCollectionViewCell.h"
