@@ -85,4 +85,8 @@
   }];
 }
 
+-(BOOL) isPresenting {
+  return self.to.isBeingPresented;
+}
+
 @end
