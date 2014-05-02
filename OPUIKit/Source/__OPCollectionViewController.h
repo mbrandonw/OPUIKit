@@ -10,7 +10,31 @@
 
 @class __OPCollectionViewCell;
 
-@interface __OPCollectionViewController : UICollectionViewController
+@protocol OPCollectionViewDataSource <UICollectionViewDataSource>
+/**
+ Returns the class of the UIView that represents the cell
+ at the specified index path.
+ */
+-(Class) collectionView:(UICollectionView*)collectionView classForCellAtIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ Returns the object that represents the cell at the
+ specified index path.
+ */
+-(id) collectionView:(UICollectionView*)collectionView objectForCellAtIndexPath:(NSIndexPath*)indexPath;
+@end
+
+@protocol OPCollectionViewDelegate <UICollectionViewDelegate>
+/**
+ */
+-(UIEdgeInsets) collectionView:(UICollectionView*)collectionView insetsForCellAtIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ */
+-(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath;
+@end
+
+@interface __OPCollectionViewController : UICollectionViewController <OPCollectionViewDataSource, OPCollectionViewDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *collectionResults;
 @property (nonatomic, strong) NSMutableArray *collectionData;
@@ -22,32 +46,14 @@
 -(void) clearCollectionData;
 
 /**
- Returns the class of the UIView that represents the cell
- at the specified index path.
- */
--(Class) collectionView:(UICollectionView*)collectionView classForCellAtIndexPath:(NSIndexPath*)indexPath;
-
-/**
- */
--(UIEdgeInsets) collectionView:(UICollectionView*)collectionView insetsForCellAtIndexPath:(NSIndexPath*)indexPath;
-
-/**
- */
--(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath;
-
-/**
- Returns the object that represents the cell at the
- specified index path.
- */
--(id) collectionView:(UICollectionView*)collectionView objectForCellAtIndexPath:(NSIndexPath*)indexPath;
-
-/**
  Any cell customization that needs to be done in the controller
  should be implemented here and not in cellForItemAtIndexPath.
  Implementations must call the super method.
  */
 -(void) collectionView:(UICollectionView*)collectionView configureCellView:(UIView*)cellView atIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ */
 -(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell;
 
 @end
