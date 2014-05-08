@@ -10,7 +10,7 @@
 
 @interface __OPCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong, readonly) UIView *cellView;
+@property (nonatomic, strong, readwrite) UIView *cellView;
 @property (nonatomic, strong) Class cellViewClass;
 @property (nonatomic, assign) UIEdgeInsets contentEdgeInsets;
 

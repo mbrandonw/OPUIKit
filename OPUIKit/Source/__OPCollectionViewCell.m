@@ -11,7 +11,6 @@
 #import "OPExtensionKit.h"
 
 @interface __OPCollectionViewCell (/**/)
-@property (nonatomic, strong, readwrite) UIView *cellView;
 @end
 
 @implementation __OPCollectionViewCell
@@ -38,6 +37,12 @@
   self.cellView = [[_cellViewClass alloc] initWithFrame:self.contentView.bounds];
   self.cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   [self.contentView addSubview:self.cellView];
+}
+
+-(void) setCellView:(UIView *)cellView {
+  [_cellView removeFromSuperview];
+  _cellView = cellView;
+  [self.contentView addSubview:_cellView];
 }
 
 -(void) prepareForReuse {
