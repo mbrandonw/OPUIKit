@@ -55,25 +55,25 @@
 #pragma mark -
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated {
-  [super setSelected:selected animated:animated];
-
   if (selected != [self isSelected]) {
     [self.cellView setCellIsSelected:selected];
     [self.cellView setNeedsDisplay];
     [self.cellView setNeedsLayout];
     [self.cellView cellWillDisplay];
   }
+
+  [super setSelected:selected animated:animated];
 }
 
 -(void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-  [super setHighlighted:highlighted animated:animated];
-
   if (highlighted != [self isHighlighted]) {
     [self.cellView setCellIsHighlighted:highlighted];
     [self.cellView setNeedsDisplay];
     [self.cellView setNeedsLayout];
     [self.cellView cellWillDisplay];
   }
+
+  [super setHighlighted:highlighted animated:animated];
 }
 
 #pragma mark -
