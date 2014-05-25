@@ -88,4 +88,8 @@
   [self setNeedsDisplay];
 }
 
+-(CGSize) intrinsicContentSize {
+  return CGSizeMake(self.width, self.width * self.originalSize.height / self.originalSize.width);
+}
+
 @end
