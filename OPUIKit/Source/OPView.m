@@ -120,19 +120,6 @@ static NSInteger drawingBlocksContext;
 }
 
 #pragma mark -
-#pragma mark Drawing and layout
-#pragma mark -
-
--(void) drawRect:(CGRect)rect {
-  [super drawRect:rect];
-
-  CGContextRef c = UIGraphicsGetCurrentContext();
-  for (OPViewDrawingBlock block in self.drawingBlocks) {
-    block(self, rect, c);
-  }
-}
-
-#pragma mark -
 #pragma mark KVO
 #pragma mark -
 
