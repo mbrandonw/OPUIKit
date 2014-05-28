@@ -31,12 +31,14 @@
 }
 
 -(void) setCellViewClass:(Class)cellViewClass {
-  _cellViewClass = cellViewClass;
+  if (_cellViewClass != cellViewClass) {
+    _cellViewClass = cellViewClass;
 
-  [self.cellView removeFromSuperview];
-  self.cellView = [[_cellViewClass alloc] initWithFrame:self.contentView.bounds];
-  self.cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  [self.contentView addSubview:self.cellView];
+    [self.cellView removeFromSuperview];
+    self.cellView = [[_cellViewClass alloc] initWithFrame:self.contentView.bounds];
+    self.cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.contentView addSubview:self.cellView];
+  }
 }
 
 -(void) setCellView:(UIView *)cellView {
