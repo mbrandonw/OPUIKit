@@ -42,6 +42,10 @@ extern const struct OPViewControllerNotifications {
 
 @end
 
+/**
+ Many view-related methods called on the controller will be
+ forwarded to the view.
+ */
 @interface UIView (OPViewController)
 -(void) viewWillAppear:(BOOL)animated;
 -(void) viewDidAppear:(BOOL)animated;

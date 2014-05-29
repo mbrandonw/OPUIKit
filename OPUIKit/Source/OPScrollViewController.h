@@ -14,3 +14,9 @@
 @property (nonatomic, strong, readonly) UIScrollView *scrollView;
 
 @end
+
+/**
+ UIScrollViewDelegate methods are forwarded to the scrollView.
+ */
+@interface UIScrollView (OPScrollViewController) <UIScrollViewDelegate>
+@end
