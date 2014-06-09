@@ -109,6 +109,12 @@
   }
 }
 
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+  if (scrollView == self.scrollView && [self.view respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+    [(id)self.view scrollViewWillBeginDragging:scrollView];
+  }
+}
+
 -(void) scrollViewDidScrollToTop:(UIScrollView *)scrollView {
   if (scrollView == self.scrollView && [self.view respondsToSelector:@selector(scrollViewDidScrollToTop:)]) {
     [(id)self.view scrollViewDidScrollToTop:scrollView];
@@ -132,6 +138,12 @@
     return [(id)self.view scrollViewShouldScrollToTop:scrollView];
   }
   return YES;
+}
+
+-(void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
+  if (scrollView == self.scrollView && [self.view respondsToSelector:@selector(scrollViewWillBeginZooming:withView:)]) {
+    [(id)self.view scrollViewWillBeginZooming:scrollView withView:view];
+  }
 }
 
 -(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView {
