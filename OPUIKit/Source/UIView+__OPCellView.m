@@ -140,7 +140,9 @@
 }
 
 -(CGSize) cellSizeWithManualLayout {
-  [self layoutSubviews];
+  [self setNeedsLayout];
+  [self layoutIfNeeded];
+  
   CGFloat height = 0;
   for (UIView *subview in self.subviews) {
     if (subview.alpha > 0.01f && !subview.hidden) {

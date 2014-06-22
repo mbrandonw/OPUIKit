@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface __OPTableViewController : UITableViewController
+@interface __OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *tableResults;
 @property (nonatomic, strong) NSMutableArray *tableData;
