@@ -8,8 +8,9 @@
 
 #import "OPViewController.h"
 
-@interface OPWebViewController : OPViewController <UIWebViewDelegate>
+@interface OPWebViewController : OPViewController <UIWebViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong, readonly) UIWebView *webView;
+@property (nonatomic, readonly) UIScrollView *scrollView;
 
 @end
