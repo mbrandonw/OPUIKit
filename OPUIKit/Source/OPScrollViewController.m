@@ -168,12 +168,16 @@
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
   [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-  if (! CGSizeEqualToSize(self.sizeOnRotation, CGSizeZero)) {
-    self.scrollView.contentOffset = (CGPoint){
-      (self.scrollView.contentSize.width - self.scrollView.bounds.size.width) * self.contentOffsetOnRotation.x / (self.contentSizeOnRotation.width - self.sizeOnRotation.width),
-      (self.scrollView.contentSize.height - self.scrollView.bounds.size.height) * self.contentOffsetOnRotation.y / (self.contentSizeOnRotation.height - self.sizeOnRotation.height),
-    };
+  CGPoint contentOffset = CGPointZero;
+
+  if (self.contentSizeOnRotation.width != self.sizeOnRotation.width) {
+    contentOffset.x = (self.scrollView.contentSize.width - self.scrollView.bounds.size.width) * self.contentOffsetOnRotation.x / (self.contentSizeOnRotation.width - self.sizeOnRotation.width);
   }
+  if (self.contentSizeOnRotation.height != self.sizeOnRotation.height) {
+    contentOffset.y = (self.scrollView.contentSize.height - self.scrollView.bounds.size.height) * self.contentOffsetOnRotation.y / (self.contentSizeOnRotation.height - self.sizeOnRotation.height);
+  }
+
+  self.scrollView.contentOffset = contentOffset;
 }
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
