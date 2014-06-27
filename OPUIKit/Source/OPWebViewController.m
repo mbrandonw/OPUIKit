@@ -34,7 +34,7 @@
   } else {
     self.view = [[viewClass alloc] initWithFrame:self.view.frame];
   }
-  self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+  self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
   self.scrollView.delegate = self;
   self.webView.delegate = self;
