@@ -6,11 +6,10 @@
 //  Copyright (c) 2014 Kickstarter. All rights reserved.
 //
 
-#import "OPViewController.h"
+#import "OPScrollViewController.h"
 
-@interface OPWebViewController : OPViewController <UIWebViewDelegate, UIScrollViewDelegate>
+@interface OPWebViewController : OPScrollViewController <UIWebViewDelegate>
 
 @property (nonatomic, strong, readonly) UIWebView *webView;
-@property (nonatomic, readonly) UIScrollView *scrollView;
 
 @end
