@@ -22,17 +22,15 @@
 }
 
 -(void) loadView {
-  [super loadView];
-
   Class viewClass = [[self class] viewClass];
   if (! [viewClass isSubclassOfClass:UIWebView.class]) {
     viewClass = UIWebView.class;
   }
 
   if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
-    self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
+    self.view = [[viewClass alloc] initWithFrame:UIScreen.mainScreen.bounds viewController:self];
   } else {
-    self.view = [[viewClass alloc] initWithFrame:self.view.frame];
+    self.view = [[viewClass alloc] initWithFrame:UIScreen.mainScreen.bounds];
   }
   self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
