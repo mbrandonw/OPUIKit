@@ -13,3 +13,10 @@
 @property (nonatomic, strong, readonly) UIWebView *webView;
 
 @end
+
+
+/**
+ UIWebViewDelegate methods are forwarded to the webView.
+ */
+@interface UIWebView (OPWebViewController) <UIWebViewDelegate>
+@end
