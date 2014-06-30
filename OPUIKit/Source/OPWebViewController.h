@@ -11,9 +11,9 @@
 @interface OPWebViewController : OPScrollViewController <UIWebViewDelegate>
 
 @property (nonatomic, strong, readonly) UIWebView *webView;
+@property (nonatomic, assign) BOOL preventAccidentalClicksWhileDragging;
 
 @end
-
 
 /**
  UIWebViewDelegate methods are forwarded to the webView.

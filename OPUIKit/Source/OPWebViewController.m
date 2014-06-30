@@ -73,6 +73,10 @@
 
 -(BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
+  if (self.preventAccidentalClicksWhileDragging && navigationType == UIWebViewNavigationTypeLinkClicked && webView.scrollView.isDragging) {
+    return NO;
+  }
+
   if (webView == self.webView && [webView respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
     return [(id)webView webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
   }
