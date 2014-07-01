@@ -85,3 +85,9 @@
 }
 
 @end
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
+@implementation UIWebView (OPWebViewController)
+@end
+#pragma clang diagnostic pop
