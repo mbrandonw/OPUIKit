@@ -162,7 +162,7 @@ OPDataDetector *OPDataDetectorLink;
     
 	// by default, the output starts at the top of the frame
 	CGPoint outputPoint = CGPointZero;
-	CGSize textSize = [text sizeWithFont:font constrainedToSize:frame.size];
+	CGSize textSize = [text op_sizeWithFont:font constrainedToSize:frame.size];
 	CGRect bounds = [self bounds];
 	if (textSize.height < bounds.size.height)
 	{
@@ -210,7 +210,7 @@ OPDataDetector *OPDataDetectorLink;
 			scanningWhitespace = NO;
             
 			NSString *scanText = [text substringWithRange:scanRange];
-			CGSize currentSize = [scanText sizeWithFont:font];
+			CGSize currentSize = [scanText op_sizeWithFont:font];
 			
 			BOOL breakLine = NO;
 			if ([token isEqualToString:@"\r"] || [token isEqualToString:@"\n"])
@@ -324,10 +324,10 @@ OPDataDetector *OPDataDetectorLink;
         [dataDetector.regex enumerateMatchesInString:text options:NSMatchingReportCompletion range:NSMakeRange(0, [text length]) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
             
             NSString *match = [text substringWithRange:result.range];
-            CGSize matchSize = [match sizeWithFont:font];
+            CGSize matchSize = [match op_sizeWithFont:font];
             NSRange measureRange = NSMakeRange(0, result.range.location);
             NSString *measureText = [text substringWithRange:measureRange];
-            CGSize measureSize = [measureText sizeWithFont:font];
+            CGSize measureSize = [measureText op_sizeWithFont:font];
             
             CGRect matchFrame = CGRectMake(measureSize.width-3.0f, point.y, matchSize.width+6.0f, matchSize.height);
             [self addButtonWithText:match withFrame:matchFrame forDataDetectorIndex:idx];
