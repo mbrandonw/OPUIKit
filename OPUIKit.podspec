@@ -13,5 +13,5 @@ Pod::Spec.new do |spec|
   spec.frameworks = 'UIKit'
 
   spec.dependency 'OPExtensionKit'
-  spec.dependency 'UIFont-Symbolset'
+  spec.dependency 'UIFont+Symbolset'
 end
