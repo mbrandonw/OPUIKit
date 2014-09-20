@@ -6,7 +6,8 @@
 //  Copyright (c) 2012 Opetopic. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
 
 typedef void(^OPViewDrawingBlock)(UIView* view, CGRect rect, CGContextRef c);
 typedef void(^OPControlDrawingBlock)(UIControl* view, CGRect rect, CGContextRef c);
