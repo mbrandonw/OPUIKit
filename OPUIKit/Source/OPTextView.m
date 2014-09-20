@@ -7,8 +7,14 @@
 //
 
 #import "OPTextView.h"
-#import <EventKit/EventKit.h>
-#import <EventKitUI/EventKitUI.h>
+#import "UIView+Opetopic.h"
+#import "UIDevice+Opetopic.h"
+#import "NSRegularExpression+Opetopic.h"
+#import "NSURL+Opetopic.h"
+#import "NSString+Opetopic.h"
+#import "GCD+Opetopic.h"
+@import EventKit;
+@import EventKitUI;
 
 @interface OPTextView (/**/) <EKEventEditViewDelegate>
 @property (nonatomic, strong, readwrite) UILabel *placeholderLabel;

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class NSFetchedResultsController;
+@protocol NSFetchedResultsControllerDelegate;
+
 @interface __OPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *tableResults;

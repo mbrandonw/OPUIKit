@@ -9,6 +9,7 @@
 #import "OPDataDetectorLabel.h"
 #import "NSString+Opetopic.h"
 #import "UIView+Opetopic.h"
+#import "NSObject+Opetopic.h"
 
 #pragma mark -
 #pragma mark OPDataDetector

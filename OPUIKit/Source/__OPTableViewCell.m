@@ -8,6 +8,7 @@
 
 #import "__OPTableViewCell.h"
 #import "UIView+__OPCellView.h"
+#import "UIView+Opetopic.h"
 
 @interface __OPTableViewCell (/**/)
 @property (nonatomic, strong, readwrite) UIView *cellView;

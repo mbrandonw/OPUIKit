@@ -7,6 +7,8 @@
 //
 
 #import "OPBlurView.h"
+#import "UIDevice+Opetopic.h"
+#import "UIView+Opetopic.h"
 
 @interface OPBlurView (/**/)
 @property (nonatomic, strong) UIToolbar *blurToolbar;

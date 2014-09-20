@@ -8,6 +8,7 @@
 
 #import "OPWebViewController.h"
 #import "OPWebView.h"
+#import "UIViewController+Opetopic.h"
 
 @interface OPWebViewController () <UIScrollViewDelegate>
 @end

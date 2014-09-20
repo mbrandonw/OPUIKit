@@ -26,6 +26,8 @@
 #import "OPViewController.h"
 #import "UIScrollView+Opetopic.h"
 #import "OPTableSectionView.h"
+#import "NSObject+Opetopic.h"
+#import "GCD+Opetopic.h"
 
 @interface UIViewController (OPTableViewController)
 @property (nonatomic, readonly) BOOL selfOrParentsHidesBottomBarWhenPushed;

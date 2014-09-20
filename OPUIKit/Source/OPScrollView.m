@@ -7,6 +7,9 @@
 //
 
 #import "OPScrollView.h"
+#import "UIView+Opetopic.h"
+#import "NSObject+Opetopic.h"
+#import "UIScrollView+Opetopic.h"
 
 @interface _OPScrollContentContainerView : UIView
 @end

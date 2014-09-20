@@ -8,6 +8,8 @@
 
 #import "OPViewControllerContextTransitioningBase.h"
 #import "OPViewController.h"
+#import "UIViewController+Opetopic.h"
+#import "UIView+Opetopic.h"
 
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 

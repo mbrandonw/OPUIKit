@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class __OPCollectionViewCell;
+@class NSFetchedResultsController;
 
 @protocol OPCollectionViewDataSource <UICollectionViewDataSource>
 /**

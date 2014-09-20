@@ -7,7 +7,8 @@
 //
 
 #import "UIView+__OPCellView.h"
-#import <objc/runtime.h>
+#import "UIView+Opetopic.h"
+@import ObjectiveC;
 
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 

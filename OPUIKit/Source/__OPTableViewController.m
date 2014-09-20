@@ -10,6 +10,11 @@
 #import "__OPTableViewCell.h"
 #import "OPEnumerable.h"
 #import "UIView+__OPCellView.h"
+#import "UIViewController+Opetopic.h"
+#import "UIView+Opetopic.h"
+#import "NSObject+Opetopic.h"
+#import "GCD+Opetopic.h"
+@import CoreData;
 
 @interface __OPTableViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;

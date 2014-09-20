@@ -7,6 +7,7 @@
 //
 
 #import "OPSymbolSetBarButtonItem.h"
+#import "UIFont+Symbolset.h"
 
 @implementation OPSymbolSetBarButtonItem
 
