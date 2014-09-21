@@ -15,4 +15,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'OPExtensionKit'
   spec.dependency 'UIFont+Symbolset'
   spec.dependency 'OPQuartzKit'
+  spec.dependency 'OPTableView'
+  spec.dependency 'MAObjCRuntime'
 end

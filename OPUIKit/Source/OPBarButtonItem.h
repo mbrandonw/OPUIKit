@@ -35,9 +35,4 @@ typedef NS_ENUM(NSInteger, OPBarButtonItemSide) {
  */
 -(void) addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
 
-/**
- Button geometry methods.
- */
--(CGFloat) heightForOrientation:(UIInterfaceOrientation)orientation;
-
 @end
