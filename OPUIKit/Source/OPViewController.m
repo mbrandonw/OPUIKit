@@ -52,6 +52,8 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark -
 
 +(void) initialize {
+  [super initialize];
+  
   [[self class] configureForCurrentContentSizeCategory];
 }
 

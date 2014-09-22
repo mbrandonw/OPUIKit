@@ -33,6 +33,8 @@ static NSInteger drawingBlocksContext;
 #pragma mark -
 
 +(void) initialize {
+  [super initialize];
+  
   [[self class] configureForCurrentContentSizeCategory];
 }
 

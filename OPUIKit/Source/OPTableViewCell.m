@@ -58,6 +58,8 @@
 @implementation OPTableViewCell
 
 +(void) initialize {
+  [super initialize];
+  
   [[self class] configureForCurrentContentSizeCategory];
 }
 
