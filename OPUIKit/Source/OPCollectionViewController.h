@@ -1,5 +1,5 @@
 //
-//  __OPCollectionViewController.h
+//  OPCollectionViewController.h
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/14/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class __OPCollectionViewCell;
+@class OPCollectionViewCell;
 @class NSFetchedResultsController;
 
 @protocol OPCollectionViewDataSource <UICollectionViewDataSource>
@@ -35,7 +35,7 @@
 -(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
-@interface __OPCollectionViewController : UICollectionViewController <OPCollectionViewDataSource, OPCollectionViewDelegate>
+@interface OPCollectionViewController : UICollectionViewController <OPCollectionViewDataSource, OPCollectionViewDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *collectionResults;
 @property (nonatomic, strong) NSMutableArray *collectionData;
@@ -55,6 +55,6 @@
 
 /**
  */
--(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell;
+-(void) collectionView:(UICollectionView *)collectionView layoutCell:(OPCollectionViewCell*)cell;
 
 @end

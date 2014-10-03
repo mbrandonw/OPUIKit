@@ -68,6 +68,11 @@
 -(void) cellWillDisplay;
 
 /**
+ Implement this to do any work when the cell is done displaying.
+ */
+-(void) cellDidEndDisplay;
+
+/**
  @b Optional: Called when the cell is about to be reused.
  */
 -(void) prepareForReuse;

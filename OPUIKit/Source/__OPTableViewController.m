@@ -186,6 +186,17 @@
   return cell;
 }
 
+-(void) tableView:(UITableView *)tableView didEndDisplayingCell:(__OPTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if ([cell isKindOfClass:__OPTableViewCell.class]) {
+    [cell.cellView traverseSelfAndSubviews:^(UIView *subview) {
+      if ([subview respondsToSelector:@selector(cellDidEndDisplay)]) {
+        [subview cellDidEndDisplay];
+      }
+    }];
+  }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   CGFloat height = 0.0f;
 

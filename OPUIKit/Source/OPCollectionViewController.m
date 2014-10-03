@@ -1,24 +1,24 @@
 //
-//  __OPCollectionViewController.m
+//  OPCollectionViewController.m
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/14/14.
 //  Copyright (c) 2014 Kickstarter. All rights reserved.
 //
 
-#import "__OPCollectionViewController.h"
+#import "OPCollectionViewController.h"
 #import "OPViewController.h"
 #import "UIView+__OPCellView.h"
-#import "__OPCollectionViewCell.h"
+#import "OPCollectionViewCell.h"
 #import "OPExtensionKit.h"
 
-@interface __OPCollectionViewController (/**/) <UICollectionViewDelegateFlowLayout>
+@interface OPCollectionViewController (/**/) <UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
--(void) collectionView:(UICollectionView *)collectionView configureCell:(__OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+-(void) collectionView:(UICollectionView *)collectionView configureCell:(OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 -(UIView*) collectionView:(UICollectionView*)collectionView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
-@implementation __OPCollectionViewController
+@implementation OPCollectionViewController
 
 #pragma mark -
 #pragma mark Object lifecycle methods
@@ -259,7 +259,7 @@
   return nil;
 }
 
--(void) collectionView:(UICollectionView *)collectionView configureCell:(__OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+-(void) collectionView:(UICollectionView *)collectionView configureCell:(OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
   [self collectionView:collectionView configureCellView:cell.cellView atIndexPath:indexPath];
   cell.contentEdgeInsets = [self collectionView:collectionView insetsForCellAtIndexPath:indexPath];
   [cell setNeedsLayout];
@@ -280,7 +280,7 @@
   cellView.cellObject = [self collectionView:collectionView objectForCellAtIndexPath:indexPath];
 }
 
--(void) collectionView:(UICollectionView *)collectionView layoutCell:(__OPCollectionViewCell*)cell {
+-(void) collectionView:(UICollectionView *)collectionView layoutCell:(OPCollectionViewCell*)cell {
   NSIndexPath *indexPath = [collectionView indexPathForCell:cell];
   [self collectionView:collectionView configureCell:cell atIndexPath:indexPath];
   [cell layoutSubviews];
@@ -292,9 +292,9 @@
   Class cellClass = [self collectionView:collectionView classForCellAtIndexPath:indexPath];
   NSString *reuseIdentifier = NSStringFromClass(cellClass);
 
-  [collectionView registerClass:__OPCollectionViewCell.class forCellWithReuseIdentifier:reuseIdentifier];
+  [collectionView registerClass:OPCollectionViewCell.class forCellWithReuseIdentifier:reuseIdentifier];
 
-  __OPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+  OPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
   if (! cell.cellViewClass) {
     cell.cellViewClass = cellClass;
   }

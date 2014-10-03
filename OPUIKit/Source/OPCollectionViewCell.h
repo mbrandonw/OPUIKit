@@ -1,5 +1,5 @@
 //
-//  __OPCollectionViewCell.h
+//  OPCollectionViewCell.h
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/14/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface __OPCollectionViewCell : UICollectionViewCell
+@interface OPCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong, readwrite) UIView *cellView;
 @property (nonatomic, strong) Class cellViewClass;

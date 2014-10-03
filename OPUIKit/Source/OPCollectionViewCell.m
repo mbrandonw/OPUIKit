@@ -1,19 +1,19 @@
 //
-//  __OPCollectionViewCell.m
+//  OPCollectionViewCell.m
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/14/14.
 //  Copyright (c) 2014 Kickstarter. All rights reserved.
 //
 
-#import "__OPCollectionViewCell.h"
+#import "OPCollectionViewCell.h"
 #import "UIView+__OPCellView.h"
 #import "OPExtensionKit.h"
 
-@interface __OPCollectionViewCell (/**/)
+@interface OPCollectionViewCell (/**/)
 @end
 
-@implementation __OPCollectionViewCell
+@implementation OPCollectionViewCell
 
 -(id) initWithFrame:(CGRect)frame {
   if (! (self = [super initWithFrame:frame])) {

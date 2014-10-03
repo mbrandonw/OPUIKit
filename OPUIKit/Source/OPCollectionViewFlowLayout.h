@@ -1,5 +1,5 @@
 //
-//  __OPCollectionViewFlowLayout.h
+//  OPCollectionViewFlowLayout.h
 //  Kickstarter
 //
 //  Created by Brandon Williams on 1/14/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface __OPCollectionViewFlowLayout : UICollectionViewFlowLayout
+@interface OPCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 @end
