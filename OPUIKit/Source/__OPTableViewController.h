@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "__OPTableViewCell.h"
 
 @class NSFetchedResultsController;
 @protocol NSFetchedResultsControllerDelegate;
@@ -49,4 +50,10 @@
  */
 -(void) configureForContentSizeCategory:(NSString*)contentSize;
 
+@end
+
+/**
+ UIScrollViewDelegate methods are forwarded to the tableView cells.
+ */
+@interface UIView (__OPTableViewController_OPCellView) <UIScrollViewDelegate>
 @end

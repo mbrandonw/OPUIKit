@@ -228,6 +228,19 @@
 //  return UITableViewAutomaticDimension;
 //}
 
+#pragma mark - UIScrollView methods
+
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+
+  for (__OPTableViewCell *cell in self.tableView.visibleCells) {
+    if ([cell isKindOfClass:__OPTableViewCell.class] &&
+        [cell.cellView respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
+      
+      [cell.cellView scrollViewDidEndDecelerating:self.tableView];
+    }
+  }
+}
+
 #pragma mark -
 #pragma mark Content size methods
 #pragma mark -
