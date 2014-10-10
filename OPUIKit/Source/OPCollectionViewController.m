@@ -328,8 +328,8 @@
   metricCellView.height = 10000.0f;
   [self collectionView:collectionView configureCellView:metricCellView atIndexPath:indexPath];
 
-  if ([metricCellView respondsToSelector:@selector(cellSize)]) {
-    size.height += ceilf(metricCellView.cellSize.height);
+  if ([metricCellView respondsToSelector:@selector(_cellSize)]) {
+    size.height += ceilf(metricCellView._cellSize.height);
   } else {
     size.height += ceilf(metricCellView.cellSizeWithManualLayout.height);
   }

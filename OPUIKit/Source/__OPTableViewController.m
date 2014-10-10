@@ -209,8 +209,8 @@
   metricCellView.height = 10000.0f;
   [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
 
-  if ([metricCellView respondsToSelector:@selector(cellSize)]) {
-    height += ceilf(metricCellView.cellSize.height);
+  if ([metricCellView respondsToSelector:@selector(_cellSize)]) {
+    height += ceilf(metricCellView._cellSize.height);
   } else {
     height += ceilf(metricCellView.cellSizeWithManualLayout.height);
   }

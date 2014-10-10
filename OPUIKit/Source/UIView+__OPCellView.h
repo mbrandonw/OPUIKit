@@ -30,7 +30,7 @@
  @b Optional: Subclasses can implement this method to bypass calculating
  cell size based on autolayout.
  */
--(CGSize) cellSize;
+-(CGSize) _cellSize;
 
 /**
  @b Optional: Subclasses can implement this method to provide a quick
