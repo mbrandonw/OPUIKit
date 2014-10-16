@@ -106,6 +106,7 @@
 
 -(void) clearCollectionData {
   [self.collectionData makeObjectsPerformSelector:@selector(removeAllObjects)];
+  [self.collectionView reloadData];
 }
 
 #pragma mark -

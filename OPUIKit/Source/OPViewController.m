@@ -225,6 +225,14 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
   }
 }
 
+-(void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+  if ([self.view respondsToSelector:@selector(viewWillTransitionToSize:withTransitionCoordinator:)]) {
+    [self.view viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+  }
+}
+
 #pragma mark -
 #pragma mark Preferred content size methods
 #pragma mark -
