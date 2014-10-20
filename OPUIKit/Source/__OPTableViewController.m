@@ -89,9 +89,7 @@
   [self.tableData makeObjectsPerformSelector:@selector(removeAllObjects)];
 }
 
-#pragma mark -
-#pragma mark UITableView methods
-#pragma mark -
+#pragma mark - UITableView methods
 
 -(Class) tableView:(UITableView *)tableView classForRowAtIndexPath:(NSIndexPath *)indexPath {
   return [UIView class];
