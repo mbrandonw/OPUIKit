@@ -15,4 +15,6 @@
 
 @property (nonatomic, readonly) CAGradientLayer *gradientLayer;
 
+-(void) setColors:(NSArray*)colors;
+
 @end

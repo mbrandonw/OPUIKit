@@ -12,35 +12,53 @@
 @implementation OPGradientView
 
 +(Class) layerClass {
-    return [CAGradientLayer class];
+  return [CAGradientLayer class];
 }
 
 -(CAGradientLayer*) gradientLayer {
-    return (CAGradientLayer*)self.layer;
+  return (CAGradientLayer*)self.layer;
 }
 
 -(id) init {
-    if (! (self = [super init]))
-        return nil;
-    self.layer.shouldRasterize = YES;
-    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
-    return self;
+  if (! (self = [super init])) {
+    return nil;
+  }
+
+  self.layer.shouldRasterize = YES;
+  self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+
+  return self;
 }
 
 -(id) initWithFrame:(CGRect)frame {
-    if (! (self = [super initWithFrame:frame]))
-        return nil;
-    self.layer.shouldRasterize = YES;
-    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
-    return self;
+  if (! (self = [super initWithFrame:frame])) {
+    return nil;
+  }
+
+  self.layer.shouldRasterize = YES;
+  self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+
+  return self;
 }
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
-    if (! (self = [super initWithCoder:aDecoder]))
-        return nil;
-    self.layer.shouldRasterize = YES;
-    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
-    return self;
+  if (! (self = [super initWithCoder:aDecoder])) {
+    return nil;
+  }
+
+  self.layer.shouldRasterize = YES;
+  self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+
+  return self;
+}
+
+-(void) setColors:(NSArray*)colors {
+  NSMutableArray *newColors = [NSMutableArray arrayWithCapacity:colors.count];
+  for (UIColor *color in colors) {
+    [newColors addObject:color.CGColor];
+  }
+
+  self.gradientLayer.colors = newColors;
 }
 
 @end
