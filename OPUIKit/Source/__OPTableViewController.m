@@ -8,6 +8,7 @@
 
 #import "__OPTableViewController.h"
 #import "__OPTableViewCell.h"
+#import "OPViewController.h"
 #import "OPEnumerable.h"
 #import "UIView+__OPCellView.h"
 #import "UIViewController+Opetopic.h"
@@ -66,6 +67,22 @@
 #pragma mark View lifecycle methods
 #pragma mark -
 
+-(void) loadView {
+  [super loadView];
+
+  Class viewClass = [[self class] viewClass];
+  if (viewClass) {
+    if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
+    } else {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame];
+    }
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  }
+}
+
 -(void) viewDidLoad {
   [super viewDidLoad];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -74,11 +91,49 @@
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   [self configureForCurrentContentSizeCategory];
+
+  if ([self.view respondsToSelector:@selector(viewWillAppear:)]) {
+    [self.view viewWillAppear:animated];
+  }
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+
+  if ([self.view respondsToSelector:@selector(viewDidAppear:)]) {
+    [self.view viewDidAppear:animated];
+  }
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+
+  if ([self.view respondsToSelector:@selector(viewWillDisappear:)]) {
+    [self.view viewWillDisappear:animated];
+  }
+}
+
+-(void) viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+
+  if ([self.view respondsToSelector:@selector(viewDidDisappear:)]) {
+    [self.view viewDidDisappear:animated];
+  }
 }
 
 -(void) viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
   [self configureForCurrentContentSizeCategory];
+}
+
+#pragma mark - UIViewController methods
+
+-(void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+  if ([self.view respondsToSelector:@selector(viewWillTransitionToSize:withTransitionCoordinator:)]) {
+    [self.view viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+  }
 }
 
 #pragma mark -

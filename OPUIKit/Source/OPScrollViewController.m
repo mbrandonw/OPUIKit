@@ -12,6 +12,7 @@
 #import "UIViewController+Opetopic.h"
 #import "NSObject+Opetopic.h"
 #import "UIScrollView+Opetopic.h"
+#import "UIView+Opetopic.h"
 
 @interface OPScrollViewController (/**/)
 @property (nonatomic, assign) CGPoint contentOffsetOnRotation;

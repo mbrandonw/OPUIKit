@@ -9,10 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface OPWebView : UIWebView
-
-@property (nonatomic, weak) UIViewController *viewController;
-
--(instancetype) initWithViewController:(UIViewController*)viewController;
--(instancetype) initWithFrame:(CGRect)frame viewController:(UIViewController*)viewController;
-
 @end

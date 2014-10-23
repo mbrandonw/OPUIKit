@@ -12,11 +12,6 @@
 
 @interface OPView : UIView <OPStyleProtocol>
 
-@property (nonatomic, weak) UIViewController *viewController;
-
--(instancetype) initWithViewController:(UIViewController*)viewController;
--(instancetype) initWithFrame:(CGRect)frame viewController:(UIViewController*)viewController;
-
 -(void) configureForContentSizeCategory:(NSString*)category;
 +(void) configureForContentSizeCategory:(NSString*)category;
 
