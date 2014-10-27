@@ -57,3 +57,9 @@
  */
 @interface UIView (__OPTableViewController_OPCellView) <UIScrollViewDelegate>
 @end
+
+/**
+ UIScrollViewDelegate methods are forwarded to the UITableView
+ */
+@interface UITableView (__OPTableViewController_UITableView) <UIScrollViewDelegate>
+@end
