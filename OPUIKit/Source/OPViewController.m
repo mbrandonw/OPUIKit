@@ -197,6 +197,29 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
   [self layoutToolbarView];
 }
 
+#pragma mark - Status bar methods
+
+-(UIStatusBarStyle) preferredStatusBarStyle {
+  if ([self.view respondsToSelector:@selector(preferredStatusBarStyle)]) {
+    return [(id)self.view preferredStatusBarStyle];
+  }
+  return [super preferredStatusBarStyle];
+}
+
+-(BOOL) prefersStatusBarHidden {
+  if ([self.view respondsToSelector:@selector(prefersStatusBarHidden)]) {
+    return [(id)self.view prefersStatusBarHidden];
+  }
+  return [super prefersStatusBarHidden];
+}
+
+-(UIStatusBarAnimation) preferredStatusBarUpdateAnimation {
+  if ([self.view respondsToSelector:@selector(preferredStatusBarUpdateAnimation)]) {
+    return [(id)self.view preferredStatusBarUpdateAnimation];
+  }
+  return [super preferredStatusBarUpdateAnimation];
+}
+
 #pragma mark -
 #pragma mark Overridden methods
 #pragma mark -
