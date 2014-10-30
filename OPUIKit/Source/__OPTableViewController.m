@@ -72,8 +72,8 @@
 -(void) loadView {
   [super loadView];
 
-  Class viewClass = [[self class] viewClass];
-  if (viewClass) {
+  Class viewClass = self.class.viewClass;
+  if (viewClass && viewClass != UIView.class) {
     if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
       self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
     } else {
