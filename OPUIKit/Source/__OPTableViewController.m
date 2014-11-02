@@ -224,7 +224,7 @@
 
   __OPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
   if (! cell) {
-    cell = [[__OPTableViewCell alloc] initWithViewClass:cellClass reuseIdentifier:reuseIdentifier];
+    cell = [[__OPTableViewCell alloc] initWithViewClass:cellClass viewController:self reuseIdentifier:reuseIdentifier];
   }
 
   UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];

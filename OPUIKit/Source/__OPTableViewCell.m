@@ -20,11 +20,12 @@
 
 @implementation __OPTableViewCell
 
--(id) initWithViewClass:(Class)viewClass reuseIdentifier:(NSString *)reuseIdentifier {
-  if (! (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier])) {
+-(id) initWithViewClass:(Class)viewClass viewController:(UIViewController*)viewController reuseIdentifier:(NSString *)reuseIdentifier {
+  if (! (self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier])) {
     return nil;
   }
 
+  self.op_viewController = viewController;
   self.selectionStyle = UITableViewCellSelectionStyleNone;
 
   self.cellView = [[viewClass alloc] initWithFrame:self.contentView.bounds];

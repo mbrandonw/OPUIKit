@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong, readonly) UIView *cellView;
 
--(id) initWithViewClass:(Class)viewClass reuseIdentifier:(NSString *)reuseIdentifier;
+-(id) initWithViewClass:(Class)viewClass viewController:(UIViewController*)viewController reuseIdentifier:(NSString *)reuseIdentifier;
 
 @end
