@@ -61,7 +61,9 @@
     [self.cellView setCellIsSelected:selected];
     [self.cellView setNeedsDisplay];
     [self.cellView setNeedsLayout];
-    [self.cellView cellWillDisplay];
+    if ([self.cellView respondsToSelector:@selector(cellWillDisplay)]) {
+      [self.cellView cellWillDisplay];
+    }
   }
 
   [super setSelected:selected animated:animated];
@@ -72,7 +74,9 @@
     [self.cellView setCellIsHighlighted:highlighted];
     [self.cellView setNeedsDisplay];
     [self.cellView setNeedsLayout];
-    [self.cellView cellWillDisplay];
+    if ([self.cellView respondsToSelector:@selector(cellWillDisplay)]) {
+      [self.cellView cellWillDisplay];
+    }
   }
 
   [super setHighlighted:highlighted animated:animated];
