@@ -59,11 +59,11 @@
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated {
   if (selected != [self isSelected]) {
     [self.cellView setCellIsSelected:selected];
-    [self.cellView setNeedsDisplay];
-    [self.cellView setNeedsLayout];
     if ([self.cellView respondsToSelector:@selector(cellWillDisplay)]) {
       [self.cellView cellWillDisplay];
     }
+    [self.cellView setNeedsDisplay];
+    [self.cellView setNeedsLayout];
   }
 
   [super setSelected:selected animated:animated];
@@ -72,11 +72,11 @@
 -(void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
   if (highlighted != [self isHighlighted]) {
     [self.cellView setCellIsHighlighted:highlighted];
-    [self.cellView setNeedsDisplay];
-    [self.cellView setNeedsLayout];
     if ([self.cellView respondsToSelector:@selector(cellWillDisplay)]) {
       [self.cellView cellWillDisplay];
     }
+    [self.cellView setNeedsDisplay];
+    [self.cellView setNeedsLayout];
   }
 
   [super setHighlighted:highlighted animated:animated];
