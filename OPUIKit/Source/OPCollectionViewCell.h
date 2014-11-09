@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Kickstarter. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface OPCollectionViewCell : UICollectionViewCell
+
+@property (nonatomic, weak) UIViewController *viewController;
 
 @property (nonatomic, strong, readwrite) UIView *cellView;
 @property (nonatomic, strong) Class cellViewClass;

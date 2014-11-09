@@ -12,7 +12,7 @@
 #import "OPCollectionViewCell.h"
 #import "OPExtensionKit.h"
 
-@interface OPCollectionViewController (/**/) <UICollectionViewDelegateFlowLayout>
+@interface OPCollectionViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
 -(void) collectionView:(UICollectionView *)collectionView configureCell:(OPCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 -(UIView*) collectionView:(UICollectionView*)collectionView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
@@ -105,7 +105,7 @@
 #pragma mark -
 
 -(void) clearCollectionData {
-  [self.collectionData makeObjectsPerformSelector:@selector(removeAllObjects)];
+  [_collectionData makeObjectsPerformSelector:@selector(removeAllObjects)];
   [self.collectionView reloadData];
 }
 
@@ -296,6 +296,7 @@
   [collectionView registerClass:OPCollectionViewCell.class forCellWithReuseIdentifier:reuseIdentifier];
 
   OPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+  cell.viewController = self;
   if (! cell.cellViewClass) {
     cell.cellViewClass = cellClass;
   }

@@ -35,7 +35,7 @@
 -(CGFloat) collectionView:(UICollectionView*)collectionView widthForCellAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
-@interface OPCollectionViewController : UICollectionViewController <OPCollectionViewDataSource, OPCollectionViewDelegate>
+@interface OPCollectionViewController : UICollectionViewController <OPCollectionViewDataSource, OPCollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSFetchedResultsController *collectionResults;
 @property (nonatomic, strong) NSMutableArray *collectionData;
