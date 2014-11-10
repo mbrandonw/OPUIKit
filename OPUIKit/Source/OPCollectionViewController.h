@@ -57,4 +57,9 @@
  */
 -(void) collectionView:(UICollectionView *)collectionView layoutCell:(OPCollectionViewCell*)cell;
 
+/**
+ Finds the index path of the object.
+ */
+-(NSIndexPath*) indexPathForObject:(id)object;
+
 @end

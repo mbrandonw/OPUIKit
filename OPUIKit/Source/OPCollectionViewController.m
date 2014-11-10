@@ -288,6 +288,19 @@
   [cell.cellView layoutSubviews];
 }
 
+-(NSIndexPath*) indexPathForObject:(id)object {
+  for (NSInteger section = 0; section < [self numberOfSectionsInCollectionView:self.collectionView]; section++) {
+    for (NSInteger item = 0; item < [self collectionView:self.collectionView numberOfItemsInSection:section]; item++) {
+      NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+      id testObject = [self collectionView:self.collectionView objectForCellAtIndexPath:indexPath];
+      if ([testObject isEqual:object]) {
+        return indexPath;
+      }
+    }
+  }
+  return nil;
+}
+
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
   Class cellClass = [self collectionView:collectionView classForCellAtIndexPath:indexPath];
