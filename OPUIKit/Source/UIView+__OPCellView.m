@@ -15,12 +15,6 @@
 @implementation UIView (__OPCellView)
 
 -(void) setCellObject:(id)cellObject {
-  // early out if the object didn't change.
-  id previousCellObject = self.cellObject;
-  if (cellObject == previousCellObject) {
-    return ;
-  }
-
   [self setNeedsDisplay];
   [self setNeedsLayout];
 
