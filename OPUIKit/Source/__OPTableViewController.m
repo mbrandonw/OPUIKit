@@ -19,7 +19,7 @@
 
 @interface __OPTableViewController (/**/)
 @property (nonatomic, strong) NSMutableDictionary *metricsCellViews;
--(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath;
+-(__OPTableViewCell*) tableView:(UITableView *)tableView metricCellForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 // helper methods for dealing with content size
 @property (nonatomic, strong) NSString *lastContentSizeCategory;
@@ -222,9 +222,14 @@
   Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
   NSString *reuseIdentifier = NSStringFromClass(cellClass);
 
-  __OPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-  if (! cell) {
-    cell = [[__OPTableViewCell alloc] initWithViewClass:cellClass viewController:self reuseIdentifier:reuseIdentifier];
+  __OPTableViewCell *cell = nil;
+  if (self.hasUniqueCellViews) {
+    cell = [self tableView:tableView metricCellForRowAtIndexPath:indexPath];
+  } else {
+    cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    if (! cell) {
+      cell = [__OPTableViewCell.alloc initWithViewClass:cellClass viewController:self reuseIdentifier:reuseIdentifier];
+    }
   }
 
   UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
@@ -255,7 +260,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   CGFloat height = 0.0f;
 
-  UIView *metricCellView = [self tableView:tableView metricCellViewForRowAtIndexPath:indexPath];
+  __OPTableViewCell *metricCell = [self tableView:tableView metricCellForRowAtIndexPath:indexPath];
+  UIView *metricCellView = metricCell.cellView;
 
   UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
   height += insets.top + insets.bottom;
@@ -269,6 +275,8 @@
   } else {
     height += ceilf(metricCellView.cellSizeWithManualLayout.height);
   }
+  metricCell.height = height;
+  metricCellView.height = height - insets.top - insets.bottom;
   
   return height;
 }
@@ -288,16 +296,6 @@
     };
   }
 }
-
-//-(CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//
-//  Class viewClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
-//  if ([viewClass respondsToSelector:@selector(estimatedCellSize)]) {
-//    return ceilf([viewClass estimatedCellSize].height);
-//  }
-//
-//  return UITableViewAutomaticDimension;
-//}
 
 #pragma mark - UIScrollView methods
 
@@ -465,7 +463,6 @@
 
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
   [self.tableView endUpdates];
-//  [self updateCellScrollRatios];
 }
 
 #pragma mark -
@@ -495,15 +492,19 @@
   return _metricsCellViews;
 }
 
--(UIView*) tableView:(UITableView *)tableView metricCellViewForRowAtIndexPath:(NSIndexPath*)indexPath {
+-(__OPTableViewCell*) tableView:(UITableView *)tableView metricCellForRowAtIndexPath:(NSIndexPath*)indexPath {
 
-  id class = [self tableView:tableView classForRowAtIndexPath:indexPath];
+  Class cellClass = [self tableView:tableView classForRowAtIndexPath:indexPath];
 
-  if (! self.metricsCellViews[class]) {
-    self.metricsCellViews[class] = [[class alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 44.0f)];
+  if (! self.metricsCellViews[cellClass]) {
+    __OPTableViewCell *cell = [__OPTableViewCell.alloc initWithViewClass:cellClass
+                                                          viewController:self
+                                                         reuseIdentifier:NSStringFromClass(cellClass)];
+    cell.width = self.tableView.bounds.size.width;
+    self.metricsCellViews[cellClass] = cell;
   }
 
-  return self.metricsCellViews[class];
+  return self.metricsCellViews[cellClass];
 }
 
 -(void) enumerateVisibleCellViews:(void(^)(UIView *cellView))block {

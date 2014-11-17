@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSFetchedResultsController *tableResults;
 @property (nonatomic, strong) NSMutableArray *tableData;
 
+@property (nonatomic, assign) BOOL hasUniqueCellViews;
+
 /**
  A convenience method that simply removes all objects
  from subsets.
