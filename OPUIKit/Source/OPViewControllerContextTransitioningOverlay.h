@@ -8,6 +8,12 @@
 
 #import "OPViewControllerContextTransitioningBase.h"
 
-@interface OPViewControllerContextTransitioningOverlay : OPViewControllerContextTransitioningBase
+@interface OPViewControllerContextTransitioningOverlay : OPViewControllerContextTransitioningBase <UIViewControllerTransitioningDelegate>
+
+@end
+
+@interface UIViewController (OPViewControllerContextTransitioningOverlay)
+
+-(void) presentOverlayViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion;
 
 @end

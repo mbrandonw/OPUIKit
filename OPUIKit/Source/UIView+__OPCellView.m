@@ -18,14 +18,16 @@
   [self setNeedsDisplay];
   [self setNeedsLayout];
 
-  objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  if (cellObject != self.cellObject) {
+    objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-  if ([self respondsToSelector:@selector(cellObjectChanged)]) {
-    [self cellObjectChanged];
-  }
+    if ([self respondsToSelector:@selector(cellObjectChanged)]) {
+      [self cellObjectChanged];
+    }
 
-  for (UIView *subview in self.subviews) {
-    subview.cellObject = cellObject;
+    for (UIView *subview in self.subviews) {
+      subview.cellObject = cellObject;
+    }
   }
 }
 
