@@ -33,8 +33,11 @@
 
   // this hacky piece is necessary in order for transitions to work
   // in portrait and landscape.
-  self.to.view.frame = transitionContext.containerView.bounds;
-  self.from.view.frame = transitionContext.containerView.bounds;
+  if (self.presenting) {
+    self.to.view.frame = transitionContext.containerView.bounds;
+  } else {
+    self.from.view.frame = transitionContext.containerView.bounds;
+  }
 
   if (self.presenting) {
     self.to.view.alpha = 0.0f;
