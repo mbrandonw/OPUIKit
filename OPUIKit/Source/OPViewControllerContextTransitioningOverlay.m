@@ -81,7 +81,6 @@
                            OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
   [self presentViewController:viewControllerToPresent animated:flag completion:completion];
-
 }
 
 @end
