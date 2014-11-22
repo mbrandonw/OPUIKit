@@ -49,17 +49,19 @@
   [super loadView];
 
   Class viewClass = [[self class] viewClass];
-  if (! [viewClass isSubclassOfClass:[UIScrollView class]]) {
-    viewClass = UIScrollView.class;
+  if (self.view.class != viewClass) {
+    if (! [viewClass isSubclassOfClass:[UIScrollView class]]) {
+      viewClass = UIScrollView.class;
+    }
+
+    if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
+    } else {
+      self.view = [[viewClass alloc] initWithFrame:self.view.frame];
+    }
   }
 
-  if ([viewClass instancesRespondToSelector:@selector(initWithFrame:viewController:)]) {
-    self.view = [[viewClass alloc] initWithFrame:self.view.frame viewController:self];
-  } else {
-    self.view = [[viewClass alloc] initWithFrame:self.view.frame];
-  }
   self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-
   self.scrollView.delegate = self;
 }
 
