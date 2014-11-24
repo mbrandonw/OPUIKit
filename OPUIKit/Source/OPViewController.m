@@ -200,21 +200,21 @@ const struct OPViewControllerNotifications OPViewControllerNotifications = {
 #pragma mark - Status bar methods
 
 -(UIStatusBarStyle) preferredStatusBarStyle {
-  if ([self.view respondsToSelector:@selector(preferredStatusBarStyle)]) {
+  if (self.isViewLoaded && [self.view respondsToSelector:@selector(preferredStatusBarStyle)]) {
     return [(id)self.view preferredStatusBarStyle];
   }
   return [super preferredStatusBarStyle];
 }
 
 -(BOOL) prefersStatusBarHidden {
-  if ([self.view respondsToSelector:@selector(prefersStatusBarHidden)]) {
+  if (self.isViewLoaded && [self.view respondsToSelector:@selector(prefersStatusBarHidden)]) {
     return [(id)self.view prefersStatusBarHidden];
   }
   return [super prefersStatusBarHidden];
 }
 
 -(UIStatusBarAnimation) preferredStatusBarUpdateAnimation {
-  if ([self.view respondsToSelector:@selector(preferredStatusBarUpdateAnimation)]) {
+  if (self.isViewLoaded && [self.view respondsToSelector:@selector(preferredStatusBarUpdateAnimation)]) {
     return [(id)self.view preferredStatusBarUpdateAnimation];
   }
   return [super preferredStatusBarUpdateAnimation];
