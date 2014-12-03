@@ -24,149 +24,149 @@ static char toolbarViewKey;
 @implementation UIViewController (OPUIKit)
 
 -(id) initWithTitle:(NSString*)title subtitle:(NSString*)subtitle {
-    if (! (self = [self init]))
-        return nil;
-    
-    [self setTitle:title subtitle:subtitle];
-    
-    return self;
+  if (! (self = [self init]))
+    return nil;
+
+  [self setTitle:title subtitle:subtitle];
+
+  return self;
 }
 
 -(void) setTitle:(NSString*)title subtitle:(NSString*)subtitle {
-    
-    self.title = title;
-    
-    UIColor *titleColor = [UIColor whiteColor];
-    UIFont *titleFont = [UIFont boldSystemFontOfSize:18.0f];
-    UIFont *subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
-    UIColor *titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-    CGSize titleShadowOffset = CGSizeZero;
-    
-    if ([self isKindOfClass:[OPTableViewController class]] || [self isKindOfClass:[OPViewController class]])
-    {
-        titleColor = [(id)self titleColor] ?: titleColor;
-        titleFont = [(id)self titleFont] ?: titleFont;
-        subtitleFont = [(id)self subtitleFont] ?: subtitleFont;
-        titleShadowColor = [(id)self titleShadowColor] ?: titleShadowColor;
-        titleShadowOffset = [(id)self titleShadowOffset];
-    }
-    
-    if (title && subtitle)
-        titleFont = [UIFont fontWithName:subtitleFont.fontName size:subtitleFont.pointSize+2.0f];
-    
-	UIView *wrapper = [[UIView alloc] initWithFrame:CGRectZero];
-	
-	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	titleLabel.text = title;
-	titleLabel.textColor = titleColor;
-	titleLabel.shadowColor = titleShadowColor;
-    titleLabel.shadowOffset = titleShadowOffset;
-	titleLabel.textAlignment = NSTextAlignmentCenter;
-	titleLabel.font = titleFont;
-	titleLabel.numberOfLines = 1;
-	titleLabel.backgroundColor = [UIColor clearColor];
-	titleLabel.opaque = NO;
-    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	[titleLabel sizeToFit];
-	
-	UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	if (subtitle)
-    {
-		subtitleLabel.text = subtitle;
-		subtitleLabel.textColor = titleColor;
-		subtitleLabel.shadowColor = titleShadowColor;
-        subtitleLabel.shadowOffset = titleShadowOffset;
-		subtitleLabel.textAlignment = NSTextAlignmentCenter;
-		subtitleLabel.font = subtitleFont;
-		subtitleLabel.numberOfLines = 1;
-		subtitleLabel.backgroundColor = [UIColor clearColor];
-		subtitleLabel.opaque = NO;
-        subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[subtitleLabel sizeToFit];
-	}
-	
-	CGFloat maxWidth = MAX(titleLabel.frame.size.width, subtitleLabel.frame.size.width);
-	wrapper.frame = CGRectMake(0.0, 0.0, maxWidth, 44.0);
-	titleLabel.frame = CGRectMake(0.0, (subtitle ? 3.0 : 12.0), maxWidth, 20.0);
-	[wrapper addSubview:titleLabel];
-	
-	if (subtitle)
-    {
-		subtitleLabel.frame = CGRectMake(0.0, 21.0, maxWidth, 16.0);
-		[wrapper addSubview:subtitleLabel];
-	}
-	
-	self.navigationItem.titleView = wrapper;
+
+  self.title = title;
+
+  UIColor *titleColor = [UIColor whiteColor];
+  UIFont *titleFont = [UIFont boldSystemFontOfSize:18.0f];
+  UIFont *subtitleFont = [UIFont boldSystemFontOfSize:13.0f];
+  UIColor *titleShadowColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+  CGSize titleShadowOffset = CGSizeZero;
+
+  if ([self isKindOfClass:[OPTableViewController class]] || [self isKindOfClass:[OPViewController class]])
+  {
+    titleColor = [(id)self titleColor] ?: titleColor;
+    titleFont = [(id)self titleFont] ?: titleFont;
+    subtitleFont = [(id)self subtitleFont] ?: subtitleFont;
+    titleShadowColor = [(id)self titleShadowColor] ?: titleShadowColor;
+    titleShadowOffset = [(id)self titleShadowOffset];
+  }
+
+  if (title && subtitle)
+    titleFont = [UIFont fontWithName:subtitleFont.fontName size:subtitleFont.pointSize+2.0f];
+
+  UIView *wrapper = [[UIView alloc] initWithFrame:CGRectZero];
+
+  UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  titleLabel.text = title;
+  titleLabel.textColor = titleColor;
+  titleLabel.shadowColor = titleShadowColor;
+  titleLabel.shadowOffset = titleShadowOffset;
+  titleLabel.textAlignment = NSTextAlignmentCenter;
+  titleLabel.font = titleFont;
+  titleLabel.numberOfLines = 1;
+  titleLabel.backgroundColor = [UIColor clearColor];
+  titleLabel.opaque = NO;
+  titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+  [titleLabel sizeToFit];
+
+  UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  if (subtitle)
+  {
+    subtitleLabel.text = subtitle;
+    subtitleLabel.textColor = titleColor;
+    subtitleLabel.shadowColor = titleShadowColor;
+    subtitleLabel.shadowOffset = titleShadowOffset;
+    subtitleLabel.textAlignment = NSTextAlignmentCenter;
+    subtitleLabel.font = subtitleFont;
+    subtitleLabel.numberOfLines = 1;
+    subtitleLabel.backgroundColor = [UIColor clearColor];
+    subtitleLabel.opaque = NO;
+    subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [subtitleLabel sizeToFit];
+  }
+
+  CGFloat maxWidth = MAX(titleLabel.frame.size.width, subtitleLabel.frame.size.width);
+  wrapper.frame = CGRectMake(0.0, 0.0, maxWidth, 44.0);
+  titleLabel.frame = CGRectMake(0.0, (subtitle ? 3.0 : 12.0), maxWidth, 20.0);
+  [wrapper addSubview:titleLabel];
+
+  if (subtitle)
+  {
+    subtitleLabel.frame = CGRectMake(0.0, 21.0, maxWidth, 16.0);
+    [wrapper addSubview:subtitleLabel];
+  }
+
+  self.navigationItem.titleView = wrapper;
 }
 
 -(void) setToolbarView:(UIView*)toolbarView {
-    objc_setAssociatedObject(self, &toolbarViewKey, nil, OBJC_ASSOCIATION_RETAIN);
-    objc_setAssociatedObject(self, &toolbarViewKey, toolbarView, OBJC_ASSOCIATION_RETAIN);
-    [self.view addSubview:self.toolbarView];
-    [self layoutToolbarView];
-    
-    [self.parentViewController setToolbarViewHidden:YES animated:YES];
+  objc_setAssociatedObject(self, &toolbarViewKey, nil, OBJC_ASSOCIATION_RETAIN);
+  objc_setAssociatedObject(self, &toolbarViewKey, toolbarView, OBJC_ASSOCIATION_RETAIN);
+  [self.view addSubview:self.toolbarView];
+  [self layoutToolbarView];
+
+  [self.parentViewController setToolbarViewHidden:YES animated:YES];
 }
 
 -(UIView*) toolbarView {
-    UIView *retVal = objc_getAssociatedObject(self, &toolbarViewKey);
-    if (! retVal)
-        return [self.parentViewController toolbarView];
-    return retVal;
+  UIView *retVal = objc_getAssociatedObject(self, &toolbarViewKey);
+  if (! retVal)
+    return [self.parentViewController toolbarView];
+  return retVal;
 }
 
 -(BOOL) isToolbarViewHidden {
-    return self.toolbarView.hidden;
+  return self.toolbarView.hidden;
 }
 
 -(void) setToolbarViewHidden:(BOOL)hidden {
-    [self setToolbarViewHidden:hidden animated:NO];
+  [self setToolbarViewHidden:hidden animated:NO];
 }
 
 -(void) setToolbarViewHidden:(BOOL)hidden animated:(BOOL)animated {
-    
-    if ([self isToolbarViewHidden] == hidden)
-        return ;
-    
-    if (self.toolbarView)
-    {
-        dispatch_after_delay(0.1f, ^{
-            
-            self.toolbarView.hidden = NO;
-            [self layoutToolbarView:!hidden];
-            
-            [UIView animateWithDuration:0.3f*animated animations:^{
-                [self layoutToolbarView:hidden];
-            } completion:^(BOOL finished) {
-                self.toolbarView.hidden = hidden;
-                [self layoutToolbarView];
-            }];
-            
-        });
+
+  if (self.toolbarView) {
+    if ([self isToolbarViewHidden] == hidden) {
+      return ;
     }
-    else
-    {
-        [self.parentViewController setToolbarViewHidden:hidden animated:YES];
-    }
+
+    dispatch_after_delay(0.1f, ^{
+
+      self.toolbarView.hidden = NO;
+      [self layoutToolbarView:!hidden];
+
+      [UIView animateWithDuration:0.3f*animated animations:^{
+        [self layoutToolbarView:hidden];
+      } completion:^(BOOL finished) {
+        self.toolbarView.hidden = hidden;
+        [self layoutToolbarView];
+      }];
+
+    });
+  }
+  else
+  {
+    [self.parentViewController setToolbarViewHidden:hidden animated:YES];
+  }
 }
 
 -(void) layoutToolbarView {
-    [self layoutToolbarView:[self isToolbarViewHidden]];
+  [self layoutToolbarView:[self isToolbarViewHidden]];
 }
 
 -(void) layoutToolbarView:(BOOL)hidden {
-    
-    [self.toolbarView bringToFront];
-    self.toolbarView.frame = (CGRect){
-        self.viewOffset.x,
-        self.toolbarView.superview.bounds.size.height - self.toolbarView.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f),
-        self.toolbarView.superview.bounds.size.width,
-        self.toolbarView.height
-    };
+
+  [self.toolbarView bringToFront];
+  self.toolbarView.frame = (CGRect){
+    self.viewOffset.x,
+    self.toolbarView.superview.bounds.size.height - self.toolbarView.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f),
+    self.toolbarView.superview.bounds.size.width,
+    self.toolbarView.height
+  };
 }
 
 -(CGPoint) viewOffset {
-    return [self.toolbarView.superview isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.toolbarView.superview contentOffset] : CGPointZero;
+  return [self.toolbarView.superview isKindOfClass:[UIScrollView class]] ? [(UIScrollView*)self.toolbarView.superview contentOffset] : CGPointZero;
 }
 
 -(BOOL) walkViewControllerHierarchy:(void(^)(UIViewController *controller, BOOL *stop))block {
