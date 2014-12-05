@@ -281,22 +281,6 @@
   return height;
 }
 
--(void) viewDidLayoutSubviews {
-  [super viewDidLayoutSubviews];
-
-  if ([self numberOfSectionsInTableView:self.tableView] > 0 &&
-      [self tableView:self.tableView numberOfRowsInSection:0] > 0) {
-
-    UIEdgeInsets insets = [self tableView:self.tableView insetsForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    self.tableView.tableHeaderView.frame = (CGRect){
-      insets.left,
-      self.tableView.tableHeaderView.top,
-      self.tableView.bounds.size.width - insets.left - insets.right,
-      self.tableView.tableHeaderView.height,
-    };
-  }
-}
-
 #pragma mark - UIScrollView methods
 
 -(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
