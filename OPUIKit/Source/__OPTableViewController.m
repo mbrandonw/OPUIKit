@@ -128,6 +128,22 @@
   [self configureForCurrentContentSizeCategory];
 }
 
+-(void) viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+
+  if ([self numberOfSectionsInTableView:self.tableView] > 0 &&
+      [self tableView:self.tableView numberOfRowsInSection:0] > 0) {
+
+    UIEdgeInsets insets = [self tableViewInsetsForTableViewHeader:self.tableView];
+    self.tableView.tableHeaderView.frame = (CGRect){
+      insets.left,
+      self.tableView.tableHeaderView.top,
+      self.tableView.bounds.size.width - insets.left - insets.right,
+      self.tableView.tableHeaderView.height,
+    };
+  }
+}
+
 #pragma mark - UIViewController methods
 
 -(void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -150,6 +166,10 @@
 
 -(Class) tableView:(UITableView *)tableView classForRowAtIndexPath:(NSIndexPath *)indexPath {
   return [UIView class];
+}
+
+-(UIEdgeInsets) tableViewInsetsForTableViewHeader:(UITableView*)tableView {
+  return UIEdgeInsetsZero;
 }
 
 -(UIEdgeInsets) tableView:(UITableView*)tableView insetsForRowAtIndexPath:(NSIndexPath*)indexPath {

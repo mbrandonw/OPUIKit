@@ -33,6 +33,7 @@
 
 /**
  */
+-(UIEdgeInsets) tableViewInsetsForTableViewHeader:(UITableView*)tableView;
 -(UIEdgeInsets) tableView:(UITableView*)tableView insetsForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
