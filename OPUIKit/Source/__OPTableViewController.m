@@ -148,6 +148,25 @@
   if ([self.view respondsToSelector:@selector(viewWillTransitionToSize:withTransitionCoordinator:)]) {
     [self.view viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
   }
+
+  if (self.scorchedEarthRotationPolicy) {
+    CGPoint offsetPercentage = {
+      self.tableView.contentOffset.x / self.tableView.contentSize.width,
+      self.tableView.contentOffset.y / self.tableView.contentSize.height,
+    };
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+      self.tableView.delegate = self;
+      self.tableView.dataSource = self;
+      [self.tableView reloadData];
+      self.tableView.contentOffset = (CGPoint){
+        offsetPercentage.x * self.tableView.contentSize.width,
+        offsetPercentage.y * self.tableView.contentSize.height,
+      };
+    }];
+  }
 }
 
 #pragma mark -
@@ -282,18 +301,9 @@
   UIEdgeInsets insets = [self tableView:tableView insetsForRowAtIndexPath:indexPath];
   height += insets.top + insets.bottom;
 
-  metricCellView.width = tableView.bounds.size.width - insets.left - insets.right;
-  metricCellView.height = 10000.0f;
   [self tableView:tableView configureCellView:metricCellView atIndexPath:indexPath];
+  height += [metricCellView sizeThatFitsWidth:tableView.bounds.size.width - insets.left - insets.right].height;
 
-  if ([metricCellView respondsToSelector:@selector(_cellSize)]) {
-    height += ceilf(metricCellView._cellSize.height);
-  } else {
-    height += ceilf(metricCellView.cellSizeWithManualLayout.height);
-  }
-  metricCell.height = height;
-  metricCellView.height = height - insets.top - insets.bottom;
-  
   return height;
 }
 

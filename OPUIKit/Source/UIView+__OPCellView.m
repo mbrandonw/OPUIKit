@@ -15,9 +15,7 @@
 @implementation UIView (__OPCellView)
 
 -(void) setCellObject:(id)cellObject {
-  [self setNeedsDisplay];
-  [self setNeedsLayout];
-
+  
   if (cellObject != self.cellObject) {
     objc_setAssociatedObject(self, @selector(cellObject), cellObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 

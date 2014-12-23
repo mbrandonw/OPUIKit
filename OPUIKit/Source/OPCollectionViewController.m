@@ -339,15 +339,8 @@
     insets.top + insets.bottom,
   };
 
-  metricCellView.width = size.width;
-  metricCellView.height = 10000.0f;
   [self collectionView:collectionView configureCellView:metricCellView atIndexPath:indexPath];
-
-  if ([metricCellView respondsToSelector:@selector(_cellSize)]) {
-    size.height += ceilf(metricCellView._cellSize.height);
-  } else {
-    size.height += ceilf(metricCellView.cellSizeWithManualLayout.height);
-  }
+  size = [metricCellView sizeThatFitsWidth:size.width];
 
   size.width += insets.left + insets.right;
   return size;
