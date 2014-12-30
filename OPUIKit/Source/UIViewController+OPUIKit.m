@@ -14,20 +14,19 @@
 #import "OPMacros.h"
 #import <objc/runtime.h>
 
-static char toolbarViewKey;
-
 @interface UIViewController (OPUIKit_Private)
--(void) layoutToolbarView:(BOOL)hidden;
 -(CGPoint) viewOffset;
 @end
 
 @implementation UIViewController (OPUIKit)
 
 -(id) initWithTitle:(NSString*)title subtitle:(NSString*)subtitle {
-  if (! (self = [self init]))
+  if (! (self = [self init])) {
     return nil;
+  }
 
   [self setTitle:title subtitle:subtitle];
+  [self setToolbarViewHidden:YES];
 
   return self;
 }
@@ -100,23 +99,27 @@ static char toolbarViewKey;
 }
 
 -(void) setToolbarView:(UIView*)toolbarView {
-  objc_setAssociatedObject(self, &toolbarViewKey, nil, OBJC_ASSOCIATION_RETAIN);
-  objc_setAssociatedObject(self, &toolbarViewKey, toolbarView, OBJC_ASSOCIATION_RETAIN);
+  [self.toolbarView removeFromSuperview];
+  objc_setAssociatedObject(self, @selector(toolbarView), nil, OBJC_ASSOCIATION_RETAIN);
+
+  objc_setAssociatedObject(self, @selector(toolbarView), toolbarView, OBJC_ASSOCIATION_RETAIN);
   [self.view addSubview:self.toolbarView];
+
   [self layoutToolbarView];
 
   [self.parentViewController setToolbarViewHidden:YES animated:YES];
 }
 
 -(UIView*) toolbarView {
-  UIView *retVal = objc_getAssociatedObject(self, &toolbarViewKey);
-  if (! retVal)
+  UIView *retVal = objc_getAssociatedObject(self, @selector(toolbarView));
+  if (! retVal) {
     return [self.parentViewController toolbarView];
+  }
   return retVal;
 }
 
--(BOOL) isToolbarViewHidden {
-  return self.toolbarView.hidden;
+-(BOOL) toolbarViewHidden {
+  return [objc_getAssociatedObject(self, @selector(toolbarViewHidden)) boolValue];
 }
 
 -(void) setToolbarViewHidden:(BOOL)hidden {
@@ -124,21 +127,16 @@ static char toolbarViewKey;
 }
 
 -(void) setToolbarViewHidden:(BOOL)hidden animated:(BOOL)animated {
+  objc_setAssociatedObject(self, @selector(toolbarViewHidden), @(hidden), OBJC_ASSOCIATION_RETAIN);
 
   if (self.toolbarView) {
-    if ([self isToolbarViewHidden] == hidden) {
-      return ;
-    }
+    dispatch_after_delay(0.01f, ^{
+      [self layoutToolbarView];
 
-    dispatch_after_delay(0.1f, ^{
-
-      self.toolbarView.hidden = NO;
-      [self layoutToolbarView:!hidden];
-
-      [UIView animateWithDuration:0.3f*animated animations:^{
-        [self layoutToolbarView:hidden];
+      [UIView animateWithDuration:0.3 * animated animations:^{
+        self.toolbarView.alpha = hidden ? 0.0f : 1.0f;
+        [self layoutToolbarView];
       } completion:^(BOOL finished) {
-        self.toolbarView.hidden = hidden;
         [self layoutToolbarView];
       }];
 
@@ -151,15 +149,10 @@ static char toolbarViewKey;
 }
 
 -(void) layoutToolbarView {
-  [self layoutToolbarView:[self isToolbarViewHidden]];
-}
-
--(void) layoutToolbarView:(BOOL)hidden {
-
   [self.toolbarView bringToFront];
   self.toolbarView.frame = (CGRect){
     self.viewOffset.x,
-    self.toolbarView.superview.bounds.size.height - self.toolbarView.height + self.viewOffset.y + (hidden ? self.toolbarView.height : 0.0f),
+    self.toolbarView.superview.bounds.size.height - self.toolbarView.height + self.viewOffset.y,
     self.toolbarView.superview.bounds.size.width,
     self.toolbarView.height
   };

@@ -16,7 +16,7 @@
 -(void) setToolbarView:(UIView*)toolbarView;
 -(UIView*) toolbarView;
 
--(BOOL) isToolbarViewHidden;
+-(BOOL) toolbarViewHidden;
 -(void) setToolbarViewHidden:(BOOL)hidden;
 -(void) setToolbarViewHidden:(BOOL)hidden animated:(BOOL)animated;
 
