@@ -28,7 +28,7 @@
 
 +(id) controllerWithRootViewController:(UIViewController*)rootViewController {
 
-	OPNavigationController *controller = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] lastObject];
+	OPNavigationController *controller = [[[NSBundle bundleForClass:self] loadNibNamed:NSStringFromClass(self) owner:self options:nil] lastObject];
 
   if (rootViewController) {
     controller.viewControllers = @[rootViewController];
