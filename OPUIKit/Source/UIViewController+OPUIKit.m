@@ -99,7 +99,8 @@
 }
 
 -(void) setToolbarView:(UIView*)toolbarView {
-  [self.toolbarView removeFromSuperview];
+  UIView *currToolbarView = objc_getAssociatedObject(self, @selector(toolbarView));
+  [currToolbarView removeFromSuperview];
   objc_setAssociatedObject(self, @selector(toolbarView), nil, OBJC_ASSOCIATION_RETAIN);
 
   objc_setAssociatedObject(self, @selector(toolbarView), toolbarView, OBJC_ASSOCIATION_RETAIN);
